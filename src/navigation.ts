@@ -19,6 +19,10 @@ export const headerData = {
       href: getPermalink('/locations'),
     },
     {
+      text: 'Testimonials',
+      href: getPermalink('/testimonials'),
+    },
+    {
       text: 'Contact',
       href: getPermalink('/contact'),
     },
@@ -55,6 +59,7 @@ export const footerData = {
         { text: 'About Us', href: getPermalink('/about') },
         { text: 'Our Mission', href: getPermalink('/about#mission') },
         { text: 'Our Values', href: getPermalink('/about#values') },
+        { text: 'Testimonials', href: getPermalink('/testimonials') },
         { text: 'Contact', href: getPermalink('/contact') },
       ],
     },

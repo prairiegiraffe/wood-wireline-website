@@ -1,0 +1,207 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Testimonials from '~/components/widgets/Testimonials.astro';
+import Brands from '~/components/widgets/Brands.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import Image from '~/components/common/Image.astro';
+
+const metadata = {
+  title: 'Testimonials — Wood Wireline',
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero Section -->
+  <Hero
+    tagline="Testimonials"
+    image={{
+      src: '~/assets/images/All Images/Wood Wireline Truck.webp',
+      alt: 'Wood Wireline Operations',
+    }}
+  >
+    <Fragment slot="title">
+      <span class="text-5xl md:text-6xl font-black">What Our Clients Say</span><br />
+      <span class="text-accent dark:text-white text-4xl md:text-5xl font-bold mt-4 block">Trusted by Industry Leaders</span>
+    </Fragment>
+    <Fragment slot="subtitle">
+      <p class="text-xl md:text-2xl leading-relaxed max-w-4xl mx-auto">
+        Our commitment to excellence has earned the trust of operators across the Powder River Basin and beyond. 
+        Here's what our clients say about working with Wood Wireline.
+      </p>
+    </Fragment>
+  </Hero>
+
+  <!-- Testimonials Section -->
+  <Testimonials
+    title="Client Testimonials"
+    subtitle="Don't just take our word for it. Here's what operators and industry professionals have to say about working with Wood Wireline."
+    tagline="What Our Clients Say"
+    testimonials={[
+      {
+        testimonial: `Wood Wireline has been our go-to service provider for years. Their crews are professional, efficient, and always show up ready to work. They've never let us down, and their attention to detail is unmatched. When we need wireline services, we call Wood Wireline.`,
+        name: 'Operations Manager',
+        job: 'Major Operator, Williston Basin',
+      },
+      {
+        testimonial: `What sets Wood Wireline apart is their attention to detail and commitment to safety. They get the job done right the first time, every time. Their crews are among the most efficient we've worked with. No excuses, no downtime—just results.`,
+        name: 'Company Man',
+        job: 'Independent Operator, Powder River Basin',
+      },
+      {
+        testimonial: `We've worked with Wood Wireline across multiple basins, and their consistency and reliability are unmatched. They understand what it takes to keep operations moving, and they deliver on their promises. Their crews show up ready from the moment they cross the cattle guard.`,
+        name: 'Field Supervisor',
+        job: 'Regional Operator',
+      },
+      {
+        testimonial: `Wood Wireline's experience shows in every job. They've seen it all and know how to handle it. That experience means fewer delays, smarter decisions, and better results for our operations. They're a trusted partner we can count on.`,
+        name: 'Drilling Manager',
+        job: 'Energy Company, Bakken Basin',
+      },
+      {
+        testimonial: `Safety is paramount in our operations, and Wood Wireline shares that commitment. Every project is carried out with precision, efficiency, and the highest safety standards. That's how they've built their reputation—by doing the job right, every single time.`,
+        name: 'Operations Director',
+        job: 'Major Operator, DJ Basin',
+      },
+      {
+        testimonial: `Whether it's the middle of the day or the middle of the night, Wood Wireline shows up ready to work. Quick rigs, tight turnarounds, and honest communication are what we've come to expect. They don't just meet expectations—they exceed them.`,
+        name: 'Well Site Supervisor',
+        job: 'Independent Operator, Powder River Basin',
+      },
+    ]}
+  />
+
+  <!-- Trusted By Brands Section -->
+  <Brands
+    tagline="Trusted By"
+    title="Industry Leaders Across the Basin"
+    subtitle="We're proud to serve operators and companies throughout the Powder River Basin, Williston Basin, Bakken Basin, DJ Basin, Big Horn Basin, and beyond. Our commitment to excellence has earned the trust of industry leaders."
+    icons={[
+      'tabler:building-factory',
+      'tabler:building-warehouse',
+      'tabler:building',
+      'tabler:building-skyscraper',
+      'tabler:building-arch',
+      'tabler:building-store',
+    ]}
+  >
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-gradient-to-b from-white via-gray-50 to-white dark:from-transparent dark:via-transparent dark:to-transparent"></div>
+    </Fragment>
+  </Brands>
+
+  <!-- Note: Replace icons above with actual company logos by updating the images prop:
+    images={[
+      { src: '~/assets/images/logos/company1.png', alt: 'Company Name' },
+      { src: '~/assets/images/logos/company2.png', alt: 'Company Name' },
+      // Add more company logos here
+    ]}
+  -->
+
+  <!-- Additional Testimonials Section -->
+  <section class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12">
+        <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
+          More Client Feedback
+        </p>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-6">
+          Why Operators Choose Wood Wireline
+        </h2>
+        <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
+          Decades of experience, unwavering commitment to safety, and a reputation for getting the job done right.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 md:p-8">
+          <div class="flex items-center mb-4">
+            <div class="flex text-yellow-400">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            </div>
+          </div>
+          <blockquote class="text-lg text-muted dark:text-slate-300 mb-4">
+            "Wood Wireline's crews bring precision and problem-solving to every run. We've seen it all and they know how to handle it. That experience means fewer delays and better results."
+          </blockquote>
+          <div class="flex items-center">
+            <div>
+              <div class="font-semibold text-default dark:text-white">Production Engineer</div>
+              <div class="text-sm text-muted dark:text-slate-400">Major Operator</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 md:p-8">
+          <div class="flex items-center mb-4">
+            <div class="flex text-yellow-400">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            </div>
+          </div>
+          <blockquote class="text-lg text-muted dark:text-slate-300 mb-4">
+            "Clean trucks, organized crews, and tight operations are what separate Wood Wireline from the rest. That pride shows up in every call they take and every client they serve."
+          </blockquote>
+          <div class="flex items-center">
+            <div>
+              <div class="font-semibold text-default dark:text-white">Operations Coordinator</div>
+              <div class="text-sm text-muted dark:text-slate-400">Regional Energy Company</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Get a Quote',
+        href: '/contact',
+        icon: 'tabler:phone',
+      },
+      {
+        text: 'View Our Services',
+        href: '/services',
+      },
+    ]}
+  >
+    <Fragment slot="title">
+      Ready to Experience the Wood Wireline Difference?
+    </Fragment>
+    <Fragment slot="subtitle">
+      Join the operators who trust Wood Wireline for reliable, efficient wireline services across the Powder River Basin and beyond.
+      <br class="hidden md:inline" />
+      Contact us today to get started.
+    </Fragment>
+  </CallToAction>
+</Layout>
+
