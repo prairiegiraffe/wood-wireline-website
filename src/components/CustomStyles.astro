@@ -1,22 +1,5 @@
 ---
 import '@fontsource-variable/inter';
-
-// 'DM Sans'
-// Nunito
-// Dosis
-// Outfit
-// Roboto
-// Literata
-// 'IBM Plex Sans'
-// Karla
-// Poppins
-// 'Fira Sans'
-// 'Libre Franklin'
-// Inconsolata
-// Raleway
-// Oswald
-// 'Space Grotesk'
-// Urbanist
 ---
 
 <style is:inline>
@@ -25,9 +8,10 @@ import '@fontsource-variable/inter';
     --aw-font-serif: 'Inter Variable';
     --aw-font-heading: 'Inter Variable';
 
-    --aw-color-primary: rgb(1 97 239);
-    --aw-color-secondary: rgb(1 84 207);
-    --aw-color-accent: rgb(109 40 217);
+    /* Wood Wireline Colors: Black, Silver & White */
+    --aw-color-primary: rgb(0 0 0); /* Black */
+    --aw-color-secondary: rgb(128 128 128); /* Silver */
+    --aw-color-accent: rgb(192 192 192); /* Light Silver */
 
     --aw-color-text-heading: rgb(0 0 0);
     --aw-color-text-default: rgb(16 16 16);
@@ -37,7 +21,8 @@ import '@fontsource-variable/inter';
     --aw-color-bg-page-dark: rgb(3 6 32);
 
     ::selection {
-      background-color: lavender;
+      background-color: rgb(192 192 192);
+      color: rgb(0 0 0);
     }
   }
 
@@ -46,18 +31,18 @@ import '@fontsource-variable/inter';
     --aw-font-serif: 'Inter Variable';
     --aw-font-heading: 'Inter Variable';
 
-    --aw-color-primary: rgb(1 97 239);
-    --aw-color-secondary: rgb(1 84 207);
-    --aw-color-accent: rgb(109 40 217);
+    --aw-color-primary: rgb(192 192 192); /* Light Silver */
+    --aw-color-secondary: rgb(128 128 128); /* Silver */
+    --aw-color-accent: rgb(255 255 255); /* White */
 
-    --aw-color-text-heading: rgb(247, 248, 248);
-    --aw-color-text-default: rgb(229 236 246);
-    --aw-color-text-muted: rgb(229 236 246 / 66%);
-    --aw-color-bg-page: rgb(3 6 32);
+    --aw-color-text-heading: rgb(255 255 255);
+    --aw-color-text-default: rgb(229 229 229);
+    --aw-color-text-muted: rgb(229 229 229 / 66%);
+    --aw-color-bg-page: rgb(16 16 16);
 
     ::selection {
-      background-color: black;
-      color: snow;
+      background-color: rgb(128 128 128);
+      color: rgb(255 255 255);
     }
   }
 </style>

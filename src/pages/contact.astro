@@ -3,21 +3,92 @@ import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
 import ContactUs from '~/components/widgets/Contact.astro';
 import Features2 from '~/components/widgets/Features2.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Image from '~/components/common/Image.astro';
+import { Icon } from 'astro-icon/components';
 
 const metadata = {
-  title: 'Contact',
+  title: 'Contact Us',
 };
 ---
 
 <Layout metadata={metadata}>
-  <!-- HeroText Widget ******************* -->
+  <!-- Enhanced Hero Widget with Image ******************* -->
 
-  <HeroText tagline="Contact" title="Let's Connect!" />
+  <Hero
+    tagline="Contact"
+    title="Get in Touch"
+    subtitle="Ready to work? We're ready too. Contact us today for reliable wireline services across the Powder River Basin and beyond."
+    actions={[
+      { variant: 'primary', text: 'Call Now', href: 'tel:307-682-0143', icon: 'tabler:phone' },
+      { variant: 'secondary', text: 'View Services', href: '/services' },
+    ]}
+    image={{
+      src: '~/assets/images/All Images/Wood Wireline Truck.webp',
+      alt: 'Contact Wood Wireline',
+    }}
+  />
+
+  <!-- Photo Section ******************* -->
+
+  <section class="py-12 md:py-20 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="relative group overflow-hidden rounded-xl shadow-xl">
+          <Image
+            src="~/assets/images/All Images/Oil Rig Worker.webp"
+            alt="Professional Crew"
+            class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+            widths={[400, 600, 800]}
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+            <div class="absolute bottom-4 left-4 right-4 text-white">
+              <h3 class="font-bold text-lg">Professional Crews</h3>
+              <p class="text-sm">Ready to work when you are</p>
+            </div>
+          </div>
+        </div>
+        <div class="relative group overflow-hidden rounded-xl shadow-xl">
+          <Image
+            src="~/assets/images/All Images/Oilfield Operations.webp"
+            alt="Operations"
+            class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+            widths={[400, 600, 800]}
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+            <div class="absolute bottom-4 left-4 right-4 text-white">
+              <h3 class="font-bold text-lg">24/7 Availability</h3>
+              <p class="text-sm">No excuses, no downtime</p>
+            </div>
+          </div>
+        </div>
+        <div class="relative group overflow-hidden rounded-xl shadow-xl">
+          <Image
+            src="~/assets/images/All Images/Wood Wireline Truck-BdikWvmwck.webp"
+            alt="Equipment"
+            class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+            widths={[400, 600, 800]}
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+            <div class="absolute bottom-4 left-4 right-4 text-white">
+              <h3 class="font-bold text-lg">Reliable Equipment</h3>
+              <p class="text-sm">Ready from the moment we arrive</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form ******************* -->
 
   <ContactUs
     id="form"
-    title="Drop us a message today!"
-    subtitle="For quicker answers, explore our FAQs section. You may find the solution you're looking  for right there! If not, our support team is delighted to help you."
+    title="Request a Quote"
+    subtitle="Fill out the form below and we'll get back to you as soon as possible. For immediate assistance, call us at 307-682-0143."
     inputs={[
       {
         type: 'text',
@@ -29,51 +100,171 @@ const metadata = {
         name: 'email',
         label: 'Email',
       },
+      {
+        type: 'tel',
+        name: 'phone',
+        label: 'Phone',
+      },
+      {
+        type: 'text',
+        name: 'company',
+        label: 'Company',
+      },
     ]}
     textarea={{
       label: 'Message',
+      placeholder: 'Tell us about your wireline service needs...',
     }}
     disclaimer={{
       label:
         'By submitting this contact form, you acknowledge and agree to the collection of your personal information.',
     }}
-    description="Our support team typically responds within 24 business hours."
+    description="Our team typically responds within 24 hours. For urgent requests, please call us directly."
   />
 
-  <!-- Features2 Widget ************** -->
+  <!-- Enhanced Features2 Widget with Photos ************** -->
 
-  <Features2
-    title="We are here to help!"
-    items={[
-      {
-        title: 'General support',
-        description: `Chat with us for inquiries related to account management, website navigation, payment issues, accessing purchased templates or general questions about the website's functionality.`,
-      },
-      {
-        title: 'Contact sales',
-        description:
-          'Chat with us for questions about purchases, customization options, licensing for commercial use, inquiries about specific template, etc.',
-      },
-      {
-        title: 'Technical support',
-        description:
-          'Chat with us when facing issues like template installation, problems editing difficulties, compatibility issues with software or download errors, or other technical challenges related to using the templates.',
-      },
-      {
-        title: 'Phone',
-        description: '+1 (234) 567-890',
-        icon: 'tabler:headset',
-      },
-      {
-        title: 'Email',
-        description: 'contact@support.com',
-        icon: 'tabler:mail',
-      },
-      {
-        title: 'Location',
-        description: '1234 Lorem Ipsum St, 12345, Miami, EEUU',
-        icon: 'tabler:map-pin',
-      },
-    ]}
-  />
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-24">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-4">
+        Contact Information
+      </h2>
+      <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
+        Multiple ways to reach us. We're here when you need us.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center group hover:shadow-xl transition-shadow">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary mb-4 group-hover:scale-110 transition-transform">
+          <Icon name="tabler:phone" class="w-8 h-8" />
+        </div>
+        <h3 class="text-xl font-bold dark:text-white mb-2">Phone</h3>
+        <p class="text-muted dark:text-slate-300">
+          <a href="tel:307-682-0143" class="text-primary hover:underline text-lg font-semibold">307-682-0143</a>
+        </p>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center group hover:shadow-xl transition-shadow">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary mb-4 group-hover:scale-110 transition-transform">
+          <Icon name="tabler:mail" class="w-8 h-8" />
+        </div>
+        <h3 class="text-xl font-bold dark:text-white mb-2">Email</h3>
+        <p class="text-muted dark:text-slate-300">
+          <a href="mailto:alicia@kutthru.com" class="text-primary hover:underline">alicia@kutthru.com</a>
+        </p>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center group hover:shadow-xl transition-shadow">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary mb-4 group-hover:scale-110 transition-transform">
+          <Icon name="tabler:map-pin" class="w-8 h-8" />
+        </div>
+        <h3 class="text-xl font-bold dark:text-white mb-2">Address</h3>
+        <p class="text-muted dark:text-slate-300">
+          3106 East 2nd Street<br>Gillette, WY
+        </p>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center group hover:shadow-xl transition-shadow">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary mb-4 group-hover:scale-110 transition-transform">
+          <Icon name="tabler:map" class="w-8 h-8" />
+        </div>
+        <h3 class="text-xl font-bold dark:text-white mb-2">Service Areas</h3>
+        <p class="text-muted dark:text-slate-300">
+          Gillette, WY • Casper, WY<br>Dickinson, ND • Williston, ND
+        </p>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center group hover:shadow-xl transition-shadow">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary mb-4 group-hover:scale-110 transition-transform">
+          <Icon name="tabler:clock" class="w-8 h-8" />
+        </div>
+        <h3 class="text-xl font-bold dark:text-white mb-2">Hours</h3>
+        <p class="text-muted dark:text-slate-300">
+          24/7 Emergency Service<br>Available when you need us
+        </p>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center group hover:shadow-xl transition-shadow">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary mb-4 group-hover:scale-110 transition-transform">
+          <Icon name="tabler:rocket" class="w-8 h-8" />
+        </div>
+        <h3 class="text-xl font-bold dark:text-white mb-2">Response Time</h3>
+        <p class="text-muted dark:text-slate-300">
+          Quick rigs, tight turnarounds<br>Ready when you are
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional Photo Gallery ******************* -->
+
+  <section class="py-12 md:py-20 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-4">
+          Our Operations
+        </h2>
+        <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
+          Professional crews and equipment ready to serve you.
+        </p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="col-span-2">
+          <Image
+            src="~/assets/images/All Images/Oil Rig Workers Onsite.webp"
+            alt="Workers Onsite"
+            class="w-full h-full object-cover rounded-lg shadow-xl"
+            widths={[600, 800]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        </div>
+        <div>
+          <Image
+            src="~/assets/images/All Images/Oil Rig Worker Monitoring Equipment.webp"
+            alt="Monitoring Equipment"
+            class="w-full h-full object-cover rounded-lg shadow-lg"
+            widths={[300, 400]}
+            sizes="(max-width: 768px) 50vw, 25vw"
+          />
+        </div>
+        <div>
+          <Image
+            src="~/assets/images/All Images/Oilfield Workers Operating Machinery.webp"
+            alt="Operating Machinery"
+            class="w-full h-full object-cover rounded-lg shadow-lg"
+            widths={[300, 400]}
+            sizes="(max-width: 768px) 50vw, 25vw"
+          />
+        </div>
+        <div>
+          <Image
+            src="~/assets/images/All Images/Oil Rig Equipment.webp"
+            alt="Rig Equipment"
+            class="w-full h-full object-cover rounded-lg shadow-lg"
+            widths={[300, 400]}
+            sizes="(max-width: 768px) 50vw, 25vw"
+          />
+        </div>
+        <div>
+          <Image
+            src="~/assets/images/All Images/Oil Rig Maintenance.webp"
+            alt="Rig Maintenance"
+            class="w-full h-full object-cover rounded-lg shadow-lg"
+            widths={[300, 400]}
+            sizes="(max-width: 768px) 50vw, 25vw"
+          />
+        </div>
+        <div class="col-span-2">
+          <Image
+            src="~/assets/images/All Images/Wood Wireline Truck-VIF53Zk16v.webp"
+            alt="Wood Wireline Truck"
+            class="w-full h-full object-cover rounded-lg shadow-xl"
+            widths={[600, 800]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
 </Layout>

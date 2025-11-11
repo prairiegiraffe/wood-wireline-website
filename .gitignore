@@ -22,3 +22,6 @@ pnpm-debug.log*
 pnpm-lock.yaml
 
 .astro
+
+# Large video files (exceed GitHub 100MB limit)
+public/background-video.mp4

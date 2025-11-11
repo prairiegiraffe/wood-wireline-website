@@ -1,228 +1,366 @@
 ---
-import Features2 from '~/components/widgets/Features2.astro';
-import Features3 from '~/components/widgets/Features3.astro';
 import Hero from '~/components/widgets/Hero.astro';
 import Stats from '~/components/widgets/Stats.astro';
 import Steps2 from '~/components/widgets/Steps2.astro';
+import Content from '~/components/widgets/Content.astro';
+import Features3 from '~/components/widgets/Features3.astro';
 import Layout from '~/layouts/PageLayout.astro';
+import Image from '~/components/common/Image.astro';
 
 const metadata = {
-  title: 'About us',
+  title: 'About Us',
 };
 ---
 
 <Layout metadata={metadata}>
-  <!-- Hero Widget ******************* -->
+  <!-- Enhanced Hero Widget ******************* -->
 
   <Hero
-    tagline="About us"
+    tagline="About Wood Wireline"
     image={{
-      src: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      alt: 'Caos Image',
+      src: '~/assets/images/All Images/Wood Wireline Truck.webp',
+      alt: 'Wood Wireline Operations',
     }}
   >
     <Fragment slot="title">
-      Elevate your online presence with our <br />
-      <span class="text-accent dark:text-white"> Beautiful Website Templates</span>
+      <span class="text-5xl md:text-6xl font-black">Established 1977</span><br />
+      <span class="text-accent dark:text-white text-4xl md:text-5xl font-bold mt-4 block">Nearly Five Decades of Excellence</span>
     </Fragment>
 
     <Fragment slot="subtitle">
-      Donec efficitur, ipsum quis congue luctus, mauris magna convallis mauris, eu auctor nisi lectus non augue. Donec
-      quis lorem non massa vulputate efficitur ac at turpis. Sed tincidunt ex a nunc convallis, et lobortis nisi tempus.
-      Suspendisse vitae nisi eget tortor luctus maximus sed non lectus.
+      <p class="text-xl md:text-2xl leading-relaxed max-w-4xl mx-auto">
+        We have built our reputation on an unwavering commitment to being the leading service company in every basin we operate. Our crews are among the most efficient in wireline, ready to deliver results from the moment we cross the cattle guard.
+      </p>
     </Fragment>
   </Hero>
 
-  <!-- Stats Widget ****************** -->
+  <!-- Enhanced Stats Widget ****************** -->
 
   <Stats
-    title="Statistics about us"
+    title="Wood Wireline by the Numbers"
     stats={[
-      { title: 'Offices', amount: '4' },
-      { title: 'Employees', amount: '248' },
-      { title: 'Templates', amount: '12' },
-      { title: 'Awards', amount: '24' },
+      { title: 'Years in Business', amount: '48+' },
+      { title: 'Service Basins', amount: '5' },
+      { title: 'Service Locations', amount: '4' },
+      { title: 'Services Offered', amount: '16+' },
     ]}
   />
 
-  <!-- Features3 Widget ************** -->
+  <!-- Photo Gallery Section ******************* -->
 
-  <Features3
-    title="Our templates"
-    subtitle="Etiam scelerisque, enim eget vestibulum luctus, nibh mauris blandit nulla, nec vestibulum risus justo ut enim. Praesent lacinia diam et ante imperdiet euismod."
-    columns={3}
-    isBeforeContent={true}
+  <section class="py-12 md:py-20 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-4">
+          Our Operations
+        </h2>
+        <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
+          Professional crews and equipment in action across the Powder River Basin.
+        </p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="col-span-2">
+          <Image
+            src="~/assets/images/All Images/Wood Wireline Truck-BdikWvmwck.webp"
+            alt="Wood Wireline Truck"
+            class="w-full h-full object-cover rounded-lg shadow-xl"
+            widths={[800, 1200]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        </div>
+        <div>
+          <Image
+            src="~/assets/images/All Images/Oil Rig Worker.webp"
+            alt="Oil Rig Worker"
+            class="w-full h-full object-cover rounded-lg shadow-lg"
+            widths={[400, 600]}
+            sizes="(max-width: 768px) 50vw, 25vw"
+          />
+        </div>
+        <div>
+          <Image
+            src="~/assets/images/All Images/Oilfield Operations.webp"
+            alt="Oilfield Operations"
+            class="w-full h-full object-cover rounded-lg shadow-lg"
+            widths={[400, 600]}
+            sizes="(max-width: 768px) 50vw, 25vw"
+          />
+        </div>
+        <div>
+          <Image
+            src="~/assets/images/All Images/Oil Rig Equipment.webp"
+            alt="Oil Rig Equipment"
+            class="w-full h-full object-cover rounded-lg shadow-lg"
+            widths={[400, 600]}
+            sizes="(max-width: 768px) 50vw, 25vw"
+          />
+        </div>
+        <div>
+          <Image
+            src="~/assets/images/All Images/Oilfield Workers On Site.webp"
+            alt="Oilfield Workers"
+            class="w-full h-full object-cover rounded-lg shadow-lg"
+            widths={[400, 600]}
+            sizes="(max-width: 768px) 50vw, 25vw"
+          />
+        </div>
+        <div class="col-span-2">
+          <Image
+            src="~/assets/images/All Images/Oil Rig Workers Onsite.webp"
+            alt="Oil Rig Workers"
+            class="w-full h-full object-cover rounded-lg shadow-xl"
+            widths={[800, 1200]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced Mission Section ****************** -->
+
+  <Content
+    id="mission"
+    tagline="Our Mission"
+    title="Delivering Dependable Wireline Services"
+    items={[]}
+    image={{
+      src: '~/assets/images/All Images/Oil Rig Worker Monitoring Equipment.webp',
+      alt: 'Mission',
+    }}
+  >
+    <Fragment slot="content">
+      <h3 class="text-3xl md:text-4xl font-bold tracking-tight dark:text-white mb-6">Mission Statement</h3>
+      <p class="text-lg md:text-xl text-muted dark:text-slate-300 mb-6 leading-relaxed">
+        To deliver dependable, safe, and efficient wireline services that keep our clients' operations moving. No excuses, no downtime. We show up ready, perform with precision, and take pride in doing the job right the first time.
+      </p>
+      <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 border-l-4 border-primary">
+        <p class="text-base md:text-lg text-muted dark:text-slate-400 italic leading-relaxed">
+          "Our mission is not simply to meet expectations, but to consistently exceed them."
+        </p>
+      </div>
+    </Fragment>
+  </Content>
+
+  <!-- Enhanced Vision Section ****************** -->
+
+  <Content
+    id="vision"
+    isReversed
+    tagline="Our Vision"
+    title="The Most Trusted Name in Wireline Services"
+    items={[]}
+    image={{
+      src: '~/assets/images/All Images/Oilfield Workers Operating Machinery.webp',
+      alt: 'Vision',
+    }}
+  >
+    <Fragment slot="content">
+      <h3 class="text-3xl md:text-4xl font-bold tracking-tight dark:text-white mb-6">Vision Statement</h3>
+      <p class="text-lg md:text-xl text-muted dark:text-slate-300 mb-6 leading-relaxed">
+        To be the most trusted name in wireline services across the Powder River Basin and beyond. Known for reliability, speed, and the relationships that drive the oilfield forward.
+      </p>
+      <div class="space-y-4">
+        <div class="flex items-start">
+          <span class="text-primary mr-3 text-xl">→</span>
+          <p class="text-base text-muted dark:text-slate-400">Reliability that operators can count on</p>
+        </div>
+        <div class="flex items-start">
+          <span class="text-primary mr-3 text-xl">→</span>
+          <p class="text-base text-muted dark:text-slate-400">Speed that keeps operations moving</p>
+        </div>
+        <div class="flex items-start">
+          <span class="text-primary mr-3 text-xl">→</span>
+          <p class="text-base text-muted dark:text-slate-400">Relationships that drive the industry forward</p>
+        </div>
+      </div>
+    </Fragment>
+  </Content>
+
+  <!-- Enhanced Values Section ****************** -->
+
+  <Steps2
+    id="values"
+    title="Our Core Values"
+    subtitle="These principles guide everything we do and define who we are as a company. They're not just words on a wall - they're how we operate every single day."
     items={[
       {
-        title: 'Educational',
+        title: 'Experience That Matters',
         description:
-          'Morbi faucibus luctus quam, sit amet aliquet felis tempor id. Cras augue massa, ornare quis dignissim a, molestie vel nulla.',
-        icon: 'tabler:template',
+          "With decades of combined knowledge, our crews bring precision and problem-solving to every run. We've seen it all and we know how to handle it. That experience means fewer delays, smarter decisions, and better results for our clients.",
+        icon: 'tabler:briefcase',
       },
       {
-        title: 'Interior Design',
+        title: 'Pride in the Job',
         description:
-          'Vivamus porttitor, tortor convallis aliquam pretium, turpis enim consectetur elit, vitae egestas purus erat ac nunc nulla.',
-        icon: 'tabler:template',
+          "We don't just get it done, we get it done right. Clean trucks, organized crews, and tight operations are what separate us from the rest. That pride shows up in every call we take and every client we serve.",
+        icon: 'tabler:award',
       },
       {
-        title: 'Photography',
+        title: 'Flexibility & Family',
         description:
-          'Duis sed lectus in nisl vehicula porttitor eget quis odio. Aliquam erat volutpat. Nulla eleifend nulla id sem fermentum.',
-        icon: 'tabler:template',
+          "We take care of our people, and they take care of the work. With full coverage for employees and their families, low turnover, and strong loyalty, our team operates like a family. One that shows up, works hard, and has each other's backs.",
+        icon: 'tabler:users',
+      },
+      {
+        title: 'Customer Service, Always',
+        description:
+          "Our clients count on us and we don't take that lightly. Whether it's the middle of the day or the middle of the night, Wood Wireline shows up ready to work. Quick rigs, tight turnarounds, and honest communication are what we're built on.",
+        icon: 'tabler:headset',
+      },
+      {
+        title: 'Safety Above All',
+        description:
+          "Safety isn't just a policy, it's part of who we are. From the rig floor to the road home, every job we take on follows the highest safety standards. Our people, our clients, and our communities depend on it.",
+        icon: 'tabler:shield-check',
       },
     ]}
   />
 
-  <!-- Features3 Widget ************** -->
+  <!-- Enhanced Leadership Team Section with Photos ****************** -->
 
-  <Features3
-    columns={3}
-    isAfterContent={true}
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-24">
+    <div class="text-center mb-16">
+      <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
+        Leadership Team
+      </p>
+      <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-6">
+        Meet the Team
+      </h2>
+      <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
+        Experienced professionals leading Wood Wireline with decades of combined expertise in wireline operations.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+      <div class="text-center group">
+        <div class="relative mb-6 mx-auto w-64 h-64 rounded-full overflow-hidden shadow-2xl ring-4 ring-gray-200 dark:ring-gray-700 group-hover:ring-primary transition-all">
+          <Image
+            src="~/assets/images/team/Dusty.jpg"
+            alt="Dusty"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            widths={[400, 600]}
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+        </div>
+        <h3 class="text-2xl font-bold dark:text-white mb-2">Dusty</h3>
+        <p class="text-muted dark:text-slate-300 mb-4">Leadership Team</p>
+        <p class="text-base text-muted dark:text-slate-400">
+          Extensive experience in wireline operations and field management. Decades of hands-on expertise.
+        </p>
+      </div>
+      <div class="text-center group">
+        <div class="relative mb-6 mx-auto w-64 h-64 rounded-full overflow-hidden shadow-2xl ring-4 ring-gray-200 dark:ring-gray-700 group-hover:ring-primary transition-all">
+          <Image
+            src="~/assets/images/team/Justin.jpg"
+            alt="Justin"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            widths={[400, 600]}
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+        </div>
+        <h3 class="text-2xl font-bold dark:text-white mb-2">Justin</h3>
+        <p class="text-muted dark:text-slate-300 mb-4">Leadership Team</p>
+        <p class="text-base text-muted dark:text-slate-400">
+          Dedicated to operational excellence and customer service. Committed to delivering results.
+        </p>
+      </div>
+      <div class="text-center group">
+        <div class="relative mb-6 mx-auto w-64 h-64 rounded-full overflow-hidden shadow-2xl ring-4 ring-gray-200 dark:ring-gray-700 group-hover:ring-primary transition-all">
+          <Image
+            src="~/assets/images/team/Tiffany.jpg"
+            alt="Tiffany"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            widths={[400, 600]}
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+        </div>
+        <h3 class="text-2xl font-bold dark:text-white mb-2">Tiffany</h3>
+        <p class="text-muted dark:text-slate-300 mb-4">Leadership Team</p>
+        <p class="text-base text-muted dark:text-slate-400">
+          Focused on safety, quality, and team development. Ensuring the highest standards.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional Photo Section ******************* -->
+
+  <section class="py-12 md:py-20 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="relative group overflow-hidden rounded-xl shadow-xl">
+          <Image
+            src="~/assets/images/All Images/Oil Rig Worker Onsite.webp"
+            alt="Worker Onsite"
+            class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
+            widths={[400, 600, 800]}
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+        </div>
+        <div class="relative group overflow-hidden rounded-xl shadow-xl">
+          <Image
+            src="~/assets/images/All Images/Oil Rig Maintenance.webp"
+            alt="Rig Maintenance"
+            class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
+            widths={[400, 600, 800]}
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+        </div>
+        <div class="relative group overflow-hidden rounded-xl shadow-xl">
+          <Image
+            src="~/assets/images/All Images/Wood Wireline Truck-VIF53Zk16v.webp"
+            alt="Wireline Truck"
+            class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
+            widths={[400, 600, 800]}
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced Company History Section ****************** -->
+
+  <Content
+    isAfterContent
+    tagline="Our Story"
+    title="Nearly Five Decades of Service"
     items={[
       {
-        title: 'E-commerce',
+        title: 'Established 1977',
         description:
-          'Rutrum non odio at vehicula. Proin ipsum justo, dignissim in vehicula sit amet, dignissim id quam. Sed ac tincidunt sapien.',
-        icon: 'tabler:template',
+          'Wood Wireline was founded with a commitment to excellence and a focus on building lasting relationships with operators across the region. From day one, we have been committed to doing the job right.',
       },
       {
-        title: 'Blog',
+        title: 'Expanding Service Areas',
         description:
-          'Nullam efficitur volutpat sem sed fringilla. Suspendisse et enim eu orci volutpat laoreet ac vitae libero.',
-        icon: 'tabler:template',
+          "Over the years, we have expanded our operations to serve the Williston, Bakken, DJ, Big Horn and Powder River Basins. Our growth has been driven by our commitment to excellence.",
       },
       {
-        title: 'Business',
+        title: 'Continuous Innovation',
         description:
-          'Morbi et elit finibus, facilisis justo ut, pharetra ipsum. Donec efficitur, ipsum quis congue luctus, mauris magna.',
-        icon: 'tabler:template',
+          "We have continuously added new services, including our newest addition, Slick E-line, to meet the evolving needs of our clients. Innovation keeps us at the forefront of the industry.",
       },
       {
-        title: 'Branding',
+        title: 'Building the Future',
         description:
-          'Suspendisse vitae nisi eget tortor luctus maximus sed non lectus. Cras malesuada pretium placerat. Nullam venenatis dolor a ante rhoncus.',
-        icon: 'tabler:template',
-      },
-      {
-        title: 'Medical',
-        description:
-          'Vestibulum malesuada lacus id nibh posuere feugiat. Nam volutpat nulla a felis ultrices, id suscipit mauris congue. In hac habitasse platea dictumst.',
-        icon: 'tabler:template',
-      },
-      {
-        title: 'Fashion Design',
-        description:
-          'Maecenas eu tellus eget est scelerisque lacinia et a diam. Aliquam velit lorem, vehicula id fermentum et, rhoncus et purus.',
-        icon: 'tabler:template',
+          'Today, we continue to build on our reputation for reliability, efficiency, and excellence in wireline services. The future is built on the foundation of nearly five decades of experience.',
       },
     ]}
     image={{
-      src: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
-      alt: 'Colorful Image',
+      src: '~/assets/images/All Images/Oilfield Operations With Crane And Truck.webp',
+      alt: 'Company History',
     }}
-  />
-
-  <!-- Steps2 Widget ****************** -->
-
-  <Steps2
-    title="Our values"
-    subtitle="Maecenas eu tellus eget est scelerisque lacinia et a diam. Aliquam velit lorem, vehicula id fermentum et, rhoncus et purus. Nulla facilisi. Vestibulum malesuada lacus."
-    items={[
-      {
-        title: 'Customer-centric approach',
-        description:
-          'Donec id nibh neque. Quisque et fermentum tortor. Fusce vitae dolor a mauris dignissim commodo. Ut eleifend luctus condimentum.',
-      },
-      {
-        title: 'Constant Improvement',
-        description:
-          'Phasellus laoreet fermentum venenatis. Vivamus dapibus pulvinar arcu eget mattis. Fusce eget mauris leo.',
-      },
-      {
-        title: 'Ethical Practices',
-        description:
-          'Vestibulum imperdiet libero et lectus molestie, et maximus augue porta. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
-      },
-    ]}
-  />
-
-  <!-- Steps2 Widget ****************** -->
-
-  <Steps2
-    title="Achievements"
-    subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sagittis, quam nec venenatis lobortis, mi risus tempus nulla, sed porttitor est nibh at nulla."
-    isReversed={true}
-    callToAction={{
-      text: 'See more',
-      href: '/',
-    }}
-    items={[
-      {
-        title: 'Global reach',
-        description: 'Nam malesuada urna in enim imperdiet tincidunt. Phasellus non tincidunt nisi, at elementum mi.',
-        icon: 'tabler:globe',
-      },
-      {
-        title: 'Positive customer feedback and reviews',
-        description:
-          'Cras semper nulla leo, eget laoreet erat cursus sed. Praesent faucibus massa in purus iaculis dictum.',
-        icon: 'tabler:message-star',
-      },
-      {
-        title: 'Awards and recognition as industry experts',
-        description:
-          'Phasellus lacinia cursus velit, eu malesuada magna pretium eu. Etiam aliquet tellus purus, blandit lobortis ex rhoncus vitae.',
-        icon: 'tabler:award',
-      },
-    ]}
-  />
-
-  <!-- Features2 Widget ************** -->
-
-  <Features2
-    title="Our locations"
-    tagline="Find us"
-    columns={4}
-    items={[
-      {
-        title: 'EE.UU',
-        description: '1234 Lorem Ipsum St, 12345, Miami',
-      },
-      {
-        title: 'Spain',
-        description: '5678 Lorem Ipsum St, 56789, Madrid',
-      },
-      {
-        title: 'Australia',
-        description: '9012 Lorem Ipsum St, 90123, Sydney',
-      },
-      {
-        title: 'Brazil',
-        description: '3456 Lorem Ipsum St, 34567, São Paulo',
-      },
-    ]}
-  />
-
-  <!-- Features2 Widget ************** -->
-
-  <Features2
-    title="Technical Support"
-    tagline="Contact us"
-    columns={2}
-    items={[
-      {
-        title: 'Chat with us',
-        description:
-          'Integer luctus laoreet libero, auctor varius purus rutrum sit amet. Ut nec molestie nisi, quis eleifend mi.',
-        icon: 'tabler:messages',
-      },
-      {
-        title: 'Call us',
-        description:
-          'Mauris faucibus finibus orci, in posuere elit viverra non. In hac habitasse platea dictumst. Cras lobortis metus a hendrerit congue.',
-        icon: 'tabler:headset',
-      },
-    ]}
-  />
+  >
+    <Fragment slot="content">
+      <h3 class="text-3xl md:text-4xl font-bold tracking-tight dark:text-white mb-6">Our Commitment</h3>
+      <p class="text-lg md:text-xl text-muted dark:text-slate-300 mb-4 leading-relaxed">
+        Our mission is not simply to meet expectations, but to consistently exceed them. With decades of hands-on experience, we understand what it takes to provide solutions that stand the test of time.
+      </p>
+      <p class="text-base md:text-lg text-muted dark:text-slate-400 leading-relaxed">
+        Safety is the foundation of our operations. Every project is carried out with precision, efficiency, and the highest safety standards. This dedication is how we have built and continue to uphold our reputation: by doing the job right, every single time.
+      </p>
+    </Fragment>
+  </Content>
 </Layout>
