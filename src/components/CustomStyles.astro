@@ -45,4 +45,86 @@ import '@fontsource-variable/inter';
       color: rgb(255 255 255);
     }
   }
+
+  /* Hide announcement banner - AGGRESSIVE - hide ANY black div immediately */
+  [slot="announcement"],
+  slot[name="announcement"],
+  div.bg-black.dark,
+  div[class*="bg-black"][class*="dark"],
+  div[class*="announcement"],
+  body > div:first-child[class*="bg-black"],
+  body > div:first-child.dark[class*="text-muted"],
+  div.hidden.md\:flex.bg-black,
+  div[class*="hidden"][class*="md:flex"][class*="bg-black"],
+  div.dark.text-muted.bg-black,
+  /* Target any div before the header */
+  body > div:first-of-type:not(header):not(main):not(footer)[class*="bg-black"],
+  body > div:first-of-type:not(header):not(main):not(footer).dark.text-muted,
+  /* Target wrapper divs that might be created by Astro slots - only if they have black bg */
+  body > div:first-child[class*="bg-black"],
+  body > div:first-child > div:first-child[class*="bg-black"],
+  /* Target black banners inside header - VERY SPECIFIC */
+  header > div.bg-black,
+  header div.dark.text-muted.bg-black,
+  header div[class*="bg-black"][class*="dark"],
+  header div.hidden.md\:flex.bg-black,
+  /* Target wrapper divs that might wrap the header slot content */
+  header > div:first-child.bg-black,
+  header > div:first-child[class*="bg-black"][class*="dark"],
+  /* Target any div in header that comes BEFORE the content div (with relative/text-default classes) */
+  header > div.bg-black:not([class*="relative"]):not([class*="text-default"]),
+  header > div[class*="bg-black"][class*="dark"]:not([class*="relative"]):not([class*="text-default"]),
+  /* Target the EXACT announcement banner pattern */
+  div.dark.text-muted.text-sm.bg-black.dark\:bg-transparent.dark\:border-b.dark\:border-slate-800.dark\:text-slate-400.hidden.md\:flex,
+  div[class*="dark"][class*="text-muted"][class*="text-sm"][class*="bg-black"][class*="hidden"][class*="md:flex"],
+  /* Target ANY div with black background that's small (banner-like) - but exclude large sections */
+  div[class*="bg-black"][class*="dark"]:not([class*="hero"]):not([class*="section"]):not([class*="main"]):not([class*="content"]):not([class*="relative"]):not([class*="text-default"]),
+  /* Target any div that's a direct child of body with black background (wrapper divs) */
+  body > div[class*="bg-black"][class*="dark"]:not(header):not(main):not(footer) {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    max-height: 0 !important;
+  }
+  
+  /* Specifically target the announcement banner at md breakpoint */
+  @media (min-width: 768px) {
+    div.dark.text-muted.text-sm.bg-black,
+    div.dark.text-muted.bg-black.hidden.md\:flex,
+    div[class*="bg-black"][class*="dark"][class*="text-muted"],
+    div[class*="bg-black"][class*="dark"][class*="border-b"],
+    body > div:first-child.dark.text-muted,
+    body > div:first-child[class*="bg-black"],
+    /* Hide any black div that appears before the header */
+    body > div:first-of-type:not(header):not(main):not(footer)[class*="bg-black"],
+    header ~ div.dark.text-muted.bg-black,
+    header ~ div[class*="bg-black"][class*="dark"],
+    /* Target any element with the exact announcement classes */
+    div.dark.text-muted.text-sm.bg-black.dark\:bg-transparent.dark\:border-b,
+    div[class*="hidden"][class*="md:flex"][class*="bg-black"][class*="dark"][class*="text-muted"],
+    /* Target wrapper divs - only if they have black background */
+    body > div:first-child:not(header):not(main):not(footer)[class*="bg-black"],
+    body > div:first-child > div:first-child[class*="bg-black"],
+    /* Target black banners inside header at md breakpoint */
+    header > div.bg-black.dark,
+    header div.dark.text-muted.bg-black.hidden.md\:flex,
+    header div[class*="bg-black"][class*="dark"][class*="text-muted"],
+    /* Target ANY small black div */
+    div[class*="bg-black"][class*="dark"]:not([class*="hero"]):not([class*="section"]):not([class*="main"]) {
+      display: none !important;
+      height: 0 !important;
+      min-height: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      overflow: hidden !important;
+      visibility: hidden !important;
+      max-height: 0 !important;
+      opacity: 0 !important;
+    }
+  }
 </style>
