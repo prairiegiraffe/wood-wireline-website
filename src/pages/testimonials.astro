@@ -13,19 +13,23 @@ const metadata = {
 
 <Layout metadata={metadata}>
   <!-- Hero Section -->
-  <Hero
-    tagline="Testimonials"
-    image={{
-      src: '~/assets/images/All Images/Wood Wireline Truck.webp',
-      alt: 'Wood Wireline Operations',
-    }}
-  >
+  <Hero tagline="Testimonials">
+    <Fragment slot="bg">
+      <Image
+        src="~/assets/images/All Images/Oilfield Workers Operating Machinery.webp"
+        alt="Wood Wireline Operations"
+        class="absolute inset-0 w-full h-full object-cover"
+        widths={[1920, 2560]}
+        sizes="100vw"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70"></div>
+    </Fragment>
     <Fragment slot="title">
-      <span class="text-5xl md:text-6xl font-black">What Our Clients Say</span><br />
+      <span class="text-5xl md:text-6xl font-black text-white">What Our Clients Say</span><br />
       <span class="text-accent dark:text-white text-4xl md:text-5xl font-bold mt-4 block">Trusted by Industry Leaders</span>
     </Fragment>
     <Fragment slot="subtitle">
-      <p class="text-xl md:text-2xl leading-relaxed max-w-4xl mx-auto">
+      <p class="text-xl md:text-2xl leading-relaxed max-w-4xl mx-auto text-white">
         Our commitment to excellence has earned the trust of operators across the Powder River Basin and beyond. 
         Here's what our clients say about working with Wood Wireline.
       </p>

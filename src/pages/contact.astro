@@ -17,17 +17,28 @@ const metadata = {
 
   <Hero
     tagline="Contact"
-    title="Get in Touch"
-    subtitle="Ready to work? We're ready too. Contact us today for reliable wireline services across the Powder River Basin and beyond."
     actions={[
       { variant: 'primary', text: 'Call Now', href: 'tel:307-682-0143', icon: 'tabler:phone' },
       { variant: 'secondary', text: 'View Services', href: '/services' },
     ]}
-    image={{
-      src: '~/assets/images/All Images/Wood Wireline Truck.webp',
-      alt: 'Contact Wood Wireline',
-    }}
-  />
+  >
+    <Fragment slot="bg">
+      <Image
+        src="~/assets/images/All Images/Wood Wireline Truck-VIF53Zk16v.webp"
+        alt="Contact Wood Wireline"
+        class="absolute inset-0 w-full h-full object-cover"
+        widths={[1920, 2560]}
+        sizes="100vw"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70"></div>
+    </Fragment>
+    <Fragment slot="title">
+      <span class="text-white">Get in Touch</span>
+    </Fragment>
+    <Fragment slot="subtitle">
+      <p class="text-white">Ready to work? We're ready too. Contact us today for reliable wireline services across the Powder River Basin and beyond.</p>
+    </Fragment>
+  </Hero>
 
   <!-- Photo Section ******************* -->
 

@@ -17,17 +17,28 @@ const metadata = {
 
   <Hero
     tagline="Service Locations"
-    title="Serving Operators Across Multiple Basins"
-    subtitle="Wood Wireline operates from four strategic locations across Wyoming and North Dakota, providing comprehensive wireline services to operators throughout the Powder River Basin, Williston Basin, Bakken, DJ Basin, and Big Horn Basin."
     actions={[
       { variant: 'primary', text: 'Contact Us', href: '/contact', icon: 'tabler:phone' },
       { variant: 'secondary', text: 'View Services', href: '/services' },
     ]}
-    image={{
-      src: '~/assets/images/All Images/Wood Wireline Truck.webp',
-      alt: 'Wood Wireline Service Locations',
-    }}
-  />
+  >
+    <Fragment slot="bg">
+      <Image
+        src="~/assets/images/All Images/Oilfield Operations With Crane And Truck.webp"
+        alt="Wood Wireline Service Locations"
+        class="absolute inset-0 w-full h-full object-cover"
+        widths={[1920, 2560]}
+        sizes="100vw"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70"></div>
+    </Fragment>
+    <Fragment slot="title">
+      <span class="text-white">Serving Operators Across Multiple Basins</span>
+    </Fragment>
+    <Fragment slot="subtitle">
+      <p class="text-white">Wood Wireline operates from four strategic locations across Wyoming and North Dakota, providing comprehensive wireline services to operators throughout the Powder River Basin, Williston Basin, Bakken, DJ Basin, and Big Horn Basin.</p>
+    </Fragment>
+  </Hero>
 
   <!-- Stats Section ******************* -->
 

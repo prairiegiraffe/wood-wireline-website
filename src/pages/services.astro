@@ -17,17 +17,28 @@ const metadata = {
 
   <Hero
     tagline="Our Services"
-    title="Comprehensive Wireline Services"
-    subtitle="From logging to plug and abandonment, we provide the full spectrum of wireline services your operations need. Our crews are among the most efficient in wireline, ready to deliver results."
     actions={[
       { variant: 'primary', text: 'Get Quote', href: '/contact', icon: 'tabler:phone' },
       { variant: 'secondary', text: 'Learn More', href: '/about' },
     ]}
-    image={{
-      src: '~/assets/images/All Images/Wood Wireline Truck.webp',
-      alt: 'Wood Wireline Services',
-    }}
-  />
+  >
+    <Fragment slot="bg">
+      <Image
+        src="~/assets/images/All Images/Oil Field Operations.webp"
+        alt="Wood Wireline Services"
+        class="absolute inset-0 w-full h-full object-cover max-w-full"
+        widths={[1920, 2560]}
+        sizes="100vw"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70"></div>
+    </Fragment>
+    <Fragment slot="title">
+      <span class="text-white">Comprehensive Wireline Services</span>
+    </Fragment>
+    <Fragment slot="subtitle">
+      <p class="text-white">From logging to plug and abandonment, we provide the full spectrum of wireline services your operations need. Our crews are among the most efficient in wireline, ready to deliver results.</p>
+    </Fragment>
+  </Hero>
 
   <!-- Photo Showcase ******************* -->
 
@@ -105,7 +116,9 @@ const metadata = {
 
   <!-- Enhanced Services Tabs ******************* -->
 
-  <ServicesTabs client:load />
+  <section class="w-full overflow-x-hidden">
+    <ServicesTabs client:load />
+  </section>
 
   <!-- Service Categories Overview ******************* -->
 

@@ -15,20 +15,24 @@ const metadata = {
 <Layout metadata={metadata}>
   <!-- Enhanced Hero Widget ******************* -->
 
-  <Hero
-    tagline="About Wood Wireline"
-    image={{
-      src: '~/assets/images/All Images/Wood Wireline Truck.webp',
-      alt: 'Wood Wireline Operations',
-    }}
-  >
+  <Hero tagline="About Wood Wireline">
+    <Fragment slot="bg">
+      <Image
+        src="~/assets/images/All Images/Oil Rig Workers Onsite.webp"
+        alt="Wood Wireline Operations"
+        class="absolute inset-0 w-full h-full object-cover"
+        widths={[1920, 2560]}
+        sizes="100vw"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70"></div>
+    </Fragment>
     <Fragment slot="title">
-      <span class="text-5xl md:text-6xl font-black">Established 1977</span><br />
+      <span class="text-5xl md:text-6xl font-black text-white">Established 1977</span><br />
       <span class="text-accent dark:text-white text-4xl md:text-5xl font-bold mt-4 block">Nearly Five Decades of Excellence</span>
     </Fragment>
 
     <Fragment slot="subtitle">
-      <p class="text-xl md:text-2xl leading-relaxed max-w-4xl mx-auto">
+      <p class="text-xl md:text-2xl leading-relaxed max-w-4xl mx-auto text-white">
         We have built our reputation on an unwavering commitment to being the leading service company in every basin we operate. Our crews are among the most efficient in wireline, ready to deliver results from the moment we cross the cattle guard.
       </p>
     </Fragment>

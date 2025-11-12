@@ -221,21 +221,23 @@ const services: Service[] = [
 
 export default function ServicesTabs() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-20">
-      <div className="text-center mb-16">
-        <p className="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
-          Our Services
-        </p>
-        <h2 className="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-6">
-          Comprehensive Wireline Solutions
-        </h2>
-        <p className="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
-          Click on any service below to learn more about our capabilities and expertise. Each service is backed by decades of experience and the highest safety standards.
-        </p>
-      </div>
+    <div className="w-full overflow-x-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-20">
+        <div className="text-center mb-16">
+          <p className="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
+            Our Services
+          </p>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-6">
+            Comprehensive Wireline Solutions
+          </h2>
+          <p className="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
+            Click on any service below to learn more about our capabilities and expertise. Each service is backed by decades of experience and the highest safety standards.
+          </p>
+        </div>
 
-      <TabGroup>
-        <TabList className="flex flex-wrap justify-center gap-3 mb-12 border-b-2 border-gray-200 dark:border-gray-700 pb-2">
+        <TabGroup>
+          <div className="overflow-x-hidden">
+            <TabList className="flex flex-wrap justify-center gap-3 mb-12 border-b-2 border-gray-200 dark:border-gray-700 pb-2 w-full">
           {services.map((service) => (
             <Tab
               key={service.id}
@@ -246,9 +248,10 @@ export default function ServicesTabs() {
               <span className="sm:hidden">{service.name.split(':')[0] || service.name.split(' ')[0]}</span>
             </Tab>
           ))}
-        </TabList>
+            </TabList>
+          </div>
 
-        <TabPanels>
+          <TabPanels>
           {services.map((service) => (
             <TabPanel key={service.id} className="focus:outline-none animate-fade">
               <div className="max-w-5xl mx-auto">
@@ -278,8 +281,9 @@ export default function ServicesTabs() {
               </div>
             </TabPanel>
           ))}
-        </TabPanels>
-      </TabGroup>
+          </TabPanels>
+        </TabGroup>
+      </div>
     </div>
   );
 }
