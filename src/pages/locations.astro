@@ -6,6 +6,7 @@ import Features2 from '~/components/widgets/Features2.astro';
 import Stats from '~/components/widgets/Stats.astro';
 import Image from '~/components/common/Image.astro';
 import TablerIcon from '~/components/ui/TablerIcon.astro';
+import SimpleTerrainMap from '~/components/ui/3d-map/SimpleTerrainMap.tsx';
 
 const metadata = {
   title: 'Service Locations',
@@ -52,6 +53,25 @@ const metadata = {
       { title: '24/7 Availability', amount: 'Yes' },
     ]}
   />
+
+  <!-- Interactive 3D Map ******************* -->
+
+  <section class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12">
+        <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
+          Interactive Map
+        </p>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-6">
+          Explore Our Service Locations
+        </h2>
+        <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
+          Click on location markers to explore our four strategic operations centers across Wyoming and North Dakota.
+        </p>
+      </div>
+      <SimpleTerrainMap client:load />
+    </div>
+  </section>
 
   <!-- Main Locations Grid ******************* -->
 
