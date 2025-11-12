@@ -26,9 +26,10 @@ const metadata = {
       <Image
         src="~/assets/images/All Images/Wood Wireline Truck-VIF53Zk16v.webp"
         alt="Contact Wood Wireline"
-        class="absolute inset-0 w-full h-full object-cover"
+        class="absolute inset-0 w-full h-full object-cover min-w-full"
         widths={[1920, 2560]}
         sizes="100vw"
+        style="min-width: 100%; width: 100%; height: 100%; object-fit: cover;"
       />
       <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70"></div>
     </Fragment>
@@ -40,66 +41,12 @@ const metadata = {
     </Fragment>
   </Hero>
 
-  <!-- Photo Section ******************* -->
-
-  <section class="py-12 md:py-20 bg-gray-50 dark:bg-gray-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="relative group overflow-hidden rounded-xl shadow-xl">
-          <Image
-            src="~/assets/images/All Images/Oil Rig Worker.webp"
-            alt="Professional Crew"
-            class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-            widths={[400, 600, 800]}
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-            <div class="absolute bottom-4 left-4 right-4 text-white">
-              <h3 class="font-bold text-lg">Professional Crews</h3>
-              <p class="text-sm">Ready to work when you are</p>
-            </div>
-          </div>
-        </div>
-        <div class="relative group overflow-hidden rounded-xl shadow-xl">
-          <Image
-            src="~/assets/images/All Images/Oil Rig Workers Onsite.webp"
-            alt="Oil Rig Workers"
-            class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-            widths={[400, 600, 800]}
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-            <div class="absolute bottom-4 left-4 right-4 text-white">
-              <h3 class="font-bold text-lg">24/7 Availability</h3>
-              <p class="text-sm">No excuses, no downtime</p>
-            </div>
-          </div>
-        </div>
-        <div class="relative group overflow-hidden rounded-xl shadow-xl">
-          <Image
-            src="~/assets/images/All Images/Wood Wireline Truck-BdikWvmwck.webp"
-            alt="Equipment"
-            class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-            widths={[400, 600, 800]}
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-            <div class="absolute bottom-4 left-4 right-4 text-white">
-              <h3 class="font-bold text-lg">Reliable Equipment</h3>
-              <p class="text-sm">Ready from the moment we arrive</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Contact Form ******************* -->
 
   <ContactUs
     id="form"
     title="Request a Quote"
-    subtitle="Fill out the form below and we'll get back to you as soon as possible. For immediate assistance, call us at 307-682-0143."
+    subtitle="Fill out the form below and we'll get back to you as soon as possible. For immediate assistance, call us at <a href='tel:307-682-0143' class='text-primary hover:underline font-semibold'>307-682-0143</a>."
     inputs={[
       {
         type: 'text',
@@ -208,74 +155,4 @@ const metadata = {
     </div>
   </div>
 
-  <!-- Additional Photo Gallery ******************* -->
-
-  <section class="py-12 md:py-20 bg-gray-50 dark:bg-gray-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6">
-      <div class="text-center mb-12">
-        <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-4">
-          Our Operations
-        </h2>
-        <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
-          Professional crews and equipment ready to serve you.
-        </p>
-      </div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="col-span-2">
-          <Image
-            src="~/assets/images/All Images/Oil Rig Workers Onsite.webp"
-            alt="Workers Onsite"
-            class="w-full h-full object-cover rounded-lg shadow-xl"
-            widths={[600, 800]}
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
-        </div>
-        <div>
-          <Image
-            src="~/assets/images/All Images/Oil Rig Worker Monitoring Equipment.webp"
-            alt="Monitoring Equipment"
-            class="w-full h-full object-cover rounded-lg shadow-lg"
-            widths={[300, 400]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
-        </div>
-        <div>
-          <Image
-            src="~/assets/images/All Images/Oilfield Workers Operating Machinery.webp"
-            alt="Operating Machinery"
-            class="w-full h-full object-cover rounded-lg shadow-lg"
-            widths={[300, 400]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
-        </div>
-        <div>
-          <Image
-            src="~/assets/images/All Images/Oil Rig Equipment.webp"
-            alt="Rig Equipment"
-            class="w-full h-full object-cover rounded-lg shadow-lg"
-            widths={[300, 400]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
-        </div>
-        <div>
-          <Image
-            src="~/assets/images/All Images/Oil Rig Maintenance.webp"
-            alt="Rig Maintenance"
-            class="w-full h-full object-cover rounded-lg shadow-lg"
-            widths={[300, 400]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
-        </div>
-        <div class="col-span-2">
-          <Image
-            src="~/assets/images/All Images/Wood Wireline Truck-VIF53Zk16v.webp"
-            alt="Wood Wireline Truck"
-            class="w-full h-full object-cover rounded-lg shadow-xl"
-            widths={[600, 800]}
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
-        </div>
-      </div>
-    </div>
-  </section>
 </Layout>

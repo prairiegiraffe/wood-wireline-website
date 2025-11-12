@@ -2,6 +2,7 @@
 import Layout from '~/layouts/Layout.astro';
 import Header from '~/components/widgets/Header.astro';
 import Footer from '~/components/widgets/Footer.astro';
+import StickyCallButton from '~/components/common/StickyCallButton.astro';
 
 import { headerData, footerData } from '~/navigation';
 
@@ -15,13 +16,18 @@ const { metadata } = Astro.props;
 ---
 
 <Layout metadata={metadata}>
+  <!-- Skip to main content link for accessibility -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-md">
+    Skip to main content
+  </a>
   <slot name="header">
     <Header {...headerData} isSticky showToggleTheme />
   </slot>
-  <main class="overflow-x-hidden">
+  <main id="main-content" class="overflow-x-hidden" role="main">
     <slot />
   </main>
   <slot name="footer">
     <Footer {...footerData} />
   </slot>
+  <StickyCallButton />
 </Layout>

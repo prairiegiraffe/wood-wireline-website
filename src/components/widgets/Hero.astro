@@ -18,8 +18,8 @@ const {
 } = Astro.props;
 ---
 
-<section class="relative md:-mt-[76px] not-prose min-h-[60vh] md:min-h-[70vh] flex items-center overflow-x-hidden" {...id ? { id } : {}}>
-  <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+<section class="relative md:-mt-[76px] not-prose min-h-[60vh] md:min-h-[70vh] flex items-center overflow-x-hidden w-full" style="background-color: transparent; background: transparent;" {...id ? { id } : {}}>
+  <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true" style="background-color: transparent; background: transparent; width: 100vw; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw;">
     <slot name="bg">
       {bg ? <Fragment set:html={bg} /> : null}
     </slot>
@@ -33,6 +33,8 @@ const {
             <p
               class="text-base text-white dark:text-blue-200 font-bold tracking-wide uppercase intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
               set:html={tagline}
+              role="text"
+              aria-label={typeof tagline === 'string' ? tagline : undefined}
             />
           )
         }
@@ -41,6 +43,7 @@ const {
             <h1
               class="text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-4 font-heading text-white dark:text-white intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
               set:html={title}
+              aria-label={typeof title === 'string' ? title : undefined}
             />
           )
         }

@@ -1,23 +1,83 @@
 ---
-import Layout from '~/layouts/Layout.astro';
+import Layout from '~/layouts/PageLayout.astro';
 import { getHomePermalink } from '~/utils/permalinks';
+import TablerIcon from '~/components/ui/TablerIcon.astro';
 
-const title = `Error 404`;
+const metadata = {
+  title: '404 — Page Not Found',
+  description: 'The page you are looking for could not be found. Return to Wood Wireline homepage or contact us for assistance.',
+};
 ---
 
-<Layout metadata={{ title }}>
-  <section class="flex items-center h-full p-16">
-    <div class="container flex flex-col items-center justify-center px-5 mx-auto my-8">
-      <div class="max-w-md text-center">
-        <h2 class="mb-8 font-bold text-9xl">
-          <span class="sr-only">Error</span>
-          <span class="text-primary">404</span>
-        </h2>
-        <p class="text-3xl font-semibold md:text-3xl">Sorry, we couldn't find this page.</p>
-        <p class="mt-4 mb-8 text-lg text-muted dark:text-slate-400">
-          But dont worry, you can find plenty of other things on our homepage.
-        </p>
-        <a rel="noopener noreferrer" href={getHomePermalink()} class="btn ml-4">Back to homepage</a>
+<Layout metadata={metadata}>
+  <section class="flex items-center justify-center min-h-[80vh] py-16 px-4 sm:px-6 bg-white dark:bg-gray-900">
+    <div class="max-w-2xl mx-auto text-center">
+      <div class="mb-8">
+        <TablerIcon name="tabler:alert-triangle" className="w-24 h-24 mx-auto text-primary" />
+      </div>
+      
+      <h1 class="text-6xl md:text-9xl font-black text-primary mb-4" aria-label="Error 404">
+        404
+      </h1>
+      
+      <h2 class="text-3xl md:text-4xl font-bold dark:text-white mb-4">
+        Page Not Found
+      </h2>
+      
+      <p class="text-xl text-muted dark:text-slate-300 mb-8 max-w-xl mx-auto">
+        The page you're looking for doesn't exist or has been moved. Don't worry—we're here to help you find what you need.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+        <a 
+          href={getHomePermalink()} 
+          class="inline-flex items-center justify-center rounded-full border-0 bg-primary px-8 py-3.5 text-base font-semibold text-white hover:bg-secondary transition-colors"
+          aria-label="Return to Wood Wireline homepage"
+        >
+          <TablerIcon name="tabler:home" className="w-5 h-5 mr-2" />
+          Back to Homepage
+        </a>
+        
+        <a 
+          href="/contact" 
+          class="inline-flex items-center justify-center rounded-full border-2 border-gray-400 bg-transparent px-8 py-3.5 text-base font-medium text-default hover:bg-gray-100 dark:text-slate-300 dark:border-slate-500 dark:hover:bg-slate-800 transition-colors"
+          aria-label="Contact Wood Wireline"
+        >
+          <TablerIcon name="tabler:phone" className="w-5 h-5 mr-2" />
+          Contact Us
+        </a>
+      </div>
+
+      <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 text-left">
+        <h3 class="text-lg font-semibold dark:text-white mb-4">Quick Links</h3>
+        <nav aria-label="Quick navigation links">
+          <ul class="space-y-2">
+            <li>
+              <a href="/services" class="text-primary hover:underline flex items-center">
+                <TablerIcon name="tabler:chevron-right" className="w-4 h-4 mr-1" />
+                Our Services
+              </a>
+            </li>
+            <li>
+              <a href="/about" class="text-primary hover:underline flex items-center">
+                <TablerIcon name="tabler:chevron-right" className="w-4 h-4 mr-1" />
+                About Wood Wireline
+              </a>
+            </li>
+            <li>
+              <a href="/locations" class="text-primary hover:underline flex items-center">
+                <TablerIcon name="tabler:chevron-right" className="w-4 h-4 mr-1" />
+                Service Locations
+              </a>
+            </li>
+            <li>
+              <a href="tel:307-682-0143" class="text-primary hover:underline flex items-center">
+                <TablerIcon name="tabler:chevron-right" className="w-4 h-4 mr-1" />
+                Call: 307-682-0143
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </section>

@@ -5,16 +5,17 @@ import Button from '~/components/ui/Button.astro';
 const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } = Astro.props;
 ---
 
-<form>
+<form id="contact-form" novalidate aria-label="Contact form">
   {
     inputs &&
       inputs.map(
-        ({ type = 'text', name, label = '', autocomplete = 'on', placeholder = '' }) =>
+        ({ type = 'text', name, label = '', autocomplete = 'on', placeholder = '', required = true }) =>
           name && (
             <div class="mb-6">
               {label && (
-                <label for={name} class="block text-sm font-medium">
+                <label for={name} class="block text-sm font-medium mb-1">
                   {label}
+                  {required && <span class="text-red-500" aria-label="required">*</span>}
                 </label>
               )}
               <input
@@ -23,8 +24,12 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
                 id={name}
                 autocomplete={autocomplete}
                 placeholder={placeholder}
-                class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+                required={required}
+                aria-required={required}
+                aria-invalid="false"
+                class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent transition-colors invalid:border-red-500 invalid:focus:ring-red-500"
               />
+              <span class="hidden text-sm text-red-500 mt-1" id={`${name}-error`} role="alert" aria-live="polite"></span>
             </div>
           )
       )
@@ -32,17 +37,22 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
 
   {
     textarea && (
-      <div>
-        <label for="textarea" class="block text-sm font-medium">
+      <div class="mb-6">
+        <label for="textarea" class="block text-sm font-medium mb-1">
           {textarea.label}
+          <span class="text-red-500" aria-label="required">*</span>
         </label>
         <textarea
           id="textarea"
           name={textarea.name ? textarea.name : 'message'}
           rows={textarea.rows ? textarea.rows : 4}
           placeholder={textarea.placeholder}
-          class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+          required
+          aria-required="true"
+          aria-invalid="false"
+          class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent transition-colors invalid:border-red-500 invalid:focus:ring-red-500"
         />
+        <span class="hidden text-sm text-red-500 mt-1" id="textarea-error" role="alert" aria-live="polite"></span>
       </div>
     )
   }
@@ -55,22 +65,27 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
             id="disclaimer"
             name="disclaimer"
             type="checkbox"
-            class="cursor-pointer mt-1 py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900"
+            required
+            aria-required="true"
+            aria-invalid="false"
+            class="cursor-pointer mt-1 w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary focus:ring-2"
           />
         </div>
         <div class="ml-3">
           <label for="disclaimer" class="cursor-pointer select-none text-sm text-gray-600 dark:text-gray-400">
             {disclaimer.label}
+            <span class="text-red-500" aria-label="required">*</span>
           </label>
         </div>
       </div>
+      <span class="hidden text-sm text-red-500 mt-1 ml-7" id="disclaimer-error" role="alert" aria-live="polite"></span>
     )
   }
 
   {
     button && (
       <div class="mt-10 grid">
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" aria-label="Submit contact form">
           {button}
         </Button>
       </div>
@@ -85,3 +100,127 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
     )
   }
 </form>
+
+<script>
+  // Form validation script
+  (function() {
+    const form = document.getElementById('contact-form');
+    if (!form) return;
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[\d\s\-\(\)\+]+$/;
+
+    function showError(input: HTMLInputElement | HTMLTextAreaElement, message: string) {
+      const errorId = `${input.id}-error`;
+      const errorSpan = document.getElementById(errorId);
+      if (errorSpan) {
+        errorSpan.textContent = message;
+        errorSpan.classList.remove('hidden');
+        input.setAttribute('aria-invalid', 'true');
+        input.classList.add('border-red-500');
+      }
+    }
+
+    function hideError(input: HTMLInputElement | HTMLTextAreaElement) {
+      const errorId = `${input.id}-error`;
+      const errorSpan = document.getElementById(errorId);
+      if (errorSpan) {
+        errorSpan.classList.add('hidden');
+        errorSpan.textContent = '';
+        input.setAttribute('aria-invalid', 'false');
+        input.classList.remove('border-red-500');
+      }
+    }
+
+    function validateField(input: HTMLInputElement | HTMLTextAreaElement) {
+      const value = input.value.trim();
+      const type = input.type;
+      const name = input.name;
+
+      // Clear previous errors
+      hideError(input);
+
+      // Required field check
+      if (input.hasAttribute('required') && !value) {
+        showError(input, 'This field is required');
+        return false;
+      }
+
+      // Email validation
+      if (type === 'email' && value && !emailRegex.test(value)) {
+        showError(input, 'Please enter a valid email address');
+        return false;
+      }
+
+      // Phone validation
+      if (type === 'tel' && value && !phoneRegex.test(value)) {
+        showError(input, 'Please enter a valid phone number');
+        return false;
+      }
+
+      return true;
+    }
+
+    // Real-time validation on blur
+    form.querySelectorAll('input, textarea').forEach((field) => {
+      const input = field as HTMLInputElement | HTMLTextAreaElement;
+      input.addEventListener('blur', () => {
+        if (input.value.trim()) {
+          validateField(input);
+        }
+      });
+
+      input.addEventListener('input', () => {
+        if (input.getAttribute('aria-invalid') === 'true') {
+          validateField(input);
+        }
+      });
+    });
+
+    // Form submission validation
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      let isValid = true;
+      const fields = form.querySelectorAll('input[required], textarea[required]') as NodeListOf<HTMLInputElement | HTMLTextAreaElement>;
+
+      fields.forEach((field) => {
+        if (!validateField(field)) {
+          isValid = false;
+        }
+      });
+
+      // Validate checkbox
+      const disclaimerCheckbox = form.querySelector('#disclaimer') as HTMLInputElement;
+      if (disclaimerCheckbox && disclaimerCheckbox.hasAttribute('required')) {
+        const disclaimerError = document.getElementById('disclaimer-error');
+        if (!disclaimerCheckbox.checked) {
+          if (disclaimerError) {
+            disclaimerError.textContent = 'You must agree to the disclaimer';
+            disclaimerError.classList.remove('hidden');
+            disclaimerCheckbox.setAttribute('aria-invalid', 'true');
+          }
+          isValid = false;
+        } else {
+          if (disclaimerError) {
+            disclaimerError.classList.add('hidden');
+            disclaimerCheckbox.setAttribute('aria-invalid', 'false');
+          }
+        }
+      }
+
+      if (isValid) {
+        // Form is valid - here you would typically submit to a backend
+        // For now, we'll show a success message
+        alert('Thank you for your message! We will get back to you soon.\n\nNote: Form submission is not yet configured. Please contact us directly at 307-682-0143 or alicia@kutthru.com');
+        form.reset();
+      } else {
+        // Focus first invalid field
+        const firstInvalid = form.querySelector('[aria-invalid="true"]') as HTMLElement;
+        if (firstInvalid) {
+          firstInvalid.focus();
+        }
+      }
+    });
+  })();
+</script>

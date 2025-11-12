@@ -20,9 +20,10 @@ const metadata = {
       <Image
         src="~/assets/images/All Images/Oil Rig Workers Onsite.webp"
         alt="Wood Wireline Operations"
-        class="absolute inset-0 w-full h-full object-cover"
+        class="absolute inset-0 w-full h-full object-cover min-w-full"
         widths={[1920, 2560]}
         sizes="100vw"
+        style="min-width: 100%; width: 100%; height: 100%; object-fit: cover;"
       />
       <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70"></div>
     </Fragment>
@@ -296,42 +297,6 @@ const metadata = {
       </div>
     </div>
   </div>
-
-  <!-- Additional Photo Section ******************* -->
-
-  <section class="py-12 md:py-20 bg-gray-50 dark:bg-gray-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="relative group overflow-hidden rounded-xl shadow-xl">
-          <Image
-            src="~/assets/images/All Images/Oil Rig Worker Onsite.webp"
-            alt="Worker Onsite"
-            class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
-            widths={[400, 600, 800]}
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
-        </div>
-        <div class="relative group overflow-hidden rounded-xl shadow-xl">
-          <Image
-            src="~/assets/images/All Images/Oil Rig Maintenance.webp"
-            alt="Rig Maintenance"
-            class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
-            widths={[400, 600, 800]}
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
-        </div>
-        <div class="relative group overflow-hidden rounded-xl shadow-xl">
-          <Image
-            src="~/assets/images/All Images/Wood Wireline Truck-VIF53Zk16v.webp"
-            alt="Wireline Truck"
-            class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
-            widths={[400, 600, 800]}
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- Enhanced Company History Section ****************** -->
 

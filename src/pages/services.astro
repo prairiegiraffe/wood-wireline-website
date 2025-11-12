@@ -26,9 +26,10 @@ const metadata = {
       <Image
         src="~/assets/images/All Images/Oil Field Operations.webp"
         alt="Wood Wireline Services"
-        class="absolute inset-0 w-full h-full object-cover max-w-full"
+        class="absolute inset-0 w-full h-full object-cover min-w-full"
         widths={[1920, 2560]}
         sizes="100vw"
+        style="min-width: 100%; width: 100%; height: 100%; object-fit: cover;"
       />
       <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70"></div>
     </Fragment>
@@ -39,69 +40,6 @@ const metadata = {
       <p class="text-white">From logging to plug and abandonment, we provide the full spectrum of wireline services your operations need. Our crews are among the most efficient in wireline, ready to deliver results.</p>
     </Fragment>
   </Hero>
-
-  <!-- Photo Showcase ******************* -->
-
-  <section class="py-12 md:py-20 bg-gray-50 dark:bg-gray-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="col-span-2">
-          <Image
-            src="~/assets/images/All Images/Oil Rig Worker Monitoring Equipment.webp"
-            alt="Monitoring Equipment"
-            class="w-full h-full object-cover rounded-lg shadow-xl"
-            widths={[600, 800]}
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
-        </div>
-        <div>
-          <Image
-            src="~/assets/images/All Images/Oil Rig Equipment.webp"
-            alt="Rig Equipment"
-            class="w-full h-full object-cover rounded-lg shadow-lg"
-            widths={[300, 400]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
-        </div>
-        <div>
-          <Image
-            src="~/assets/images/All Images/Oilfield Workers Operating Machinery.webp"
-            alt="Operating Machinery"
-            class="w-full h-full object-cover rounded-lg shadow-lg"
-            widths={[300, 400]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
-        </div>
-        <div>
-          <Image
-            src="~/assets/images/All Images/Oil Rig Worker Inspection.webp"
-            alt="Worker Inspection"
-            class="w-full h-full object-cover rounded-lg shadow-lg"
-            widths={[300, 400]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
-        </div>
-        <div>
-          <Image
-            src="~/assets/images/All Images/Oil Rig Worker Onsite.webp"
-            alt="Worker Onsite"
-            class="w-full h-full object-cover rounded-lg shadow-lg"
-            widths={[300, 400]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
-        </div>
-        <div class="col-span-2">
-          <Image
-            src="~/assets/images/All Images/Wood Wireline Truck-BdikWvmwck.webp"
-            alt="Wood Wireline Truck"
-            class="w-full h-full object-cover rounded-lg shadow-xl"
-            widths={[600, 800]}
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- Quick Stats ******************* -->
 
