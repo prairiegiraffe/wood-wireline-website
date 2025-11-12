@@ -8,6 +8,7 @@ import CallToAction from '~/components/widgets/CallToAction.astro';
 import Content from '~/components/widgets/Content.astro';
 import Note from '~/components/widgets/Note.astro';
 import Image from '~/components/common/Image.astro';
+import TablerIcon from '~/components/ui/TablerIcon.astro';
 
 const metadata = {
   title: 'Wood Wireline — Efficient. Reliable. Ready.',
@@ -68,55 +69,70 @@ const metadata = {
     </div>
   </section>
 
-  <!-- Photo Gallery Section ******************* -->
+  <!-- Photo Album Section ******************* -->
 
   <section class="py-12 md:py-20 bg-gray-50 dark:bg-gray-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="col-span-2 row-span-2">
+      <div class="text-center mb-12">
+        <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
+          Our Operations
+        </p>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-4">
+          In Action
+        </h2>
+        <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
+          Professional crews and equipment in action across the Powder River Basin and beyond.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Large image on left -->
+        <div class="relative group overflow-hidden rounded-lg shadow-xl">
           <Image
             src="~/assets/images/All Images/Wood Wireline Truck.webp"
             alt="Wood Wireline Truck"
-            class="w-full h-full object-cover rounded-lg shadow-xl"
+            class="w-full h-full min-h-[400px] md:min-h-[600px] object-cover group-hover:scale-110 transition-transform duration-500"
             widths={[800, 1200]}
             sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
-        <div>
-          <Image
-            src="~/assets/images/All Images/Oil Rig Worker.webp"
-            alt="Oil Rig Worker"
-            class="w-full h-full object-cover rounded-lg shadow-lg"
-            widths={[400, 600]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
-        </div>
-        <div>
-          <Image
-            src="~/assets/images/All Images/Oilfield Operations.webp"
-            alt="Oilfield Operations"
-            class="w-full h-full object-cover rounded-lg shadow-lg"
-            widths={[400, 600]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
-        </div>
-        <div>
-          <Image
-            src="~/assets/images/All Images/Oil Rig Equipment.webp"
-            alt="Oil Rig Equipment"
-            class="w-full h-full object-cover rounded-lg shadow-lg"
-            widths={[400, 600]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
-        </div>
-        <div>
-          <Image
-            src="~/assets/images/All Images/Oilfield Workers On Site.webp"
-            alt="Oilfield Workers"
-            class="w-full h-full object-cover rounded-lg shadow-lg"
-            widths={[400, 600]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
+        <!-- 2x2 grid on right -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="relative group overflow-hidden rounded-lg shadow-lg aspect-square">
+            <Image
+              src="~/assets/images/All Images/Oil Rig Worker.webp"
+              alt="Oil Rig Worker"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              widths={[400, 600]}
+              sizes="(max-width: 768px) 50vw, 25vw"
+            />
+          </div>
+          <div class="relative group overflow-hidden rounded-lg shadow-lg aspect-square">
+            <Image
+              src="~/assets/images/All Images/Oil Rig Workers Onsite.webp"
+              alt="Oil Rig Workers"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              widths={[400, 600]}
+              sizes="(max-width: 768px) 50vw, 25vw"
+            />
+          </div>
+          <div class="relative group overflow-hidden rounded-lg shadow-lg aspect-square">
+            <Image
+              src="~/assets/images/All Images/Oil Rig Equipment.webp"
+              alt="Oil Rig Equipment"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              widths={[400, 600]}
+              sizes="(max-width: 768px) 50vw, 25vw"
+            />
+          </div>
+          <div class="relative group overflow-hidden rounded-lg shadow-lg aspect-square">
+            <Image
+              src="~/assets/images/All Images/Oilfield Workers On Site.webp"
+              alt="Oilfield Workers"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              widths={[400, 600]}
+              sizes="(max-width: 768px) 50vw, 25vw"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -165,7 +181,9 @@ const metadata = {
       <!-- Services Grid - Prominent Display ******************* -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
         <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl">
-          <div class="text-4xl mb-4">📊</div>
+          <div class="mb-4 text-primary">
+            <TablerIcon name="tabler:chart-line" className="w-12 h-12" />
+          </div>
           <h3 class="text-xl font-bold dark:text-white mb-2">E-Line: Logging</h3>
           <p class="text-muted dark:text-slate-300 mb-4">Professional logging services using advanced wireline technology for accurate formation evaluation.</p>
           <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
@@ -176,7 +194,9 @@ const metadata = {
         </div>
 
         <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl">
-          <div class="text-4xl mb-4">🪢</div>
+          <div class="mb-4 text-primary">
+            <TablerIcon name="tabler:link" className="w-12 h-12" />
+          </div>
           <h3 class="text-xl font-bold dark:text-white mb-2">Slickline</h3>
           <p class="text-muted dark:text-slate-300 mb-4">Efficient slickline services for well intervention, maintenance, and data collection operations.</p>
           <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
@@ -187,7 +207,9 @@ const metadata = {
         </div>
 
         <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl">
-          <div class="text-4xl mb-4">💧</div>
+          <div class="mb-4 text-primary">
+            <TablerIcon name="tabler:droplet" className="w-12 h-12" />
+          </div>
           <h3 class="text-xl font-bold dark:text-white mb-2">Swabbing</h3>
           <p class="text-muted dark:text-slate-300 mb-4">Expert swabbing services to remove fluids and restore well production efficiently.</p>
           <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
@@ -198,7 +220,9 @@ const metadata = {
         </div>
 
         <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl">
-          <div class="text-4xl mb-4">🎯</div>
+          <div class="mb-4 text-primary">
+            <TablerIcon name="tabler:target" className="w-12 h-12" />
+          </div>
           <h3 class="text-xl font-bold dark:text-white mb-2">Perforating</h3>
           <p class="text-muted dark:text-slate-300 mb-4">Precision perforating services to optimize well completion and production performance.</p>
           <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
@@ -209,7 +233,9 @@ const metadata = {
         </div>
 
         <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl">
-          <div class="text-4xl mb-4">🔒</div>
+          <div class="mb-4 text-primary">
+            <TablerIcon name="tabler:lock" className="w-12 h-12" />
+          </div>
           <h3 class="text-xl font-bold dark:text-white mb-2">Setting Plugs & Packers</h3>
           <p class="text-muted dark:text-slate-300 mb-4">Professional setting of plugs and packers for well isolation and completion operations.</p>
           <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
@@ -220,7 +246,9 @@ const metadata = {
         </div>
 
         <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl">
-          <div class="text-4xl mb-4">🛡️</div>
+          <div class="mb-4 text-primary">
+            <TablerIcon name="tabler:shield-lock" className="w-12 h-12" />
+          </div>
           <h3 class="text-xl font-bold dark:text-white mb-2">Plug & Abandonment</h3>
           <p class="text-muted dark:text-slate-300 mb-4">Safe and compliant plug and abandonment services following industry best practices.</p>
           <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
@@ -231,7 +259,9 @@ const metadata = {
         </div>
 
         <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl">
-          <div class="text-4xl mb-4">🔬</div>
+          <div class="mb-4 text-primary">
+            <TablerIcon name="tabler:gauge" className="w-12 h-12" />
+          </div>
           <h3 class="text-xl font-bold dark:text-white mb-2">Hydrotesting</h3>
           <p class="text-muted dark:text-slate-300 mb-4">Reliable hydrotesting services to ensure equipment integrity and safety compliance.</p>
           <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
@@ -242,7 +272,9 @@ const metadata = {
         </div>
 
         <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl">
-          <div class="text-4xl mb-4">🔗</div>
+          <div class="mb-4 text-primary">
+            <TablerIcon name="tabler:plug-connected" className="w-12 h-12" />
+          </div>
           <h3 class="text-xl font-bold dark:text-white mb-2">Slick E-Line</h3>
           <p class="text-muted dark:text-slate-300 mb-4">Our newest addition: Combined slickline and e-line capabilities for versatile operations.</p>
           <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
@@ -253,7 +285,9 @@ const metadata = {
         </div>
 
         <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl">
-          <div class="text-4xl mb-4">📷</div>
+          <div class="mb-4 text-primary">
+            <TablerIcon name="tabler:camera" className="w-12 h-12" />
+          </div>
           <h3 class="text-xl font-bold dark:text-white mb-2">Cameras</h3>
           <p class="text-muted dark:text-slate-300 mb-4">Downhole camera services for visual inspection and diagnostics.</p>
           <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
@@ -268,13 +302,34 @@ const metadata = {
       <div class="bg-primary/5 dark:bg-primary/10 rounded-xl p-8 border border-primary/20">
         <h3 class="text-2xl font-bold dark:text-white mb-6 text-center">Additional Services</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div class="text-muted dark:text-slate-300 font-medium">🔧 Pipe Recovery</div>
-          <div class="text-muted dark:text-slate-300 font-medium">⚡ 7-Conductor Wireline</div>
-          <div class="text-muted dark:text-slate-300 font-medium">⬆️ Third Party Hoisting</div>
-          <div class="text-muted dark:text-slate-300 font-medium">🎣 Fishing</div>
-          <div class="text-muted dark:text-slate-300 font-medium">🌊 Flow Diagnostics</div>
-          <div class="text-muted dark:text-slate-300 font-medium">💥 TCP</div>
-          <div class="text-muted dark:text-slate-300 font-medium">✂️ Kinley Cutter</div>
+          <div class="flex items-center justify-center gap-2 text-muted dark:text-slate-300 font-medium">
+            <TablerIcon name="tabler:tool" className="w-5 h-5 text-primary" />
+            <span>Pipe Recovery</span>
+          </div>
+          <div class="flex items-center justify-center gap-2 text-muted dark:text-slate-300 font-medium">
+            <TablerIcon name="tabler:bolt" className="w-5 h-5 text-primary" />
+            <span>7-Conductor Wireline</span>
+          </div>
+          <div class="flex items-center justify-center gap-2 text-muted dark:text-slate-300 font-medium">
+            <TablerIcon name="tabler:arrow-up" className="w-5 h-5 text-primary" />
+            <span>Third Party Hoisting</span>
+          </div>
+          <div class="flex items-center justify-center gap-2 text-muted dark:text-slate-300 font-medium">
+            <TablerIcon name="tabler:fish" className="w-5 h-5 text-primary" />
+            <span>Fishing</span>
+          </div>
+          <div class="flex items-center justify-center gap-2 text-muted dark:text-slate-300 font-medium">
+            <TablerIcon name="tabler:wave" className="w-5 h-5 text-primary" />
+            <span>Flow Diagnostics</span>
+          </div>
+          <div class="flex items-center justify-center gap-2 text-muted dark:text-slate-300 font-medium">
+            <TablerIcon name="tabler:bolt" className="w-5 h-5 text-primary" />
+            <span>TCP</span>
+          </div>
+          <div class="flex items-center justify-center gap-2 text-muted dark:text-slate-300 font-medium">
+            <TablerIcon name="tabler:scissors" className="w-5 h-5 text-primary" />
+            <span>Kinley Cutter</span>
+          </div>
           <div class="text-muted dark:text-slate-300 font-medium">+ More</div>
         </div>
         <div class="text-center mt-8">
