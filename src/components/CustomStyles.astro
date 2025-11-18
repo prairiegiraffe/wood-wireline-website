@@ -1,47 +1,50 @@
 ---
-import '@fontsource-variable/inter';
+import '@fontsource-variable/montserrat';
+import '@fontsource/open-sans/400.css';
+import '@fontsource/open-sans/600.css';
+import '@fontsource/open-sans/700.css';
 ---
 
 <style is:inline>
   :root {
-    --aw-font-sans: 'Inter Variable';
-    --aw-font-serif: 'Inter Variable';
-    --aw-font-heading: 'Inter Variable';
+    --aw-font-sans: 'Open Sans', system-ui, -apple-system, sans-serif;
+    --aw-font-serif: 'Open Sans', system-ui, -apple-system, sans-serif;
+    --aw-font-heading: 'Montserrat Variable', system-ui, -apple-system, sans-serif;
 
-    /* Wood Wireline Colors: Black, Silver & White */
-    --aw-color-primary: rgb(0 0 0); /* Black */
-    --aw-color-secondary: rgb(128 128 128); /* Silver */
-    --aw-color-accent: rgb(192 192 192); /* Light Silver */
+    /* Wood Wireline Colors: Charcoal, Steel & Crimson */
+    --aw-color-primary: rgb(26 26 26); /* Deep Charcoal - sophisticated, not harsh */
+    --aw-color-secondary: rgb(115 130 140); /* Steel Blue - industrial, professional */
+    --aw-color-accent: rgb(180 50 50); /* Crimson - energy, action, authority */
 
-    --aw-color-text-heading: rgb(0 0 0);
-    --aw-color-text-default: rgb(16 16 16);
-    --aw-color-text-muted: rgb(16 16 16 / 66%);
+    --aw-color-text-heading: rgb(20 20 20);
+    --aw-color-text-default: rgb(40 40 40);
+    --aw-color-text-muted: rgb(90 90 90);
     --aw-color-bg-page: rgb(255 255 255);
 
-    --aw-color-bg-page-dark: rgb(0 0 0); /* Pure black for better silver contrast */
+    --aw-color-bg-page-dark: rgb(18 18 18); /* Deep charcoal for premium feel */
 
     ::selection {
-      background-color: rgb(192 192 192);
-      color: rgb(0 0 0);
+      background-color: rgb(180 50 50);
+      color: rgb(255 255 255);
     }
   }
 
   .dark {
-    --aw-font-sans: 'Inter Variable';
-    --aw-font-serif: 'Inter Variable';
-    --aw-font-heading: 'Inter Variable';
+    --aw-font-sans: 'Open Sans', system-ui, -apple-system, sans-serif;
+    --aw-font-serif: 'Open Sans', system-ui, -apple-system, sans-serif;
+    --aw-font-heading: 'Montserrat Variable', system-ui, -apple-system, sans-serif;
 
-    --aw-color-primary: rgb(192 192 192); /* Light Silver */
-    --aw-color-secondary: rgb(128 128 128); /* Silver */
-    --aw-color-accent: rgb(255 255 255); /* White */
+    --aw-color-primary: rgb(220 220 220); /* Light Steel - premium silver */
+    --aw-color-secondary: rgb(140 155 165); /* Light Steel Blue */
+    --aw-color-accent: rgb(220 80 80); /* Bright Crimson for dark mode */
 
-    --aw-color-text-heading: rgb(255 255 255);
-    --aw-color-text-default: rgb(229 229 229);
-    --aw-color-text-muted: rgb(229 229 229 / 66%);
-    --aw-color-bg-page: rgb(0 0 0); /* Pure black for better silver contrast */
+    --aw-color-text-heading: rgb(240 240 240);
+    --aw-color-text-default: rgb(220 220 220);
+    --aw-color-text-muted: rgb(160 160 160);
+    --aw-color-bg-page: rgb(18 18 18); /* Deep charcoal for premium feel */
 
     ::selection {
-      background-color: rgb(128 128 128);
+      background-color: rgb(180 50 50);
       color: rgb(255 255 255);
     }
   }
