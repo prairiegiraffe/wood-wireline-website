@@ -49,10 +49,12 @@ const metadata = {
         loop
         muted
         playsinline
+        preload="auto"
         class="absolute inset-0 w-full h-full object-cover opacity-50 dark:opacity-30"
         aria-hidden="true"
+        onloadedmetadata="this.play()"
       >
-        <source src="/background-video.mp4" type="video/mp4" />
+        <source src="/WW - Website Background Loop - 10.mp4" type="video/mp4" />
       </video>
       <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
     </Fragment>
