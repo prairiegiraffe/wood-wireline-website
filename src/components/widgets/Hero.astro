@@ -31,7 +31,7 @@ const {
         {
           tagline && (
             <p
-              class="text-base text-white dark:text-blue-200 font-bold tracking-wide uppercase intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
+              class="text-base text-white dark:text-blue-200 font-bold tracking-wide uppercase"
               set:html={tagline}
               role="text"
               aria-label={typeof tagline === 'string' ? tagline : undefined}
@@ -41,7 +41,7 @@ const {
         {
           title && (
             <h1
-              class="text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-4 font-heading text-white dark:text-white intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
+              class="text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-4 font-heading text-white dark:text-white"
               set:html={title}
               aria-label={typeof title === 'string' ? title : undefined}
             />
@@ -51,14 +51,14 @@ const {
           {
             subtitle && (
               <p
-                class="text-xl text-white mb-6 dark:text-white intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
+                class="text-xl text-white mb-6 dark:text-white"
                 set:html={subtitle}
               />
             )
           }
           {
             actions && (
-              <div class="max-w-xs sm:max-w-md m-auto flex flex-nowrap flex-col sm:flex-row sm:justify-center gap-4 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade">
+              <div class="max-w-xs sm:max-w-md m-auto flex flex-nowrap flex-col sm:flex-row sm:justify-center gap-4">
                 {Array.isArray(actions) ? (
                   actions.map((action) => (
                     <div class="flex w-full sm:w-auto">
