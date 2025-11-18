@@ -2,7 +2,6 @@
 import Hero from '~/components/widgets/Hero.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import Layout from '~/layouts/PageLayout.astro';
-import ServicesTabs from '~/components/ui/ServicesTabs.tsx';
 import Stats from '~/components/widgets/Stats.astro';
 import Features2 from '~/components/widgets/Features2.astro';
 import Image from '~/components/common/Image.astro';
@@ -54,17 +53,11 @@ const metadata = {
     ]}
   />
 
-  <!-- Enhanced Services Tabs ******************* -->
-
-  <section class="w-full overflow-x-hidden">
-    <ServicesTabs client:load />
-  </section>
-
   <!-- Service Categories Overview ******************* -->
 
   <Features2
-    title="Service Categories"
-    subtitle="We offer comprehensive wireline services across multiple categories to meet all your operational needs."
+    title="Full-Spectrum Wireline Capabilities"
+    subtitle="Professional services across all wireline disciplines."
     columns={3}
     items={[
       {
