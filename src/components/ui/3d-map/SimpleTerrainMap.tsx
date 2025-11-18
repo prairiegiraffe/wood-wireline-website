@@ -862,7 +862,7 @@ export default function SimpleTerrainMap() {
             camera={{ position: [-3.6, 4, 5.1], fov: 45 }}
             shadows
             style={{
-              background: 'linear-gradient(to bottom, #1A2A3A 0%, #2A3A4A 100%)',
+              background: 'linear-gradient(to bottom, #0a0a0a 0%, #1a1a1a 100%)',
               borderRadius: '16px',
               cursor: controlsEnabled ? 'grab' : 'pointer',
               height: '100%',
