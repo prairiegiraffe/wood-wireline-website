@@ -4,6 +4,7 @@ import ContactUs from '~/components/widgets/Contact.astro';
 import Hero from '~/components/widgets/Hero.astro';
 import Image from '~/components/common/Image.astro';
 import TablerIcon from '~/components/ui/TablerIcon.astro';
+import SimpleTerrainMap from '~/components/ui/3d-map/SimpleTerrainMap.tsx';
 
 const metadata = {
   title: 'Contact Us',
@@ -77,7 +78,26 @@ const metadata = {
     description="Our team typically responds within 24 hours. For urgent requests, please call us directly."
   />
 
-  <!-- Location Contact Cards ************** -->
+  <!-- Interactive 3D Map ******************* -->
+
+  <section class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12">
+        <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
+          Interactive Map
+        </p>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-6">
+          Explore Our Service Locations
+        </h2>
+        <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
+          Click on location markers to explore our four strategic operations centers across Wyoming and North Dakota.
+        </p>
+      </div>
+      <SimpleTerrainMap client:load />
+    </div>
+  </section>
+
+  <!-- Location Details with Contact Info ************** -->
 
   <section class="py-16 md:py-24 bg-white dark:bg-gray-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
@@ -90,156 +110,273 @@ const metadata = {
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Gillette, WY -->
-        <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 border-t-4 border-primary">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
-              <TablerIcon name="tabler:map-pin" className="w-6 h-6 text-primary" />
-            </div>
-            <div>
-              <h3 class="text-2xl font-bold dark:text-white">Gillette, WY</h3>
-              <span class="text-sm text-primary font-semibold">HEADQUARTERS</span>
+        <div
+          id="gillette"
+          class="group bg-gray-50 dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border-t-4 border-primary"
+        >
+          <div class="relative h-64 overflow-hidden">
+            <Image
+              src="~/assets/images/All Images/Wood Wireline Truck-BdikWvmwck.webp"
+              alt="Gillette, WY Operations"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              widths={[600, 800]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div class="absolute bottom-4 left-4 right-4 text-white">
+              <h3 class="text-3xl font-bold mb-2">Gillette, Wyoming</h3>
+              <p class="text-lg">Primary Operations Base</p>
             </div>
           </div>
+          <div class="p-6 md:p-8">
+            <div class="space-y-4 mb-6">
+              <div class="flex items-start">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mr-4 flex-shrink-0">
+                  <TablerIcon name="tabler:map-pin" className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <p class="font-semibold dark:text-white mb-1">Address</p>
+                  <p class="text-muted dark:text-slate-300">3106 East 2nd Street<br />Gillette, WY 82716</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mr-4 flex-shrink-0">
+                  <TablerIcon name="tabler:map" className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <p class="font-semibold dark:text-white mb-1">Primary Service Basin</p>
+                  <p class="text-muted dark:text-slate-300">Powder River Basin</p>
+                </div>
+              </div>
+            </div>
 
-          <div class="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-            <p class="text-muted dark:text-slate-300">
-              3106 East 2nd Street<br />
-              Gillette, WY 82716
-            </p>
-          </div>
-
-          <div class="space-y-3">
-            <div>
-              <p class="font-semibold dark:text-white">Justin Hargens</p>
-              <p class="text-sm text-muted dark:text-slate-300">
-                <a href="tel:307-689-8029" class="text-primary hover:underline">(307) 689-8029</a> •
-                <a href="mailto:Justin@woodwireline.com" class="text-primary hover:underline">Justin@woodwireline.com</a
-                >
-              </p>
-            </div>
-            <div>
-              <p class="font-semibold dark:text-white">Dusty Wood</p>
-              <p class="text-sm text-muted dark:text-slate-300">
-                <a href="tel:307-660-6793" class="text-primary hover:underline">(307) 660-6793</a> •
-                <a href="mailto:Dusty@woodwireline.com" class="text-primary hover:underline">Dusty@woodwireline.com</a>
-              </p>
-            </div>
-            <div>
-              <p class="font-semibold dark:text-white">Tiffany Wood-Nelson</p>
-              <p class="text-sm text-muted dark:text-slate-300">
-                <a href="tel:307-686-8256" class="text-primary hover:underline">(307) 686-8256</a> •
-                <a href="mailto:Tiffany@woodwireline.com" class="text-primary hover:underline"
-                  >Tiffany@woodwireline.com</a
-                >
-              </p>
-            </div>
-            <div>
-              <p class="font-semibold dark:text-white">Courtney Hargens</p>
-              <p class="text-sm text-muted dark:text-slate-300">
-                <a href="tel:307-682-0143" class="text-primary hover:underline">(307) 682-0143</a> •
-                <a href="mailto:Courtney@woodwireline.com" class="text-primary hover:underline"
-                  >Courtney@woodwireline.com</a
-                >
-              </p>
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+              <p class="font-semibold dark:text-white mb-3">Location Contacts:</p>
+              <div class="space-y-2">
+                <div>
+                  <p class="font-semibold dark:text-white text-sm">Justin Hargens</p>
+                  <p class="text-xs text-muted dark:text-slate-300">
+                    <a href="tel:307-689-8029" class="text-primary hover:underline">(307) 689-8029</a> •
+                    <a href="mailto:Justin@woodwireline.com" class="text-primary hover:underline"
+                      >Justin@woodwireline.com</a
+                    >
+                  </p>
+                </div>
+                <div>
+                  <p class="font-semibold dark:text-white text-sm">Dusty Wood</p>
+                  <p class="text-xs text-muted dark:text-slate-300">
+                    <a href="tel:307-660-6793" class="text-primary hover:underline">(307) 660-6793</a> •
+                    <a href="mailto:Dusty@woodwireline.com" class="text-primary hover:underline"
+                      >Dusty@woodwireline.com</a
+                    >
+                  </p>
+                </div>
+                <div>
+                  <p class="font-semibold dark:text-white text-sm">Tiffany Wood-Nelson</p>
+                  <p class="text-xs text-muted dark:text-slate-300">
+                    <a href="tel:307-686-8256" class="text-primary hover:underline">(307) 686-8256</a> •
+                    <a href="mailto:Tiffany@woodwireline.com" class="text-primary hover:underline"
+                      >Tiffany@woodwireline.com</a
+                    >
+                  </p>
+                </div>
+                <div>
+                  <p class="font-semibold dark:text-white text-sm">Courtney Hargens</p>
+                  <p class="text-xs text-muted dark:text-slate-300">
+                    <a href="tel:307-682-0143" class="text-primary hover:underline">(307) 682-0143</a> •
+                    <a href="mailto:Courtney@woodwireline.com" class="text-primary hover:underline"
+                      >Courtney@woodwireline.com</a
+                    >
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Casper, WY -->
-        <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 border-t-4 border-secondary">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mr-4">
-              <TablerIcon name="tabler:map-pin" className="w-6 h-6 text-secondary" />
-            </div>
-            <div>
-              <h3 class="text-2xl font-bold dark:text-white">Casper, WY</h3>
+        <div
+          id="casper"
+          class="group bg-gray-50 dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border-t-4 border-secondary"
+        >
+          <div class="relative h-64 overflow-hidden">
+            <Image
+              src="~/assets/images/All Images/Oil Rig Workers Onsite.webp"
+              alt="Casper, WY Operations"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              widths={[600, 800]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div class="absolute bottom-4 left-4 right-4 text-white">
+              <h3 class="text-3xl font-bold mb-2">Casper, Wyoming</h3>
+              <p class="text-lg">DJ Basin Operations</p>
             </div>
           </div>
+          <div class="p-6 md:p-8">
+            <div class="space-y-4 mb-6">
+              <div class="flex items-start">
+                <div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center mr-4 flex-shrink-0">
+                  <TablerIcon name="tabler:map-pin" className="w-5 h-5 text-secondary" />
+                </div>
+                <div>
+                  <p class="font-semibold dark:text-white mb-1">Address</p>
+                  <p class="text-muted dark:text-slate-300">2384 Mine Rd<br />Casper, WY 82604</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center mr-4 flex-shrink-0">
+                  <TablerIcon name="tabler:map" className="w-5 h-5 text-secondary" />
+                </div>
+                <div>
+                  <p class="font-semibold dark:text-white mb-1">Primary Service Basin</p>
+                  <p class="text-muted dark:text-slate-300">DJ Basin</p>
+                </div>
+              </div>
+            </div>
 
-          <div class="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-            <p class="text-muted dark:text-slate-300">
-              2384 Mine Rd<br />
-              Casper, WY 82604
-            </p>
-          </div>
-
-          <div class="space-y-3">
-            <div>
-              <p class="font-semibold dark:text-white">Bill Jennings</p>
-              <p class="text-sm text-muted dark:text-slate-300">
-                <a href="tel:307-262-3055" class="text-secondary hover:underline">(307) 262-3055</a> •
-                <a href="mailto:Bill@woodwireline.com" class="text-secondary hover:underline">Bill@woodwireline.com</a>
-              </p>
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+              <p class="font-semibold dark:text-white mb-3">Location Contacts:</p>
+              <div class="space-y-2">
+                <div>
+                  <p class="font-semibold dark:text-white text-sm">Bill Jennings</p>
+                  <p class="text-xs text-muted dark:text-slate-300">
+                    <a href="tel:307-262-3055" class="text-secondary hover:underline">(307) 262-3055</a> •
+                    <a href="mailto:Bill@woodwireline.com" class="text-secondary hover:underline"
+                      >Bill@woodwireline.com</a
+                    >
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Dickinson, ND -->
-        <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 border-t-4 border-primary">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
-              <TablerIcon name="tabler:map-pin" className="w-6 h-6 text-primary" />
-            </div>
-            <div>
-              <h3 class="text-2xl font-bold dark:text-white">Dickinson, ND</h3>
+        <div
+          id="dickinson"
+          class="group bg-gray-50 dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border-t-4 border-primary"
+        >
+          <div class="relative h-64 overflow-hidden">
+            <Image
+              src="~/assets/images/All Images/Oil Field Worker Outdoors.webp"
+              alt="Dickinson, ND Operations"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              widths={[600, 800]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div class="absolute bottom-4 left-4 right-4 text-white">
+              <h3 class="text-3xl font-bold mb-2">Dickinson, North Dakota</h3>
+              <p class="text-lg">Williston Basin Operations</p>
             </div>
           </div>
-
-          <div class="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-            <p class="text-muted dark:text-slate-300">
-              2780 East Villard<br />
-              Dickinson, ND 58601<br />
-              <a href="tel:701-590-9750" class="text-primary hover:underline">Office: (701) 590-9750</a>
-            </p>
-          </div>
-
-          <div class="space-y-3">
-            <div>
-              <p class="font-semibold dark:text-white">Chris Davenport</p>
-              <p class="text-sm text-muted dark:text-slate-300">
-                <a href="tel:701-590-7072" class="text-primary hover:underline">(701) 590-7072</a> •
-                <a href="mailto:Chris@woodwireline.com" class="text-primary hover:underline">Chris@woodwireline.com</a>
-              </p>
+          <div class="p-6 md:p-8">
+            <div class="space-y-4 mb-6">
+              <div class="flex items-start">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mr-4 flex-shrink-0">
+                  <TablerIcon name="tabler:map-pin" className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <p class="font-semibold dark:text-white mb-1">Address</p>
+                  <p class="text-muted dark:text-slate-300">
+                    2780 East Villard<br />
+                    Dickinson, ND 58601<br />
+                    <a href="tel:701-590-9750" class="text-primary hover:underline">Office: (701) 590-9750</a>
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mr-4 flex-shrink-0">
+                  <TablerIcon name="tabler:map" className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <p class="font-semibold dark:text-white mb-1">Primary Service Basin</p>
+                  <p class="text-muted dark:text-slate-300">Williston Basin</p>
+                </div>
+              </div>
             </div>
-            <div>
-              <p class="font-semibold dark:text-white">Steven Eagle Feathers</p>
-              <p class="text-sm text-muted dark:text-slate-300">
-                <a href="tel:701-590-9750" class="text-primary hover:underline">(701) 590-9750</a> •
-                <a href="mailto:steven.eaglef@woodwireline.com" class="text-primary hover:underline"
-                  >steven.eaglef@woodwireline.com</a
-                >
-              </p>
+
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+              <p class="font-semibold dark:text-white mb-3">Location Contacts:</p>
+              <div class="space-y-2">
+                <div>
+                  <p class="font-semibold dark:text-white text-sm">Chris Davenport</p>
+                  <p class="text-xs text-muted dark:text-slate-300">
+                    <a href="tel:701-590-7072" class="text-primary hover:underline">(701) 590-7072</a> •
+                    <a href="mailto:Chris@woodwireline.com" class="text-primary hover:underline"
+                      >Chris@woodwireline.com</a
+                    >
+                  </p>
+                </div>
+                <div>
+                  <p class="font-semibold dark:text-white text-sm">Steven Eagle Feathers</p>
+                  <p class="text-xs text-muted dark:text-slate-300">
+                    <a href="tel:701-590-9750" class="text-primary hover:underline">(701) 590-9750</a> •
+                    <a href="mailto:steven.eaglef@woodwireline.com" class="text-primary hover:underline"
+                      >steven.eaglef@woodwireline.com</a
+                    >
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Williston, ND -->
-        <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 border-t-4 border-secondary">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mr-4">
-              <TablerIcon name="tabler:map-pin" className="w-6 h-6 text-secondary" />
-            </div>
-            <div>
-              <h3 class="text-2xl font-bold dark:text-white">Williston, ND</h3>
+        <div
+          id="williston"
+          class="group bg-gray-50 dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border-t-4 border-secondary"
+        >
+          <div class="relative h-64 overflow-hidden">
+            <Image
+              src="~/assets/images/All Images/Wood Wireline Truck-VIF53Zk16v.webp"
+              alt="Williston, ND Operations"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              widths={[600, 800]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div class="absolute bottom-4 left-4 right-4 text-white">
+              <h3 class="text-3xl font-bold mb-2">Williston, North Dakota</h3>
+              <p class="text-lg">Bakken Operations</p>
             </div>
           </div>
+          <div class="p-6 md:p-8">
+            <div class="space-y-4 mb-6">
+              <div class="flex items-start">
+                <div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center mr-4 flex-shrink-0">
+                  <TablerIcon name="tabler:map-pin" className="w-5 h-5 text-secondary" />
+                </div>
+                <div>
+                  <p class="font-semibold dark:text-white mb-1">Address</p>
+                  <p class="text-muted dark:text-slate-300">922 5th St. East<br />Williston, ND 58801</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center mr-4 flex-shrink-0">
+                  <TablerIcon name="tabler:map" className="w-5 h-5 text-secondary" />
+                </div>
+                <div>
+                  <p class="font-semibold dark:text-white mb-1">Primary Service Basin</p>
+                  <p class="text-muted dark:text-slate-300">Bakken</p>
+                </div>
+              </div>
+            </div>
 
-          <div class="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-            <p class="text-muted dark:text-slate-300">
-              922 5th St. East<br />
-              Williston, ND 58801
-            </p>
-          </div>
-
-          <div class="space-y-3">
-            <div>
-              <p class="font-semibold dark:text-white">Chris Hanson</p>
-              <p class="text-sm text-muted dark:text-slate-300">
-                <a href="tel:701-580-2130" class="text-secondary hover:underline">(701) 580-2130</a> •
-                <a href="mailto:hanson@woodwireline.com" class="text-secondary hover:underline"
-                  >hanson@woodwireline.com</a
-                >
-              </p>
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+              <p class="font-semibold dark:text-white mb-3">Location Contacts:</p>
+              <div class="space-y-2">
+                <div>
+                  <p class="font-semibold dark:text-white text-sm">Chris Hanson</p>
+                  <p class="text-xs text-muted dark:text-slate-300">
+                    <a href="tel:701-580-2130" class="text-secondary hover:underline">(701) 580-2130</a> •
+                    <a href="mailto:hanson@woodwireline.com" class="text-secondary hover:underline"
+                      >hanson@woodwireline.com</a
+                    >
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
