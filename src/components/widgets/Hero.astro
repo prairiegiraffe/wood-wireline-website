@@ -1,5 +1,4 @@
 ---
-import Image from '~/components/common/Image.astro';
 import Button from '~/components/ui/Button.astro';
 
 import type { Hero as Props } from '~/types';
@@ -11,7 +10,6 @@ const {
 
   content = await Astro.slots.render('content'),
   actions = await Astro.slots.render('actions'),
-  image = await Astro.slots.render('image'),
 
   id,
   bg = await Astro.slots.render('bg'),
@@ -33,7 +31,6 @@ const {
             <p
               class="text-base text-white dark:text-blue-200 font-bold tracking-wide uppercase"
               set:html={tagline}
-              role="text"
               aria-label={typeof tagline === 'string' ? tagline : undefined}
             />
           )

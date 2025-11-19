@@ -407,7 +407,7 @@ const services = [
             </div>
             <nav class="p-4">
               <ul class="space-y-1">
-                {services.map((service, index) => (
+                {services.map((service) => (
                   <li>
                     <a
                       href={`#${service.id}`}
@@ -441,7 +441,7 @@ const services = [
         <div class="flex-1 min-w-0">
           <!-- Individual Service Detail Sections ******************* -->
 
-  {services.map((service, index) => (
+  {services.map((service) => (
     <div
       id={service.id}
       class="scroll-mt-20 mb-16 last:mb-0"
