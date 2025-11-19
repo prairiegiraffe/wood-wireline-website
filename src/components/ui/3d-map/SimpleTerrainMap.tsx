@@ -795,6 +795,11 @@ export default function SimpleTerrainMap() {
           padding: 20px;
         }
 
+        .terrain-canvas-wrapper {
+          height: 100%;
+          width: 100%;
+        }
+
         @media (max-width: 768px) {
           .terrain-map-container {
             max-width: 100vw;
@@ -858,7 +863,7 @@ export default function SimpleTerrainMap() {
           </div>
         )}
 
-        <div className="terrain-canvas-wrapper" style={{ height: '100%' }}>
+        <div className="terrain-canvas-wrapper">
           <Canvas
             camera={{ position: [-3.6, 4, 5.1], fov: 45 }}
             shadows
@@ -866,6 +871,7 @@ export default function SimpleTerrainMap() {
               background: 'linear-gradient(to bottom, #0a0a0a 0%, #1a1a1a 100%)',
               borderRadius: '16px',
               cursor: controlsEnabled ? 'grab' : 'pointer',
+              width: '100%',
               height: '100%',
             }}
             onClick={handleInteractionStart}
