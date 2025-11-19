@@ -290,6 +290,8 @@ const services = [
     ]
   }
 ];
+
+const defaultServiceId = services[0]?.id ?? '';
 ---
 
 <Layout metadata={metadata}>
@@ -395,7 +397,7 @@ const services = [
         </p>
       </div>
 
-      <div class="flex gap-8">
+      <div class="flex flex-col lg:flex-row gap-8">
         <!-- Sticky Sidebar Navigation -->
         <aside class="hidden lg:block w-72 flex-shrink-0">
           <div class="sticky top-24 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
@@ -411,8 +413,10 @@ const services = [
                   <li>
                     <a
                       href={`#${service.id}`}
-                      class="group flex items-center gap-3 rounded-lg p-3 text-sm font-semibold transition-all hover:bg-primary/10 dark:hover:bg-primary/20"
+                      class="group flex items-center gap-3 rounded-lg p-3 text-sm font-semibold transition-all hover:bg-primary/10 dark:hover:bg-primary/20 [data-active='true']:bg-primary/10 dark:[data-active='true']:bg-primary/20 [data-active='true']:text-primary dark:[data-active='true']:text-primary"
                       data-service-link={service.id}
+                      data-active={service.id === defaultServiceId ? 'true' : 'false'}
+                      aria-current={service.id === defaultServiceId ? 'true' : undefined}
                     >
                       <div class="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 dark:group-hover:bg-primary/30 transition-colors">
                         <TablerIcon name={service.icon} className="w-5 h-5 text-primary" />
@@ -441,115 +445,128 @@ const services = [
         <div class="flex-1 min-w-0">
           <!-- Individual Service Detail Sections ******************* -->
 
-  {services.map((service) => (
-    <div
-      id={service.id}
-      class="scroll-mt-20 mb-16 last:mb-0"
-    >
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 border border-gray-200 dark:border-gray-700">
-        <div class="grid md:grid-cols-2 gap-12 items-start">
-          <!-- Content Column -->
-          <div>
-            <div class="flex items-center mb-6">
-              <div class="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mr-4">
-                <TablerIcon name={service.icon} className="w-8 h-8 text-primary" />
-              </div>
-              <div>
-                <p class="text-sm font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide">
-                  {service.category}
-                </p>
-                <h2 class="text-3xl md:text-4xl font-bold tracking-tight dark:text-white">
+          {services.map((service) => (
+            <details
+              id={service.id}
+              class="group scroll-mt-24 mb-8 last:mb-0 rounded-2xl border border-gray-200 dark:border-gray-700 bg-transparent"
+              data-service-panel={service.id}
+              open
+            >
+              <summary class="lg:hidden flex items-center justify-between gap-4 px-5 py-4 cursor-pointer text-left text-lg font-semibold text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 rounded-t-2xl">
+                <span class="flex items-center gap-3">
+                  <span class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10">
+                    <TablerIcon name={service.icon} className="w-6 h-6 text-primary" />
+                  </span>
                   {service.title}
-                </h2>
-              </div>
-            </div>
+                </span>
+                <TablerIcon name="tabler:chevron-down" className="w-5 h-5 text-primary transition-transform group-open:rotate-180" />
+              </summary>
+              <div class="p-5 sm:p-6 lg:p-0">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8 border border-gray-200 dark:border-gray-700">
+                  <div class="grid md:grid-cols-2 gap-10 lg:gap-12 items-start">
+                    <!-- Content Column -->
+                    <div>
+                      <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mr-4">
+                          <TablerIcon name={service.icon} className="w-8 h-8 text-primary" />
+                        </div>
+                        <div>
+                          <p class="text-sm font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide">
+                            {service.category}
+                          </p>
+                          <h2 class="text-3xl md:text-4xl font-bold tracking-tight dark:text-white">
+                            {service.title}
+                          </h2>
+                        </div>
+                      </div>
 
-            <p class="text-lg md:text-xl text-muted dark:text-slate-300 mb-8 leading-relaxed">
-              {service.description}
-            </p>
+                      <p class="text-lg md:text-xl text-muted dark:text-slate-300 mb-8 leading-relaxed">
+                        {service.description}
+                      </p>
 
-            {service.hasSubsections ? (
-              <div class="space-y-4 mb-6">
-                <h3 class="text-xl font-bold dark:text-white mb-4 flex items-center">
-                  <TablerIcon name="tabler:checklist" className="w-6 h-6 text-primary mr-2" />
-                  Service Capabilities
-                </h3>
-                {service.subsections.map((subsection) => (
-                  <details class="group bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden">
-                    <summary class="cursor-pointer p-6 font-bold text-lg dark:text-white flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                      <span class="flex items-center">
-                        <TablerIcon name="tabler:chevron-right" className="w-5 h-5 text-primary mr-3 group-open:rotate-90 transition-transform" />
-                        {subsection.title}
-                      </span>
-                      <span class="text-xs font-normal text-muted dark:text-slate-400">
-                        {subsection.items.length} items
-                      </span>
-                    </summary>
-                    <div class="px-6 pb-6">
-                      <ul class="space-y-2 pl-8">
-                        {subsection.items.map((item) => (
-                          <li class="flex items-start">
-                            <TablerIcon name="tabler:point" className="w-4 h-4 text-secondary mr-3 mt-1 flex-shrink-0" />
-                            <span class="text-base text-muted dark:text-slate-400">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
+                      {service.hasSubsections ? (
+                        <div class="space-y-4 mb-6">
+                          <h3 class="text-xl font-bold dark:text-white mb-4 flex items-center">
+                            <TablerIcon name="tabler:checklist" className="w-6 h-6 text-primary mr-2" />
+                            Service Capabilities
+                          </h3>
+                          {service.subsections.map((subsection) => (
+                            <details class="group bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700">
+                              <summary class="cursor-pointer p-6 font-bold text-lg dark:text-white flex items-center justify-between hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <span class="flex items-center">
+                                  <TablerIcon name="tabler:chevron-right" className="w-5 h-5 text-primary mr-3 group-open:rotate-90 transition-transform" />
+                                  {subsection.title}
+                                </span>
+                                <span class="text-xs font-normal text-muted dark:text-slate-400">
+                                  {subsection.items.length} items
+                                </span>
+                              </summary>
+                              <div class="px-6 pb-6">
+                                <ul class="space-y-2 pl-8">
+                                  {subsection.items.map((item) => (
+                                    <li class="flex items-start">
+                                      <TablerIcon name="tabler:point" className="w-4 h-4 text-secondary mr-3 mt-1 flex-shrink-0" />
+                                      <span class="text-base text-muted dark:text-slate-400">{item}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </details>
+                          ))}
+                        </div>
+                      ) : (
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 mb-6 border border-gray-100 dark:border-gray-700">
+                          <h3 class="text-xl font-bold dark:text-white mb-4 flex items-center">
+                            <TablerIcon name="tabler:checklist" className="w-6 h-6 text-primary mr-2" />
+                            Service Capabilities
+                          </h3>
+                          <ul class="space-y-2">
+                            {service.capabilities.map((capability) => (
+                              <li class="flex items-start">
+                                <TablerIcon name="tabler:check" className="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
+                                <span class="text-base text-muted dark:text-slate-400">{capability}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </div>
-                  </details>
-                ))}
-              </div>
-            ) : (
-              <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 mb-6">
-                <h3 class="text-xl font-bold dark:text-white mb-4 flex items-center">
-                  <TablerIcon name="tabler:checklist" className="w-6 h-6 text-primary mr-2" />
-                  Service Capabilities
-                </h3>
-                <ul class="space-y-2">
-                  {service.capabilities.map((capability) => (
-                    <li class="flex items-start">
-                      <TablerIcon name="tabler:check" className="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                      <span class="text-base text-muted dark:text-slate-400">{capability}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
 
-          <!-- Applications Column -->
-          <div class="sticky top-24">
-            <div class="bg-primary/5 dark:bg-primary/10 rounded-xl p-8 border-2 border-primary/20">
-              <h3 class="text-2xl font-bold dark:text-white mb-6 flex items-center">
-                <TablerIcon name="tabler:target" className="w-7 h-7 text-primary mr-3" />
-                Applications
-              </h3>
-              <div class="space-y-4 mb-8">
-                {service.applications.map((application) => (
-                  <div class="flex items-center bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm">
-                    <TablerIcon name="tabler:circle-check" className="w-6 h-6 text-secondary mr-3 flex-shrink-0" />
-                    <span class="text-base font-semibold dark:text-white">{application}</span>
+                    <!-- Applications Column -->
+                    <div class="lg:sticky lg:top-24">
+                      <div class="bg-primary/5 dark:bg-primary/10 rounded-xl p-6 sm:p-8 border-2 border-primary/20">
+                        <h3 class="text-2xl font-bold dark:text-white mb-6 flex items-center">
+                          <TablerIcon name="tabler:target" className="w-7 h-7 text-primary mr-3" />
+                          Applications
+                        </h3>
+                        <div class="space-y-4 mb-8">
+                          {service.applications.map((application) => (
+                            <div class="flex items-center bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm">
+                              <TablerIcon name="tabler:circle-check" className="w-6 h-6 text-secondary mr-3 flex-shrink-0" />
+                              <span class="text-base font-semibold dark:text-white">{application}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div class="pt-6 border-t border-primary/20">
+                          <p class="text-sm text-muted dark:text-slate-400 mb-4">
+                            Need this service? Contact us for availability and pricing.
+                          </p>
+                          <a
+                            href="/contact"
+                            class="inline-flex items-center justify-center px-6 py-3 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors w-full"
+                          >
+                            <TablerIcon name="tabler:phone" className="w-5 h-5 mr-2" />
+                            Request Service
+                          </a>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                ))}
+                </div>
               </div>
-
-              <div class="pt-6 border-t border-primary/20">
-                <p class="text-sm text-muted dark:text-slate-400 mb-4">
-                  Need this service? Contact us for availability and pricing.
-                </p>
-                <a
-                  href="/contact"
-                  class="inline-flex items-center justify-center px-6 py-3 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors w-full"
-                >
-                  <TablerIcon name="tabler:phone" className="w-5 h-5 mr-2" />
-                  Request Service
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  ))}
+            </details>
+          ))}
         </div>
       </div>
     </div>
@@ -575,3 +592,84 @@ const services = [
     subtitle="Contact us today to discuss your wireline service needs. We're ready to work when you need us. No excuses, no downtime. Just results."
   />
 </Layout>
+
+<script is:inline>
+  const initServiceNavigation = () => {
+    const links = Array.from(document.querySelectorAll('[data-service-link]'));
+    const panels = Array.from(document.querySelectorAll('[data-service-panel]'));
+
+    if (!links.length || !panels.length) return;
+
+    const mediaDesktop = window.matchMedia('(min-width: 1024px)');
+    const mediaMobile = window.matchMedia('(max-width: 1023.98px)');
+
+    const setActiveLink = (targetId) => {
+      links.forEach((link) => {
+        const isActive = link.dataset.serviceLink === targetId;
+        link.dataset.active = isActive ? 'true' : 'false';
+        if (isActive) {
+          link.setAttribute('aria-current', 'true');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    };
+
+    const openPanel = (targetId, { force = false } = {}) => {
+      let targetPanel = null;
+      panels.forEach((panel) => {
+        const isTarget = panel.id === targetId;
+        if (isTarget) {
+          targetPanel = panel;
+          panel.open = true;
+        } else if (force || mediaDesktop.matches) {
+          panel.open = false;
+        }
+      });
+
+      if (targetPanel) {
+        setActiveLink(targetId);
+      }
+    };
+
+    links.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const targetId = link.dataset.serviceLink;
+        if (!targetId) return;
+
+        if (mediaDesktop.matches) {
+          event.preventDefault();
+          openPanel(targetId, { force: true });
+        }
+      });
+    });
+
+    panels.forEach((panel) => {
+      panel.addEventListener('toggle', () => {
+        if (panel.open && mediaMobile.matches) {
+          panels.forEach((other) => {
+            if (other !== panel) {
+              other.open = false;
+            }
+          });
+        }
+        if (panel.open) {
+          setActiveLink(panel.id);
+        }
+      });
+    });
+
+    const initialHash = window.location.hash?.replace('#', '');
+    if (initialHash) {
+      openPanel(initialHash, { force: true });
+    } else if (panels[0]) {
+      openPanel(panels[0].id, { force: true });
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initServiceNavigation);
+  } else {
+    initServiceNavigation();
+  }
+</script>
