@@ -249,168 +249,78 @@ function Terrain() {
   );
 }
 
-// Basin overlay regions with polygon boundaries
-// Each basin defined by lat/lon polygon points (clockwise from northwest)
+// Basin overlay regions with approximate boundaries
 const basins = [
   {
     name: 'Powder River Basin',
     color: '#FF6B35', // Orange-red
     opacity: 0.15,
-    // Polygon points approximating the basin boundary (bounded by Bighorn Mtns, Black Hills, Casper Arch, Hartville Uplift)
-    polygon: [
-      [-106.5, 45.5], // NW corner
-      [-106.0, 46.5], // N (SE Montana)
-      [-105.5, 46.8],
-      [-105.0, 46.5],
-      [-104.5, 45.5], // NE (approaching Black Hills)
-      [-104.3, 44.5],
-      [-104.5, 43.5], // E side
-      [-105.0, 43.0], // SE (Hartville Uplift area)
-      [-105.5, 42.8],
-      [-106.5, 43.0], // S (Casper Arch)
-      [-107.0, 43.5],
-      [-107.2, 44.5], // W (Bighorn Mtns)
-      [-107.0, 45.0],
-    ],
+    // Approximate lat/lon bounds: SE Montana, NE Wyoming - adjusted for softer edges
+    bounds: { minLat: 42.5, maxLat: 46.3, minLon: -107.5, maxLon: -104.7 },
   },
   {
     name: 'Bighorn Basin',
     color: '#F38181', // Coral pink
     opacity: 0.15,
-    // Oval-shaped NW-SE trending basin (bounded by Absaroka, Pryor, Bighorn, Owl Creek Mtns)
-    polygon: [
-      [-109.2, 45.3], // NW
-      [-108.5, 45.5], // N (Pryor Mtns)
-      [-108.0, 45.3],
-      [-107.5, 44.8], // NE approaching Bighorn Mtns
-      [-107.3, 44.2],
-      [-107.5, 43.8], // SE (Owl Creek Mtns)
-      [-108.0, 43.6],
-      [-108.8, 43.7], // S (Bridger Mtns)
-      [-109.5, 44.0],
-      [-109.8, 44.5], // W (Absaroka Range)
-      [-109.6, 45.0],
-    ],
+    // Approximate lat/lon bounds: North-central Wyoming (120mi x 90mi)
+    bounds: { minLat: 43.5, maxLat: 45.3, minLon: -109.5, maxLon: -107.2 },
   },
   {
     name: 'DJ Basin',
     color: '#4ECDC4', // Turquoise
     opacity: 0.15,
-    // Elongated N-S basin in SE Wyoming and NE Colorado
-    polygon: [
-      [-105.5, 42.5], // N (Wyoming)
-      [-104.5, 42.8],
-      [-104.0, 42.5],
-      [-103.5, 42.0], // NE
-      [-103.3, 41.0],
-      [-103.5, 40.0], // E (Colorado/Kansas border)
-      [-104.0, 39.8],
-      [-105.0, 40.0], // S (Front Range)
-      [-105.5, 40.5],
-      [-106.0, 41.0], // W (Laramie Range)
-      [-106.0, 41.8],
-      [-105.8, 42.2],
-    ],
+    // Approximate lat/lon bounds: SE Wyoming, NE Colorado
+    bounds: { minLat: 40.0, maxLat: 42.8, minLon: -106.0, maxLon: -103.2 },
   },
   {
     name: 'Williston Basin',
     color: '#95E1D3', // Mint green
     opacity: 0.15,
-    // Large oval basin extending into Canada
-    polygon: [
-      [-105.5, 50.5], // NW (Saskatchewan)
-      [-104.0, 51.0], // N
-      [-102.0, 51.0],
-      [-100.5, 50.5], // NE (Manitoba)
-      [-100.0, 49.5],
-      [-99.8, 48.0], // E
-      [-100.2, 46.5],
-      [-101.0, 45.8], // SE (SD)
-      [-102.5, 45.8],
-      [-104.0, 46.0], // S (MT)
-      [-105.0, 46.5],
-      [-106.0, 47.5], // SW
-      [-106.0, 49.0],
-      [-105.8, 50.0], // W
-    ],
+    // Approximate lat/lon bounds: Western ND, Eastern MT, Southern Canada
+    bounds: { minLat: 45.5, maxLat: 50.8, minLon: -106.0, maxLon: -100.2 },
   },
   {
     name: 'Bakken Formation',
-    color: '#AAD9CD', // Light seafoam
+    color: '#AAD9CD', // Light seafoam (lighter than Williston to show overlap)
     opacity: 0.18,
-    // Core Bakken play area (subset of Williston Basin)
-    polygon: [
-      [-104.5, 49.0], // NW
-      [-103.0, 49.3], // N
-      [-101.8, 49.0],
-      [-101.5, 48.5], // NE
-      [-101.3, 47.5], // E
-      [-101.8, 47.0],
-      [-103.0, 47.0], // S
-      [-104.0, 47.2],
-      [-104.5, 47.8], // SW
-      [-104.7, 48.5], // W
-    ],
+    // Approximate lat/lon bounds: Core Bakken area within Williston Basin
+    bounds: { minLat: 46.5, maxLat: 49.3, minLon: -104.5, maxLon: -101.7 },
   },
 ] as const;
 
-// Individual basin overlay mesh component
-function BasinMesh({ basin }: { basin: (typeof basins)[number] }) {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useEffect(() => {
-    if (!meshRef.current) return;
-
+// Basin overlays component with rounded corners
+function BasinOverlays() {
+  const meshes = basins.map((basin) => {
     // Lat/Lon bounds for North America view
     const minLat = 22;
     const maxLat = 61.5;
     const minLon = -136;
     const maxLon = -53.5;
 
-    // Convert lat/lon to terrain coordinates
-    const latLonToTerrain = (lon: number, lat: number) => {
-      const x = ((lon - minLon) / (maxLon - minLon)) * TERRAIN_WIDTH - TERRAIN_WIDTH / 2;
-      const z = ((lat - minLat) / (maxLat - minLat)) * TERRAIN_HEIGHT - TERRAIN_HEIGHT / 2;
-      return { x, z: -z };
-    };
+    // Convert basin bounds to terrain coordinates
+    const x1 = ((basin.bounds.minLon - minLon) / (maxLon - minLon)) * TERRAIN_WIDTH - TERRAIN_WIDTH / 2;
+    const x2 = ((basin.bounds.maxLon - minLon) / (maxLon - minLon)) * TERRAIN_WIDTH - TERRAIN_WIDTH / 2;
+    const z1 = -((basin.bounds.minLat - minLat) / (maxLat - minLat)) * TERRAIN_HEIGHT + TERRAIN_HEIGHT / 2;
+    const z2 = -((basin.bounds.maxLat - minLat) / (maxLat - minLat)) * TERRAIN_HEIGHT + TERRAIN_HEIGHT / 2;
 
-    // Convert polygon lat/lon points to terrain coordinates
-    const terrainPoints = basin.polygon.map(([lon, lat]) => latLonToTerrain(lon, lat));
+    const centerX = (x1 + x2) / 2;
+    const centerZ = (z1 + z2) / 2;
+    const width = Math.abs(x2 - x1);
+    const depth = Math.abs(z2 - z1);
 
-    // Create a shape from the polygon points
-    const shape = new THREE.Shape();
-    terrainPoints.forEach((point, i) => {
-      if (i === 0) {
-        shape.moveTo(point.x, point.z);
-      } else {
-        shape.lineTo(point.x, point.z);
-      }
-    });
-    shape.closePath();
+    // Get height at center for positioning
+    const height = getHeight(centerX, centerZ);
 
-    // Create geometry and apply to mesh
-    const geometry = new THREE.ShapeGeometry(shape);
-    meshRef.current.geometry = geometry;
+    return { basin, centerX, centerZ, width, depth, height };
+  });
 
-    return () => {
-      geometry.dispose();
-    };
-  }, [basin]);
-
-  return (
-    <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.05, 0]}>
-      <shapeGeometry />
-      <meshBasicMaterial color={basin.color} transparent opacity={basin.opacity} side={THREE.DoubleSide} />
-    </mesh>
-  );
-}
-
-// Basin overlays component
-function BasinOverlays() {
   return (
     <group>
-      {basins.map((basin) => (
-        <BasinMesh key={basin.name} basin={basin} />
+      {meshes.map(({ basin, centerX, centerZ, width, depth, height }) => (
+        <mesh key={basin.name} position={[centerX, height + 0.05, centerZ]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[width, depth]} />
+          <meshBasicMaterial color={basin.color} transparent opacity={basin.opacity} side={THREE.DoubleSide} />
+        </mesh>
       ))}
     </group>
   );
@@ -685,6 +595,9 @@ function Scene({
 
       {/* Terrain */}
       <Terrain />
+
+      {/* Basin Overlays */}
+      <BasinOverlays />
 
       {/* State Borders */}
       <StateBorders />
