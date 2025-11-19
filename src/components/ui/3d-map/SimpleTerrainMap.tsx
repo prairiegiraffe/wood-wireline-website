@@ -686,9 +686,6 @@ function Scene({
       {/* Terrain */}
       <Terrain />
 
-      {/* Basin Overlays */}
-      <BasinOverlays />
-
       {/* State Borders */}
       <StateBorders />
 
