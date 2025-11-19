@@ -2,23 +2,290 @@
 import Hero from '~/components/widgets/Hero.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import Layout from '~/layouts/PageLayout.astro';
-import Stats from '~/components/widgets/Stats.astro';
-import Features2 from '~/components/widgets/Features2.astro';
 import Image from '~/components/common/Image.astro';
+import TablerIcon from '~/components/ui/TablerIcon.astro';
 
 const metadata = {
   title: 'Services',
 };
+
+// Service data structure
+const services = [
+  {
+    id: 'e-line',
+    icon: 'tabler:chart-line',
+    title: 'E-Line Logging',
+    category: 'Formation Evaluation',
+    shortDesc: 'Advanced formation evaluation and downhole data acquisition',
+    description: 'Comprehensive electric line logging services for accurate formation evaluation and wellbore analysis. Our experienced operators use state-of-the-art equipment to deliver reliable downhole data.',
+    capabilities: [
+      'Gamma Ray logging',
+      'Neutron density logging',
+      'Resistivity measurements',
+      'Temperature and pressure surveys',
+      'Cement bond logging',
+      'Formation evaluation analysis'
+    ],
+    applications: [
+      'Formation characterization',
+      'Reservoir evaluation',
+      'Wellbore integrity assessment',
+      'Completion verification'
+    ]
+  },
+  {
+    id: 'slickline',
+    icon: 'tabler:settings',
+    title: 'Slickline Services',
+    category: 'Well Intervention',
+    shortDesc: 'Mechanical well intervention and downhole tool deployment',
+    description: 'Professional slickline services for mechanical well intervention operations. Fast, efficient service with experienced crews and well-maintained equipment.',
+    capabilities: [
+      'Plug setting and retrieval',
+      'Gauge cutter and scraper runs',
+      'Bottom-hole pressure surveys',
+      'Bailer runs',
+      'Wireline fishing operations',
+      'Dummy runs and drift surveys'
+    ],
+    applications: [
+      'Well maintenance',
+      'Production optimization',
+      'Workover operations',
+      'Well abandonment preparation'
+    ]
+  },
+  {
+    id: 'perforating',
+    icon: 'tabler:target',
+    title: 'Perforating',
+    category: 'Completion Services',
+    shortDesc: 'Precision perforating for optimal well productivity',
+    description: 'Professional perforating services using proven gun systems and precision placement. We deliver reliable results for both new completions and workover operations.',
+    capabilities: [
+      'Tubing-conveyed perforating (TCP)',
+      'Wireline-conveyed perforating',
+      'Through-tubing perforating',
+      'Casing perforating',
+      'Selective perforation placement',
+      'Post-perforation cleanup'
+    ],
+    applications: [
+      'New well completions',
+      'Workover operations',
+      'Zone isolation',
+      'Production enhancement'
+    ]
+  },
+  {
+    id: 'tcp',
+    icon: 'tabler:rocket',
+    title: 'Tubing Conveyed Perforating',
+    category: 'Completion Services',
+    shortDesc: 'TCP services for efficient well completions',
+    description: 'Tubing-conveyed perforating services for safe, efficient completions. Our TCP operations minimize formation damage and optimize initial production.',
+    capabilities: [
+      'High-shot-density systems',
+      'Underbalanced perforating',
+      'Orientation services',
+      'Multi-zone completions',
+      'Pressure testing',
+      'Real-time monitoring'
+    ],
+    applications: [
+      'Horizontal well completions',
+      'Multi-stage fracturing',
+      'Underbalanced completions',
+      'Maximum productivity connections'
+    ]
+  },
+  {
+    id: 'plug-setting',
+    icon: 'tabler:stack',
+    title: 'Plug & Packer Setting',
+    category: 'Completion Services',
+    shortDesc: 'Reliable plug and packer deployment services',
+    description: 'Professional plug and packer setting services for completions, workovers, and P&A operations. Experienced crews ensure proper placement and function verification.',
+    capabilities: [
+      'Bridge plug setting',
+      'Packer setting and testing',
+      'Composite plug deployment',
+      'Cement retainer installation',
+      'Pressure testing',
+      'Plug milling preparation'
+    ],
+    applications: [
+      'Zone isolation',
+      'Workover operations',
+      'Multi-stage fracturing',
+      'Well abandonment'
+    ]
+  },
+  {
+    id: 'swabbing',
+    icon: 'tabler:droplet',
+    title: 'Swabbing',
+    category: 'Well Intervention',
+    shortDesc: 'Efficient fluid removal and well cleanup services',
+    description: 'Professional swabbing services for well cleanup, fluid removal, and production testing. Our crews deliver efficient service to get your wells producing.',
+    capabilities: [
+      'Post-completion cleanup',
+      'Fluid level surveys',
+      'Well unloading',
+      'Production testing',
+      'Low-pressure well service',
+      'Custom swab configurations'
+    ],
+    applications: [
+      'New well cleanup',
+      'Workover cleanup',
+      'Production enhancement',
+      'Well testing'
+    ]
+  },
+  {
+    id: 'fishing',
+    icon: 'tabler:fish',
+    title: 'Fishing & Pipe Recovery',
+    category: 'Well Intervention',
+    shortDesc: 'Downhole fishing and stuck pipe recovery',
+    description: 'Specialized fishing and pipe recovery services for wireline and downhole equipment. Experienced operators with comprehensive fishing tool inventory.',
+    capabilities: [
+      'Wireline fishing',
+      'Stuck tool recovery',
+      'Parted wireline retrieval',
+      'Overshot operations',
+      'Spear and jar services',
+      'Custom fishing solutions'
+    ],
+    applications: [
+      'Tool recovery',
+      'Wireline retrieval',
+      'Wellbore cleanup',
+      'Operational continuity'
+    ]
+  },
+  {
+    id: 'cameras',
+    icon: 'tabler:camera',
+    title: 'Downhole Cameras',
+    category: 'Inspection & Diagnostics',
+    shortDesc: 'Visual wellbore inspection and diagnostic imaging',
+    description: 'High-resolution downhole camera services for visual wellbore inspection. Identify issues, verify operations, and document downhole conditions.',
+    capabilities: [
+      'High-definition video recording',
+      'Still image capture',
+      'Wellbore condition assessment',
+      'Completion verification',
+      'Perforation inspection',
+      'Real-time viewing'
+    ],
+    applications: [
+      'Wellbore integrity checks',
+      'Pre-completion inspection',
+      'Problem diagnosis',
+      'Quality verification'
+    ]
+  },
+  {
+    id: 'hydrotesting',
+    icon: 'tabler:gauge',
+    title: 'Hydrotesting',
+    category: 'Inspection & Diagnostics',
+    shortDesc: 'Pressure testing and wellbore integrity verification',
+    description: 'Professional hydrotesting services to verify wellbore integrity, test completion equipment, and ensure operational safety.',
+    capabilities: [
+      'Tubing pressure testing',
+      'Packer testing',
+      'Casing integrity tests',
+      'BOP testing support',
+      'Pressure chart recording',
+      'Leak detection'
+    ],
+    applications: [
+      'Pre-completion verification',
+      'Post-workover testing',
+      'Equipment certification',
+      'Regulatory compliance'
+    ]
+  },
+  {
+    id: 'abandonment',
+    icon: 'tabler:lock',
+    title: 'Plug & Abandonment',
+    category: 'Well Abandonment',
+    shortDesc: 'Compliant P&A services for well decommissioning',
+    description: 'Safe, compliant plug and abandonment services following all state and federal regulations. Professional execution from start to finish.',
+    capabilities: [
+      'Cement plug placement',
+      'Bridge plug setting',
+      'Regulatory documentation',
+      'Multi-zone isolation',
+      'Verification surveys',
+      'Complete P&A programs'
+    ],
+    applications: [
+      'Permanent well abandonment',
+      'Temporary abandonment',
+      'Regulatory compliance',
+      'Environmental protection'
+    ]
+  },
+  {
+    id: 'kinley',
+    icon: 'tabler:cut',
+    title: 'Kinley Cutter',
+    category: 'Specialized Equipment',
+    shortDesc: 'Wireline casing cutting services',
+    description: 'Kinley cutter services for wireline-conveyed casing cuts. Efficient alternative to conventional cutting methods.',
+    capabilities: [
+      'Casing cutting',
+      'Tubing cutting',
+      'Single-trip operations',
+      'Multiple cut capability',
+      'Depth verification',
+      'Clean cut surfaces'
+    ],
+    applications: [
+      'Section milling preparation',
+      'Sidetracking operations',
+      'P&A operations',
+      'Workover support'
+    ]
+  },
+  {
+    id: 'conductor',
+    icon: 'tabler:cable',
+    title: '7-Conductor Wireline',
+    category: 'Specialized Equipment',
+    shortDesc: 'Multi-conductor wireline for complex operations',
+    description: 'Seven-conductor wireline capability for operations requiring multiple electrical circuits and advanced tool control.',
+    capabilities: [
+      'Multi-parameter logging',
+      'Advanced tool deployment',
+      'Complex perforating systems',
+      'Simultaneous measurements',
+      'Enhanced data transmission',
+      'Specialized tool support'
+    ],
+    applications: [
+      'Advanced logging programs',
+      'Complex completions',
+      'Multi-zone operations',
+      'Specialized diagnostics'
+    ]
+  }
+];
 ---
 
 <Layout metadata={metadata}>
-  <!-- Enhanced Hero Widget ******************* -->
+  <!-- Hero Section ******************* -->
 
   <Hero
     tagline="Our Services"
     actions={[
       { variant: 'primary', text: 'Get Quote', href: '/contact', icon: 'tabler:phone' },
-      { variant: 'secondary', text: 'Learn More', href: '/about' },
+      { variant: 'secondary', text: 'View Locations', href: '/locations' },
     ]}
   >
     <Fragment slot="bg">
@@ -33,87 +300,216 @@ const metadata = {
       <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/50"></div>
     </Fragment>
     <Fragment slot="title">
-      <span class="text-white text-5xl md:text-6xl font-bold">Our Services</span>
+      <span class="text-white text-5xl md:text-6xl font-bold">Wireline Services</span>
     </Fragment>
     <Fragment slot="subtitle">
       <p class="text-xl md:text-2xl leading-relaxed text-white">
-        Comprehensive wireline solutions for every operation
+        Comprehensive wireline solutions across five major basins
       </p>
     </Fragment>
   </Hero>
 
-  <!-- Quick Stats ******************* -->
+  <!-- Services Overview Section ******************* -->
 
-  <Stats
-    stats={[
-      { title: 'Services Available', amount: '16+' },
-      { title: 'Years Experience', amount: '48+' },
-      { title: 'Service Basins', amount: '5' },
-      { title: '24/7 Availability', amount: 'Yes' },
-    ]}
-  />
+  <section class="py-16 md:py-20 bg-white dark:bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12 md:mb-16">
+        <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
+          What We Offer
+        </p>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-4">
+          Full-Spectrum Wireline Capabilities
+        </h2>
+        <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
+          From formation evaluation to plug and abandonment, we deliver professional wireline services with experienced crews and maintained equipment.
+        </p>
+      </div>
 
-  <!-- Service Categories Overview ******************* -->
+      <div class="grid md:grid-cols-3 gap-6 md:gap-8 mb-12">
+        <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-l-4 border-primary">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
+              <TablerIcon name="tabler:clock" className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="text-xl font-bold dark:text-white">24/7 Availability</h3>
+          </div>
+          <p class="text-base text-muted dark:text-slate-400">
+            Round-the-clock service across all four locations. We're ready when you need us.
+          </p>
+        </div>
 
-  <Features2
-    title="Full-Spectrum Wireline Capabilities"
-    subtitle="Professional services across all wireline disciplines."
-    columns={3}
-    items={[
-      {
-        title: 'Formation Evaluation',
-        description: 'E-Line logging, flow diagnostics, and comprehensive formation analysis services.',
-        icon: 'tabler:chart-line',
-      },
-      {
-        title: 'Well Intervention',
-        description: 'Slickline, swabbing, fishing, and pipe recovery services for well maintenance.',
-        icon: 'tabler:settings',
-      },
-      {
-        title: 'Completion Services',
-        description: 'Perforating, plug and packer setting, and TCP services for optimal completion.',
-        icon: 'tabler:target',
-      },
-      {
-        title: 'Inspection & Diagnostics',
-        description: 'Downhole cameras, hydrotesting, and comprehensive diagnostic services.',
-        icon: 'tabler:camera',
-      },
-      {
-        title: 'Plug & Abandonment',
-        description: 'Safe and compliant P&A services following all regulatory requirements.',
-        icon: 'tabler:lock',
-      },
-      {
-        title: 'Specialized Equipment',
-        description: '7-conductor wireline, Kinley cutter, and other specialized tool services.',
-        icon: 'tabler:tool',
-      },
-    ]}
-  >
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-transparent dark:via-transparent dark:to-transparent"></div>
-    </Fragment>
-  </Features2>
+        <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-l-4 border-secondary">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mr-4">
+              <TablerIcon name="tabler:users" className="w-6 h-6 text-secondary" />
+            </div>
+            <h3 class="text-xl font-bold dark:text-white">Experienced Crews</h3>
+          </div>
+          <p class="text-base text-muted dark:text-slate-400">
+            Professional operators with decades of combined wireline experience.
+          </p>
+        </div>
 
-  <!-- Enhanced CallToAction Widget *********** -->
+        <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-l-4 border-primary">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
+              <TablerIcon name="tabler:tool" className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="text-xl font-bold dark:text-white">Modern Equipment</h3>
+          </div>
+          <p class="text-base text-muted dark:text-slate-400">
+            Well-maintained equipment and continuous investment in technology.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Detailed Services with Tabs ******************* -->
+
+  <section class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12">
+        <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
+          Service Details
+        </p>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-4">
+          Explore Our Services
+        </h2>
+        <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
+          Click any service below to view detailed capabilities and applications.
+        </p>
+      </div>
+
+      <!-- Services Grid with Cards -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {services.map((service) => (
+          <a
+            href={`#${service.id}`}
+            class="group bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all border-t-4 border-primary hover:border-secondary"
+          >
+            <div class="flex items-start mb-4">
+              <div class="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-secondary/10 transition-colors">
+                <TablerIcon name={service.icon} className="w-7 h-7 text-primary group-hover:text-secondary transition-colors" />
+              </div>
+              <div>
+                <h3 class="text-xl font-bold dark:text-white mb-1 group-hover:text-primary transition-colors">{service.title}</h3>
+                <p class="text-sm text-secondary dark:text-blue-200 font-semibold">{service.category}</p>
+              </div>
+            </div>
+            <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+              {service.shortDesc}
+            </p>
+            <div class="mt-4 flex items-center text-primary font-semibold text-sm group-hover:text-secondary transition-colors">
+              <span>View Details</span>
+              <TablerIcon name="tabler:arrow-right" className="w-4 h-4 ml-2" />
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Individual Service Detail Sections ******************* -->
+
+  {services.map((service, index) => (
+    <section
+      id={service.id}
+      class:list={[
+        'py-16 md:py-24 scroll-mt-20',
+        index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50 dark:bg-gray-900'
+      ]}
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="grid md:grid-cols-2 gap-12 items-start">
+          <!-- Content Column -->
+          <div>
+            <div class="flex items-center mb-6">
+              <div class="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mr-4">
+                <TablerIcon name={service.icon} className="w-8 h-8 text-primary" />
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide">
+                  {service.category}
+                </p>
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight dark:text-white">
+                  {service.title}
+                </h2>
+              </div>
+            </div>
+
+            <p class="text-lg md:text-xl text-muted dark:text-slate-300 mb-8 leading-relaxed">
+              {service.description}
+            </p>
+
+            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 mb-6">
+              <h3 class="text-xl font-bold dark:text-white mb-4 flex items-center">
+                <TablerIcon name="tabler:checklist" className="w-6 h-6 text-primary mr-2" />
+                Service Capabilities
+              </h3>
+              <ul class="space-y-2">
+                {service.capabilities.map((capability) => (
+                  <li class="flex items-start">
+                    <TablerIcon name="tabler:check" className="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
+                    <span class="text-base text-muted dark:text-slate-400">{capability}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <!-- Applications Column -->
+          <div class="sticky top-24">
+            <div class="bg-primary/5 dark:bg-primary/10 rounded-xl p-8 border-2 border-primary/20">
+              <h3 class="text-2xl font-bold dark:text-white mb-6 flex items-center">
+                <TablerIcon name="tabler:target" className="w-7 h-7 text-primary mr-3" />
+                Applications
+              </h3>
+              <div class="space-y-4 mb-8">
+                {service.applications.map((application) => (
+                  <div class="flex items-center bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm">
+                    <TablerIcon name="tabler:circle-check" className="w-6 h-6 text-secondary mr-3 flex-shrink-0" />
+                    <span class="text-base font-semibold dark:text-white">{application}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div class="pt-6 border-t border-primary/20">
+                <p class="text-sm text-muted dark:text-slate-400 mb-4">
+                  Need this service? Contact us for availability and pricing.
+                </p>
+                <a
+                  href="/contact"
+                  class="inline-flex items-center justify-center px-6 py-3 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors w-full"
+                >
+                  <TablerIcon name="tabler:phone" className="w-5 h-5 mr-2" />
+                  Request Service
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <!-- Call to Action ******************* -->
 
   <CallToAction
     actions={[
       {
         variant: 'primary',
-        text: 'Contact Us',
+        text: 'Contact Us Today',
         href: '/contact',
         icon: 'tabler:phone',
       },
       {
         variant: 'secondary',
-        text: 'View About Us',
-        href: '/about',
+        text: 'View Our Locations',
+        href: '/locations',
       },
     ]}
     title="Ready to Get Started?"
-    subtitle="Contact us today to discuss your wireline service needs. We're ready to work when you are. No excuses, no downtime. Just results."
+    subtitle="Contact us today to discuss your wireline service needs. We're ready to work when you need us. No excuses, no downtime. Just results."
   />
 </Layout>
