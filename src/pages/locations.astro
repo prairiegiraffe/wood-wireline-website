@@ -79,16 +79,93 @@ const metadata = {
 
   <section class="py-16 md:py-24 bg-white dark:bg-gray-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
-      <div class="text-center mb-16">
-        <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
-          Our Locations
-        </p>
-        <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-6">
-          Where We Operate
-        </h2>
-        <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
-          Four strategic locations ready to serve operators across the region. Our crews are ready to deliver results from the moment we cross the cattle guard.
-        </p>
+      <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
+        <!-- Content Column -->
+        <div class="order-2 md:order-1">
+          <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
+            Our Locations
+          </p>
+          <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-6">
+            Where We Operate
+          </h2>
+          <p class="text-lg md:text-xl text-muted dark:text-slate-300 mb-8 leading-relaxed">
+            Four strategic locations ready to serve operators across the region. Our crews are positioned to deliver results from the moment we cross the cattle guard.
+          </p>
+          <div class="space-y-6">
+            <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
+              <h3 class="text-xl font-bold dark:text-white mb-3">Wyoming Operations</h3>
+              <div class="space-y-2">
+                <div class="flex items-center">
+                  <TablerIcon name="tabler:map-pin" className="w-5 h-5 text-primary mr-3" />
+                  <span class="text-base dark:text-slate-300"><strong>Gillette</strong> - Powder River Basin HQ</span>
+                </div>
+                <div class="flex items-center">
+                  <TablerIcon name="tabler:map-pin" className="w-5 h-5 text-primary mr-3" />
+                  <span class="text-base dark:text-slate-300"><strong>Casper</strong> - DJ Basin & Big Horn Coverage</span>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
+              <h3 class="text-xl font-bold dark:text-white mb-3">North Dakota Operations</h3>
+              <div class="space-y-2">
+                <div class="flex items-center">
+                  <TablerIcon name="tabler:map-pin" className="w-5 h-5 text-primary mr-3" />
+                  <span class="text-base dark:text-slate-300"><strong>Dickinson</strong> - Williston Basin Services</span>
+                </div>
+                <div class="flex items-center">
+                  <TablerIcon name="tabler:map-pin" className="w-5 h-5 text-primary mr-3" />
+                  <span class="text-base dark:text-slate-300"><strong>Williston</strong> - Bakken Operations</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Images Column - Creative Asymmetric Layout -->
+        <div class="relative order-1 md:order-2">
+          <!-- Top left image -->
+          <div class="relative mb-4 ml-0 md:ml-12">
+            <Image
+              src="~/assets/images/All Images/Wood Wireline Truck-BdikWvmwck.webp"
+              alt="Gillette Wyoming Operations"
+              class="w-full h-64 object-cover rounded-lg shadow-xl"
+              widths={[600, 800]}
+              sizes="(max-width: 768px) 100vw, 45vw"
+            />
+            <div class="absolute -top-4 -right-4 bg-primary text-white px-4 py-2 rounded-lg font-bold shadow-lg">
+              WY
+            </div>
+          </div>
+
+          <!-- Bottom grid - offset to the left -->
+          <div class="grid grid-cols-2 gap-4">
+            <div class="relative">
+              <Image
+                src="~/assets/images/All Images/Oil Rig Workers Onsite.webp"
+                alt="North Dakota Field Operations"
+                class="w-full h-48 object-cover rounded-lg shadow-lg"
+                widths={[400, 600]}
+                sizes="(max-width: 768px) 50vw, 22vw"
+              />
+              <div class="absolute -bottom-3 -left-3 bg-secondary text-white px-3 py-1 rounded-lg font-bold text-sm shadow-lg">
+                ND
+              </div>
+            </div>
+            <div class="relative mt-8">
+              <Image
+                src="~/assets/images/All Images/Wood Wireline Truck-VIF53Zk16v.webp"
+                alt="Regional Service Coverage"
+                class="w-full h-48 object-cover rounded-lg shadow-lg"
+                widths={[400, 600]}
+                sizes="(max-width: 768px) 50vw, 22vw"
+              />
+            </div>
+          </div>
+
+          <!-- Decorative elements -->
+          <div class="absolute -bottom-8 -right-8 w-32 h-32 bg-primary/10 rounded-lg -z-10"></div>
+          <div class="absolute top-0 -left-8 w-20 h-20 bg-secondary/10 rounded-lg -z-10"></div>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">

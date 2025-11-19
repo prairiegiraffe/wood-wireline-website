@@ -50,81 +50,100 @@ const metadata = {
     ]}
   />
 
-  <!-- Photo Gallery Section ******************* -->
+  <!-- Operations in Action Section ******************* -->
 
-  <section class="py-12 md:py-20 bg-gray-50 dark:bg-gray-900">
+  <section class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
-      <div class="text-center mb-12">
-        <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-4">
-          Our Operations
-        </h2>
-        <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
-          Professional crews and equipment in action across the Powder River Basin.
-        </p>
-      </div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="col-span-2">
-          <Image
-            src="~/assets/images/All Images/Wood Wireline Truck-BdikWvmwck.webp"
-            alt="Wood Wireline Truck"
-            class="w-full h-full object-cover rounded-lg shadow-xl"
-            widths={[800, 1200]}
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
-        </div>
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <!-- Content Column -->
         <div>
-          <Image
-            src="~/assets/images/All Images/Oil Rig Worker.webp"
-            alt="Oil Rig Worker"
-            class="w-full h-full object-cover rounded-lg shadow-lg"
-            widths={[400, 600]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
+          <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
+            Field Operations
+          </p>
+          <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-6">
+            Professional Crews, Proven Results
+          </h2>
+          <p class="text-lg md:text-xl text-muted dark:text-slate-300 mb-6 leading-relaxed">
+            From the Powder River Basin to the Bakken, our crews deliver reliable wireline services with maintained equipment and decades of combined field experience.
+          </p>
+          <div class="space-y-4 mb-8">
+            <div class="flex items-start">
+              <div class="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
+                <span class="text-2xl font-bold text-primary">48</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold dark:text-white mb-1">Years of Experience</h3>
+                <p class="text-base text-muted dark:text-slate-400">Nearly five decades serving operators across five major basins</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div class="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
+                <span class="text-2xl font-bold text-primary">24/7</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold dark:text-white mb-1">Availability</h3>
+                <p class="text-base text-muted dark:text-slate-400">Round-the-clock emergency service from four strategic locations</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div class="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
+                <span class="text-2xl font-bold text-primary">16+</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold dark:text-white mb-1">Service Capabilities</h3>
+                <p class="text-base text-muted dark:text-slate-400">Comprehensive wireline solutions from logging to perforating</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div>
-          <Image
-            src="~/assets/images/All Images/Oil Rig Workers Onsite.webp"
-            alt="Oil Rig Workers"
-            class="w-full h-full object-cover rounded-lg shadow-lg"
-            widths={[400, 600]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
-        </div>
-        <div>
-          <Image
-            src="~/assets/images/All Images/Oil Rig Equipment.webp"
-            alt="Oil Rig Equipment"
-            class="w-full h-full object-cover rounded-lg shadow-lg"
-            widths={[400, 600]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
-        </div>
-        <div>
-          <Image
-            src="~/assets/images/All Images/Oilfield Workers On Site.webp"
-            alt="Oilfield Workers"
-            class="w-full h-full object-cover rounded-lg shadow-lg"
-            widths={[400, 600]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
-        </div>
-        <div>
-          <Image
-            src="~/assets/images/All Images/Oil Rig Worker Onsite.webp"
-            alt="Oil Rig Worker Onsite"
-            class="w-full h-full object-cover rounded-lg shadow-lg"
-            widths={[400, 600]}
-            sizes="(max-width: 768px) 50vw, 25vw"
-          />
-        </div>
-        <div class="col-span-2">
-          <Image
-            src="~/assets/images/All Images/Oil Rig Workers Onsite.webp"
-            alt="Oil Rig Workers"
-            class="w-full h-full object-cover rounded-lg shadow-xl"
-            widths={[800, 1200]}
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
+
+        <!-- Images Column - Asymmetric Grid -->
+        <div class="relative">
+          <!-- Main large image -->
+          <div class="relative mb-4">
+            <Image
+              src="~/assets/images/All Images/Wood Wireline Truck-BdikWvmwck.webp"
+              alt="Wood Wireline Service Truck"
+              class="w-full h-[400px] object-cover rounded-lg shadow-2xl"
+              widths={[600, 900]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-primary/20 rounded-lg -z-10"></div>
+          </div>
+
+          <!-- Bottom row of smaller images -->
+          <div class="grid grid-cols-3 gap-4">
+            <div class="relative">
+              <Image
+                src="~/assets/images/All Images/Oil Rig Worker.webp"
+                alt="Experienced Wireline Operator"
+                class="w-full h-32 object-cover rounded-lg shadow-lg"
+                widths={[300, 400]}
+                sizes="(max-width: 768px) 33vw, 16vw"
+              />
+            </div>
+            <div class="relative -mt-8">
+              <Image
+                src="~/assets/images/All Images/Oil Rig Equipment.webp"
+                alt="Wireline Equipment"
+                class="w-full h-40 object-cover rounded-lg shadow-lg"
+                widths={[300, 400]}
+                sizes="(max-width: 768px) 33vw, 16vw"
+              />
+            </div>
+            <div class="relative">
+              <Image
+                src="~/assets/images/All Images/Oilfield Workers On Site.webp"
+                alt="Field Crew in Action"
+                class="w-full h-32 object-cover rounded-lg shadow-lg"
+                widths={[300, 400]}
+                sizes="(max-width: 768px) 33vw, 16vw"
+              />
+            </div>
+          </div>
+
+          <!-- Decorative element -->
+          <div class="absolute -top-6 -right-6 w-24 h-24 bg-secondary/10 rounded-lg -z-10"></div>
         </div>
       </div>
     </div>
