@@ -41,6 +41,7 @@ const metadata = {
 
     <Fragment slot="bg">
       <video
+        id="hero-video"
         autoplay
         loop
         muted
@@ -55,6 +56,39 @@ const metadata = {
       <div class="absolute inset-0 bg-gradient-to-b from-black/42 via-black/30 to-black/42"></div>
     </Fragment>
   </Hero>
+
+  <script is:inline>
+    // Force video to play on mobile devices
+    document.addEventListener('DOMContentLoaded', () => {
+      const video = document.getElementById('hero-video');
+      if (video) {
+        // Try to play the video
+        const playPromise = video.play();
+
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              // Video is playing
+              console.log('Video autoplay started');
+            })
+            .catch((_error) => {
+              // Autoplay was prevented
+              console.log('Video autoplay prevented, attempting fallback');
+
+              // Try playing on user interaction
+              const playOnInteraction = () => {
+                video.play();
+                document.removeEventListener('touchstart', playOnInteraction);
+                document.removeEventListener('click', playOnInteraction);
+              };
+
+              document.addEventListener('touchstart', playOnInteraction, { once: true });
+              document.addEventListener('click', playOnInteraction, { once: true });
+            });
+        }
+      }
+    });
+  </script>
 
   <!-- Company Introduction Section ******************* -->
 
