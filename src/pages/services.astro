@@ -587,7 +587,10 @@ const defaultServiceId = services[0]?.id ?? '';
     const links = Array.from(document.querySelectorAll('[data-service-link]'));
     const panels = Array.from(document.querySelectorAll('[data-service-panel]'));
 
-    if (!links.length || !panels.length) return;
+    if (!links.length || !panels.length) {
+      console.warn('Service navigation: links or panels not found');
+      return;
+    }
 
     const mediaDesktop = window.matchMedia('(min-width: 1024px)');
     const mediaMobile = window.matchMedia('(max-width: 1023.98px)');
@@ -605,15 +608,18 @@ const defaultServiceId = services[0]?.id ?? '';
     };
 
     const openPanel = (targetId, { force = false, scroll = false } = {}) => {
+      console.log('openPanel called:', targetId, 'scroll:', scroll);
       let targetPanel = null;
       panels.forEach((panel) => {
         const isTarget = panel.id === targetId;
         if (isTarget) {
           targetPanel = panel;
+          console.log('Found target panel:', targetId, 'currently open:', panel.open);
           // Force the panel open
           panel.open = true;
           // Trigger a reflow to ensure the open state is applied
           void panel.offsetHeight;
+          console.log('Panel opened:', targetId);
         } else if (force || mediaDesktop.matches) {
           panel.open = false;
         }
@@ -622,14 +628,18 @@ const defaultServiceId = services[0]?.id ?? '';
       if (targetPanel) {
         setActiveLink(targetId);
         if (scroll) {
+          console.log('Preparing to scroll to:', targetId);
           // Wait for the details element to fully expand before scrolling
           // Use requestAnimationFrame to ensure the browser has painted the expanded content
           requestAnimationFrame(() => {
             requestAnimationFrame(() => {
+              console.log('Scrolling to panel:', targetId);
               targetPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
           });
         }
+      } else {
+        console.warn('Target panel not found:', targetId);
       }
     };
 
@@ -662,6 +672,7 @@ const defaultServiceId = services[0]?.id ?? '';
 
     const handleHashChange = () => {
       const hash = window.location.hash?.replace('#', '');
+      console.log('Hash changed:', hash);
       if (hash) {
         openPanel(hash, { force: true, scroll: true });
       }
@@ -672,12 +683,16 @@ const defaultServiceId = services[0]?.id ?? '';
 
     // Handle initial hash on page load
     const initialHash = window.location.hash?.replace('#', '');
+    console.log('Initial hash on load:', initialHash);
     if (initialHash) {
       // Add a delay to ensure DOM is ready and images/content are loaded
+      console.log('Will open panel in 500ms:', initialHash);
       setTimeout(() => {
+        console.log('Timeout fired, opening panel:', initialHash);
         openPanel(initialHash, { force: true, scroll: true });
       }, 500);
     } else if (panels[0]) {
+      console.log('No hash, opening first panel');
       openPanel(panels[0].id, { force: true });
     }
   };
