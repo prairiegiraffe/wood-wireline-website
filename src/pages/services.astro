@@ -424,7 +424,7 @@ const defaultServiceId = services[0]?.id ?? '';
                 id={service.id}
                 class="group scroll-mt-24 mb-8 last:mb-0 rounded-2xl border border-gray-200 dark:border-gray-700 bg-transparent"
                 data-service-panel={service.id}
-                open
+                open={service.id === defaultServiceId}
               >
                 <summary class="lg:hidden flex items-center justify-between gap-4 px-5 py-4 cursor-pointer text-left text-lg font-semibold text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 rounded-t-2xl">
                   <span class="flex items-center gap-3">
