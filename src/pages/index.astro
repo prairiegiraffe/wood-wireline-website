@@ -1,11 +1,11 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 import Hero from '~/components/widgets/Hero.astro';
-import Features from '~/components/widgets/Features.astro';
 import Stats from '~/components/widgets/Stats.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
-import Content from '~/components/widgets/Content.astro';
-import Note from '~/components/widgets/Note.astro';
+import TestimonialsWidget from '~/components/widgets/Testimonials.astro';
+import Brands from '~/components/widgets/Brands.astro';
+import Image from '~/components/common/Image.astro';
 import TablerIcon from '~/components/ui/TablerIcon.astro';
 
 const metadata = {
@@ -58,12 +58,34 @@ const metadata = {
 
   <!-- Company Introduction Section ******************* -->
 
-  <section class="py-12 md:py-16 bg-white dark:bg-gray-900">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center">
-      <p class="text-xl md:text-2xl leading-relaxed font-medium text-muted dark:text-slate-300">
-        Since 1977, Wood Wireline has set the standard for wireline services across five major basins. Professional
-        crews, proven equipment, results that matter.
-      </p>
+  <section class="py-16 md:py-24 bg-white dark:bg-gray-800">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-8">
+        <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
+          Established 1977
+        </p>
+        <h2 class="text-3xl md:text-4xl font-bold tracking-tight dark:text-white mb-6">
+          The Leading Wireline Service Company
+        </h2>
+      </div>
+      <div class="prose prose-lg dark:prose-invert max-w-none text-muted dark:text-slate-300">
+        <p class="text-lg md:text-xl leading-relaxed mb-4">
+          Established in 1977, we have built our reputation on an unwavering commitment to being the leading service
+          company in every basin we operate. Our crews are among the most efficient in wireline, ready to deliver
+          results from the moment we cross the cattle guard. Our mission is not simply to meet expectations, but to
+          consistently exceed them.
+        </p>
+        <p class="text-lg md:text-xl leading-relaxed mb-4">
+          We primarily serve the Williston, Bakken, DJ, Big Horn and Powder River Basins, offering a comprehensive range
+          of services including Slickline, E-line, Swabbing, Hydrotesting, and our newest addition, Slick E-line. With
+          decades of hands-on experience, we understand what it takes to provide solutions that stand the test of time.
+        </p>
+        <p class="text-lg md:text-xl leading-relaxed">
+          Safety is the foundation of our operations. Every project is carried out with precision, efficiency, and the
+          highest safety standards. This dedication is how we have built and continue to uphold our reputation: by doing
+          the job right, every single time.
+        </p>
+      </div>
     </div>
   </section>
 
@@ -72,365 +94,300 @@ const metadata = {
   <Stats
     title="Wood Wireline by the Numbers"
     stats={[
-      { title: 'Years in Business', amount: '48+' },
-      { title: 'Service Basins', amount: '5' },
-      { title: 'Service Locations', amount: '4' },
-      { title: 'Services Offered', amount: '16+' },
+      {
+        title: 'Leadership Experience',
+        amount: '500+',
+        subtitle: 'Years of combined industry expertise',
+      },
+      {
+        title: 'Annual Job Completions',
+        amount: '2,000+',
+        subtitle: 'Successfully completed every year',
+      },
+      {
+        title: 'Specialized Units',
+        amount: '40+',
+        subtitle: 'Fleet tailored for oil & gas',
+      },
+      {
+        title: 'Service Footprint',
+        amount: '4',
+        subtitle: 'Locations serving 6 states',
+      },
     ]}
   />
 
-  <!-- Enhanced Note Widget ******************* -->
+  <!-- Testimonials Section ******************* -->
 
-  <Note title="Our Standard:" description="On time. On spec. Every time. We don't make excuses—we deliver results." />
+  <TestimonialsWidget
+    title="Trusted by Industry Leaders"
+    subtitle="Don't just take our word for it. Here's what operators say about working with Wood Wireline."
+    tagline="Client Testimonials"
+    testimonials={[
+      {
+        testimonial: `Wood Wireline has been our go-to service provider for years. Their crews are professional, efficient, and always show up ready to work. They've never let us down, and their attention to detail is unmatched. When we need wireline services, we call Wood Wireline.`,
+        name: 'Operations Manager',
+        job: 'Major Operator, Williston Basin',
+      },
+      {
+        testimonial: `What sets Wood Wireline apart is their attention to detail and commitment to safety. They get the job done right the first time, every time. Their crews are among the most efficient we've worked with. No excuses, no downtime—just results.`,
+        name: 'Company Man',
+        job: 'Independent Operator, Powder River Basin',
+      },
+      {
+        testimonial: `We've worked with Wood Wireline across multiple basins, and their consistency and reliability are unmatched. They understand what it takes to keep operations moving, and they deliver on their promises. Their crews show up ready from the moment they cross the cattle guard.`,
+        name: 'Field Supervisor',
+        job: 'Regional Operator',
+      },
+    ]}
+  />
 
-  <!-- PROMINENT SERVICES SECTION - Moved Higher Up ******************* -->
+  <!-- Services Overview Section ******************* -->
 
-  <section id="services" class="py-16 md:py-24 bg-white dark:bg-gray-800">
+  <section class="py-16 md:py-24 bg-white dark:bg-gray-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
       <div class="text-center mb-12">
         <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
           What We Offer
         </p>
-        <h2 class="text-4xl md:text-6xl font-bold tracking-tight dark:text-white mb-6">Wireline Services</h2>
-        <p class="text-xl md:text-2xl text-muted dark:text-slate-300 max-w-4xl mx-auto leading-relaxed mb-4">
-          From logging to P&A, we provide the full spectrum of wireline capabilities your operations demand.
-        </p>
-        <p class="text-lg text-muted dark:text-slate-400 max-w-3xl mx-auto">
-          <a href="/services" class="text-primary hover:underline font-semibold inline-flex items-center">
-            View All Services Details <span class="ml-2">→</span>
-          </a>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-6">
+          Comprehensive Wireline Services
+        </h2>
+        <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
+          From formation evaluation to plug and abandonment, we deliver the full spectrum of wireline capabilities your
+          operations demand.
         </p>
       </div>
 
-      <!-- Services Grid - Prominent Display ******************* -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-        <div
-          class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl"
+      <!-- Services Grid -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <a
+          href="/services/#e-line"
+          class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-primary"
         >
-          <div class="mb-4 text-primary">
-            <TablerIcon name="tabler:chart-line" className="w-12 h-12" />
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
+              <TablerIcon name="tabler:chart-line" className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold dark:text-white">E-Line</h3>
           </div>
-          <h3 class="text-xl font-bold dark:text-white mb-2">E-Line: Logging</h3>
-          <p class="text-muted dark:text-slate-300 mb-4">
-            Professional logging services using advanced wireline technology for accurate formation evaluation.
+          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+            Complete E-Line services including advanced logging tools, pipe recovery systems, perforating capabilities,
+            and plug/packer setting.
           </p>
-          <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
-            <li>• Advanced wireline logging technology</li>
-            <li>• Real-time data acquisition</li>
-            <li>• 7-conductor wireline capabilities</li>
-          </ul>
-        </div>
+        </a>
 
-        <div
-          class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl"
+        <a
+          href="/services/#slickline"
+          class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-secondary"
         >
-          <div class="mb-4 text-primary">
-            <TablerIcon name="tabler:link" className="w-12 h-12" />
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mr-4">
+              <TablerIcon name="tabler:settings" className="w-6 h-6 text-secondary" />
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold dark:text-white">Slickline</h3>
           </div>
-          <h3 class="text-xl font-bold dark:text-white mb-2">Slickline</h3>
-          <p class="text-muted dark:text-slate-300 mb-4">
-            Efficient slickline services for well intervention, maintenance, and data collection operations.
+          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+            Professional slickline services including quick rig units, memory logging, and H2S capabilities for well
+            intervention.
           </p>
-          <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
-            <li>• Well intervention services</li>
-            <li>• Maintenance operations</li>
-            <li>• 24/7 availability</li>
-          </ul>
-        </div>
+        </a>
 
-        <div
-          class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl"
+        <a
+          href="/services/#swabbing"
+          class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-primary"
         >
-          <div class="mb-4 text-primary">
-            <TablerIcon name="tabler:droplet" className="w-12 h-12" />
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
+              <TablerIcon name="tabler:droplet" className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold dark:text-white">Swabbing</h3>
           </div>
-          <h3 class="text-xl font-bold dark:text-white mb-2">Swabbing</h3>
-          <p class="text-muted dark:text-slate-300 mb-4">
-            Expert swabbing services to remove fluids and restore well production efficiently.
+          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+            Enclosed cab swab rigs with hydraulic systems for safe, efficient well cleanup and fluid removal operations.
           </p>
-          <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
-            <li>• Fluid removal services</li>
-            <li>• Production restoration</li>
-            <li>• Quick turnaround</li>
-          </ul>
-        </div>
+        </a>
 
-        <div
-          class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl"
+        <a
+          href="/services/#tcp"
+          class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-secondary"
         >
-          <div class="mb-4 text-primary">
-            <TablerIcon name="tabler:target" className="w-12 h-12" />
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mr-4">
+              <TablerIcon name="tabler:rocket" className="w-6 h-6 text-secondary" />
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold dark:text-white">TCP</h3>
           </div>
-          <h3 class="text-xl font-bold dark:text-white mb-2">Perforating</h3>
-          <p class="text-muted dark:text-slate-300 mb-4">
-            Precision perforating services to optimize well completion and production performance.
+          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+            Full TCP capabilities including pipe recovery, plug setting, and frac support for underbalanced and long
+            interval operations.
           </p>
-          <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
-            <li>• Precision perforating systems</li>
-            <li>• TCP (Tubing Conveyed Perforating)</li>
-            <li>• Safety-focused operations</li>
-          </ul>
-        </div>
+        </a>
 
-        <div
-          class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl"
+        <a
+          href="/services/#kinley"
+          class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-primary"
         >
-          <div class="mb-4 text-primary">
-            <TablerIcon name="tabler:lock" className="w-12 h-12" />
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
+              <TablerIcon name="tabler:cut" className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold dark:text-white">Kinley Cutter</h3>
           </div>
-          <h3 class="text-xl font-bold dark:text-white mb-2">Setting Plugs & Packers</h3>
-          <p class="text-muted dark:text-slate-300 mb-4">
-            Professional setting of plugs and packers for well isolation and completion operations.
+          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+            Sand line cutters for stuck line recovery and horizontal operations with variable timer options to reduce
+            NPT.
           </p>
-          <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
-            <li>• Expert plug and packer setting</li>
-            <li>• Well isolation services</li>
-            <li>• Reliable sealing solutions</li>
-          </ul>
-        </div>
+        </a>
 
-        <div
-          class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl"
+        <a
+          href="/services/#hydrotesting"
+          class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-secondary"
         >
-          <div class="mb-4 text-primary">
-            <TablerIcon name="tabler:shield-lock" className="w-12 h-12" />
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mr-4">
+              <TablerIcon name="tabler:gauge" className="w-6 h-6 text-secondary" />
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold dark:text-white">Hydrotesting</h3>
           </div>
-          <h3 class="text-xl font-bold dark:text-white mb-2">Plug & Abandonment</h3>
-          <p class="text-muted dark:text-slate-300 mb-4">
-            Safe and compliant plug and abandonment services following industry best practices.
+          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+            Complete testing services up to 15,000 psi with no-drop slip tools for all pipe types and sizes.
           </p>
-          <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
-            <li>• Regulatory compliance</li>
-            <li>• Safe abandonment procedures</li>
-            <li>• Full documentation</li>
-          </ul>
-        </div>
+        </a>
 
-        <div
-          class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl"
+        <a
+          href="/services/#slick-eline"
+          class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-primary md:col-span-2 lg:col-span-1"
         >
-          <div class="mb-4 text-primary">
-            <TablerIcon name="tabler:gauge" className="w-12 h-12" />
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
+              <TablerIcon name="tabler:cable" className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold dark:text-white">Slick E-Line</h3>
           </div>
-          <h3 class="text-xl font-bold dark:text-white mb-2">Hydrotesting</h3>
-          <p class="text-muted dark:text-slate-300 mb-4">
-            Reliable hydrotesting services to ensure equipment integrity and safety compliance.
+          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+            Our newest addition: 25,000' Inconel line with H2S capabilities and real-time production logging.
           </p>
-          <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
-            <li>• Equipment integrity testing</li>
-            <li>• Safety compliance</li>
-            <li>• Certified testing</li>
-          </ul>
-        </div>
-
-        <div
-          class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl"
-        >
-          <div class="mb-4 text-primary">
-            <TablerIcon name="tabler:plug-connected" className="w-12 h-12" />
-          </div>
-          <h3 class="text-xl font-bold dark:text-white mb-2">Slick E-Line</h3>
-          <p class="text-muted dark:text-slate-300 mb-4">
-            Our newest addition: Combined slickline and e-line capabilities for versatile operations.
-          </p>
-          <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
-            <li>• Combined capabilities</li>
-            <li>• Latest technology</li>
-            <li>• Innovative solutions</li>
-          </ul>
-        </div>
-
-        <div
-          class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary transition-all hover:shadow-xl"
-        >
-          <div class="mb-4 text-primary">
-            <TablerIcon name="tabler:camera" className="w-12 h-12" />
-          </div>
-          <h3 class="text-xl font-bold dark:text-white mb-2">Cameras</h3>
-          <p class="text-muted dark:text-slate-300 mb-4">
-            Downhole camera services for visual inspection and diagnostics.
-          </p>
-          <ul class="space-y-2 text-sm text-muted dark:text-slate-400">
-            <li>• High-resolution cameras</li>
-            <li>• Visual inspection</li>
-            <li>• Real-time video feed</li>
-          </ul>
-        </div>
+        </a>
       </div>
 
-      <!-- Additional Services List ******************* -->
-      <div class="bg-primary/5 dark:bg-primary/10 rounded-xl p-8 border border-primary/20">
-        <h3 class="text-2xl font-bold dark:text-white mb-6 text-center">Additional Services</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div class="flex items-center justify-center gap-2 text-muted dark:text-slate-300 font-medium">
-            <TablerIcon name="tabler:tool" className="w-5 h-5 text-primary" />
-            <span>Pipe Recovery</span>
+      <div class="text-center">
+        <a href="/services" class="btn-primary inline-flex items-center">
+          View All Services <span class="ml-2">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leadership Section ******************* -->
+
+  <section class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12 md:mb-16">
+        <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">Leadership</p>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-4">Executive Team</h2>
+        <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
+          Decades of combined wireline operations and business management experience.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div
+          class="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border-t-4 border-primary"
+        >
+          <div class="relative h-72 overflow-hidden">
+            <Image
+              src="~/assets/images/team/Justin.jpg"
+              alt="Justin Hargens - VP/Operations Manager"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              widths={[400, 600]}
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
           </div>
-          <div class="flex items-center justify-center gap-2 text-muted dark:text-slate-300 font-medium">
-            <TablerIcon name="tabler:bolt" className="w-5 h-5 text-primary" />
-            <span>7-Conductor Wireline</span>
+          <div class="p-6">
+            <h3 class="text-2xl font-bold dark:text-white mb-1">Justin Hargens</h3>
+            <p class="text-primary font-semibold mb-2">VP/Operations Manager</p>
+            <div class="space-y-1 text-sm text-muted dark:text-slate-400">
+              <p><strong>Experience:</strong> 22 Years</p>
+              <p><strong>Joined Wood:</strong> 2006</p>
+              <p><strong>Specialty:</strong> Slickline</p>
+            </div>
           </div>
-          <div class="flex items-center justify-center gap-2 text-muted dark:text-slate-300 font-medium">
-            <TablerIcon name="tabler:arrow-up" className="w-5 h-5 text-primary" />
-            <span>Third Party Hoisting</span>
-          </div>
-          <div class="flex items-center justify-center gap-2 text-muted dark:text-slate-300 font-medium">
-            <TablerIcon name="tabler:fish" className="w-5 h-5 text-primary" />
-            <span>Fishing</span>
-          </div>
-          <div class="flex items-center justify-center gap-2 text-muted dark:text-slate-300 font-medium">
-            <TablerIcon name="tabler:wave" className="w-5 h-5 text-primary" />
-            <span>Flow Diagnostics</span>
-          </div>
-          <div class="flex items-center justify-center gap-2 text-muted dark:text-slate-300 font-medium">
-            <TablerIcon name="tabler:bolt" className="w-5 h-5 text-primary" />
-            <span>TCP</span>
-          </div>
-          <div class="flex items-center justify-center gap-2 text-muted dark:text-slate-300 font-medium">
-            <TablerIcon name="tabler:scissors" className="w-5 h-5 text-primary" />
-            <span>Kinley Cutter</span>
-          </div>
-          <div class="text-muted dark:text-slate-300 font-medium">+ More</div>
         </div>
-        <div class="text-center mt-8">
-          <a href="/services" class="btn-primary inline-flex items-center">
-            View Complete Services List <span class="ml-2">→</span>
-          </a>
+
+        <div
+          class="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border-t-4 border-secondary"
+        >
+          <div class="relative h-72 overflow-hidden">
+            <Image
+              src="~/assets/images/team/Dusty.jpg"
+              alt="Dusty Wood - VP/Wireline Engineer"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              widths={[400, 600]}
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
+          </div>
+          <div class="p-6">
+            <h3 class="text-2xl font-bold dark:text-white mb-1">Dusty Wood</h3>
+            <p class="text-secondary font-semibold mb-2">VP/Wireline Engineer</p>
+            <div class="space-y-1 text-sm text-muted dark:text-slate-400">
+              <p><strong>Experience:</strong> 22 Years</p>
+              <p><strong>Joined Wood:</strong> 2003</p>
+              <p><strong>Specialty:</strong> Slickline</p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border-t-4 border-primary"
+        >
+          <div class="relative h-72 overflow-hidden">
+            <Image
+              src="~/assets/images/team/Tiffany.jpg"
+              alt="Tiffany Wood-Nelson - Corporate Treasurer"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              widths={[400, 600]}
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
+          </div>
+          <div class="p-6">
+            <h3 class="text-2xl font-bold dark:text-white mb-1">Tiffany Wood-Nelson</h3>
+            <p class="text-primary font-semibold mb-2">Corporate Treasurer</p>
+            <div class="space-y-1 text-sm text-muted dark:text-slate-400">
+              <p><strong>Experience:</strong> 19 Years</p>
+              <p><strong>Joined Wood:</strong> 2006</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Enhanced Features Widget (Core Values Overview) *************** -->
+  <!-- Trusted By Section ******************* -->
 
-  <Features
-    id="values"
-    tagline="Why Wood Wireline"
-    title="What Sets Us Apart"
-    subtitle="48 years in the field. Proven expertise. Professional execution."
-    items={[
-      {
-        title: 'Experienced Crews',
-        description:
-          "Our operators bring decades of field expertise to every job. We've handled the tough wells, the complex operations, and the time-critical work. Experience reduces risk and delivers results.",
-        icon: 'tabler:briefcase',
-      },
-      {
-        title: 'Operational Excellence',
-        description:
-          'Clean equipment. Organized operations. Zero tolerance for shortcuts. Our standards ensure consistent performance, job after job.',
-        icon: 'tabler:award',
-      },
-      {
-        title: 'Safety First',
-        description:
-          'Comprehensive safety protocols on every job site. Our safety record reflects our commitment to protecting personnel and assets.',
-        icon: 'tabler:shield-check',
-      },
-      {
-        title: '24/7 Availability',
-        description:
-          "Operations don't run on a schedule, and neither do we. When you need wireline services, we're ready to mobilize.",
-        icon: 'tabler:headset',
-      },
-      {
-        title: 'Reliable Team',
-        description:
-          'Low turnover means experienced hands on your jobs. Our people stay because we invest in them, and that stability benefits your operations.',
-        icon: 'tabler:users',
-      },
-      {
-        title: 'Fast Mobilization',
-        description:
-          'Efficient rig-up, minimal downtime, and rapid turnaround. We understand that time on location costs money.',
-        icon: 'tabler:clock',
-      },
+  <Brands
+    tagline="Trusted By"
+    title="Partnered With Industry Leaders"
+    subtitle="We're proud to serve major operators and energy companies throughout the Rocky Mountain region. Our commitment to excellence has earned the trust of the industry's most respected names."
+    icons={[
+      'tabler:building-factory',
+      'tabler:building-warehouse',
+      'tabler:building',
+      'tabler:building-skyscraper',
+      'tabler:building-arch',
+      'tabler:building-store',
+      'tabler:building-community',
     ]}
-  />
-
-  <!-- Enhanced Content Widget (About Section) with Images **************** -->
-
-  <Content
-    isReversed
-    tagline="About Us"
-    title="Field-Proven Wireline Expertise"
-    items={[
-      {
-        title: 'Since 1977',
-        description:
-          '48 years serving oil and gas operators across the Rocky Mountain region. Built on relationships, sustained by results.',
-      },
-      {
-        title: 'Five Major Basins',
-        description:
-          'Powder River, Williston, Bakken, DJ, and Big Horn. Strategic locations ensure rapid response across our service territory.',
-      },
-      {
-        title: 'Full-Spectrum Capabilities',
-        description:
-          'E-line, Slickline, Swabbing, Perforating, P&A, Hydrotesting, and Slick E-line. If it runs on wireline, we do it.',
-      },
-    ]}
-    image={{
-      src: '~/assets/images/All Images/Wood Wireline Truck-BdikWvmwck.webp',
-      alt: 'Wood Wireline Operations',
-    }}
   >
-    <Fragment slot="content">
-      <h3 class="text-3xl md:text-4xl font-bold tracking-tight dark:text-white mb-4">Built on Performance</h3>
-      <p class="text-lg md:text-xl text-muted dark:text-slate-300 mb-6 leading-relaxed">
-        Wood Wireline delivers safe, efficient wireline services that keep operations running. Our reputation is built
-        on executing complex jobs correctly the first time.
-      </p>
-      <p class="text-base md:text-lg text-muted dark:text-slate-400 leading-relaxed">
-        Professional crews. Maintained equipment. Proven processes. We understand what it takes to operate successfully
-        in demanding field conditions.
-      </p>
+    <Fragment slot="bg">
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-white via-gray-50 to-white dark:from-transparent dark:via-transparent dark:to-transparent"
+      >
+      </div>
     </Fragment>
-  </Content>
+  </Brands>
 
-  <!-- Enhanced Content Widget (Service Areas) with Images **************** -->
-
-  <Content
-    tagline="Locations"
-    title="Strategic Basin Coverage"
-    items={[
-      {
-        title: 'Gillette, WY (HQ)',
-        description:
-          'Primary operations base serving the Powder River Basin. Full wireline capabilities, 24/7 dispatch.',
-      },
-      {
-        title: 'Casper, WY',
-        description: 'DJ Basin operations. Complete service suite with rapid mobilization.',
-      },
-      {
-        title: 'Dickinson, ND',
-        description: 'Williston Basin hub. Experienced local crews, full equipment complement.',
-      },
-      {
-        title: 'Williston, ND',
-        description: 'Bakken operations center. Proven track record in challenging well conditions.',
-      },
-    ]}
-    image={{
-      src: '~/assets/images/All Images/Oilfield Operations With Crane And Truck.webp',
-      alt: 'Service Areas',
-    }}
-  >
-    <Fragment slot="content">
-      <h3 class="text-3xl md:text-4xl font-bold tracking-tight dark:text-white mb-4">Regional Expertise</h3>
-      <p class="text-lg md:text-xl text-muted dark:text-slate-300 mb-4 leading-relaxed">
-        Four strategically positioned locations provide comprehensive coverage across Powder River, Williston, Bakken,
-        DJ, and Big Horn basins.
-      </p>
-      <p class="text-base md:text-lg text-muted dark:text-slate-400 leading-relaxed">
-        Local knowledge. Regional reach. Rapid response when it matters most.
-      </p>
-    </Fragment>
-  </Content>
-
-  <!-- Enhanced CallToAction Widget *********** -->
+  <!-- Call to Action ******************* -->
 
   <CallToAction
     actions={[
@@ -448,11 +405,12 @@ const metadata = {
     ]}
   >
     <Fragment slot="title">
-      Need Wireline Services? <br class="block sm:hidden" /><span class="sm:whitespace-nowrap">Let's Talk.</span>
+      Ready to Get Started? <br class="block sm:hidden" /><span class="sm:whitespace-nowrap">Let's Talk.</span>
     </Fragment>
 
     <Fragment slot="subtitle">
-      Contact Wood Wireline for professional wireline services across the Rocky Mountain region.
+      Contact Wood Wireline for professional wireline services across the Powder River, Williston, Bakken, DJ, and Big
+      Horn basins. Available 24/7 at 307-682-0143.
     </Fragment>
   </CallToAction>
 </Layout>
