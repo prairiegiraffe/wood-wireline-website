@@ -129,6 +129,7 @@ interface Social {
 export interface Stat {
   amount?: number | string;
   title?: string;
+  subtitle?: string;
   icon?: string;
 }
 
