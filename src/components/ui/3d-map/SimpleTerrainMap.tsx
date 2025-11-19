@@ -403,12 +403,7 @@ function BasinOverlays() {
       {shapes.map((shapeData) => (
         <mesh key={shapeData.name} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.05, 0]}>
           <shapeGeometry args={[shapeData.shape]} />
-          <meshBasicMaterial
-            color={shapeData.color}
-            transparent
-            opacity={shapeData.opacity}
-            side={THREE.DoubleSide}
-          />
+          <meshBasicMaterial color={shapeData.color} transparent opacity={shapeData.opacity} side={THREE.DoubleSide} />
         </mesh>
       ))}
     </group>
