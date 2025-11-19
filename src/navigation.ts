@@ -40,6 +40,10 @@ export const headerData: HeaderProps = {
       text: 'Contact',
       href: getPermalink('/contact'),
     },
+    {
+      text: 'Apply',
+      href: getPermalink('/apply'),
+    },
   ],
   actions: [{ text: 'Get Quote', href: getPermalink('/contact'), variant: 'primary' }],
 };
@@ -80,6 +84,12 @@ export const footerData = {
     { text: 'Terms', href: getPermalink('/terms') },
     { text: 'Privacy Policy', href: getPermalink('/privacy') },
   ],
-  socialLinks: [],
+  socialLinks: [
+    { ariaLabel: 'Facebook', icon: 'tabler:brand-facebook', href: '#' },
+    { ariaLabel: 'Instagram', icon: 'tabler:brand-instagram', href: '#' },
+    { ariaLabel: 'TikTok', icon: 'tabler:brand-tiktok', href: '#' },
+    { ariaLabel: 'LinkedIn', icon: 'tabler:brand-linkedin', href: '#' },
+    { ariaLabel: 'Linktree', icon: 'tabler:tree', href: '#' },
+  ],
   footNote: `© ${new Date().getFullYear()} Wood Wireline. All rights reserved. Established 1977.`,
 };
