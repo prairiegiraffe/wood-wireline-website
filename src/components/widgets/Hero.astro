@@ -37,7 +37,7 @@ const {
         {
           tagline && (
             <p
-              class="text-base text-white dark:text-blue-200 font-bold tracking-wide uppercase"
+              class="text-base text-white dark:text-blue-200 font-bold tracking-wide uppercase mb-4"
               set:html={tagline}
               aria-label={typeof tagline === 'string' ? tagline : undefined}
             />
@@ -46,14 +46,14 @@ const {
         {
           title && (
             <h1
-              class="text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-4 font-heading text-white dark:text-white"
+              class="text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-6 font-heading text-white dark:text-white"
               set:html={title}
               aria-label={typeof title === 'string' ? title : undefined}
             />
           )
         }
         <div class="max-w-3xl mx-auto">
-          {subtitle && <p class="text-xl text-white mb-6 dark:text-white" set:html={subtitle} />}
+          {subtitle && <p class="text-xl text-white mb-8 dark:text-white" set:html={subtitle} />}
           {
             actions && (
               <div class="max-w-xs sm:max-w-md m-auto flex flex-nowrap flex-col sm:flex-row sm:justify-center gap-4">
