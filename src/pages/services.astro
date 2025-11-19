@@ -629,14 +629,18 @@ const defaultServiceId = services[0]?.id ?? '';
         setActiveLink(targetId);
         if (scroll) {
           console.log('Preparing to scroll to:', targetId);
-          // Wait for the details element to fully expand before scrolling
-          // Use requestAnimationFrame to ensure the browser has painted the expanded content
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              console.log('Scrolling to panel:', targetId);
-              targetPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-          });
+          // Wait longer for the details element to fully expand before scrolling
+          // The details element needs time to render its content
+          setTimeout(() => {
+            console.log('Scrolling to panel:', targetId);
+            // Scroll with offset to account for sticky header
+            const yOffset = -100; // Offset for header
+            const element = targetPanel;
+            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+            window.scrollTo({ top: y, behavior: 'smooth' });
+            console.log('Scroll initiated to position:', y);
+          }, 200);
         }
       } else {
         console.warn('Target panel not found:', targetId);
@@ -686,11 +690,11 @@ const defaultServiceId = services[0]?.id ?? '';
     console.log('Initial hash on load:', initialHash);
     if (initialHash) {
       // Add a delay to ensure DOM is ready and images/content are loaded
-      console.log('Will open panel in 500ms:', initialHash);
+      console.log('Will open panel in 800ms:', initialHash);
       setTimeout(() => {
         console.log('Timeout fired, opening panel:', initialHash);
         openPanel(initialHash, { force: true, scroll: true });
-      }, 500);
+      }, 800);
     } else if (panels[0]) {
       console.log('No hash, opening first panel');
       openPanel(panels[0].id, { force: true });
