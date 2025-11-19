@@ -17,7 +17,7 @@ export const headerData: HeaderProps = {
     },
     {
       text: 'Locations',
-      href: getPermalink('/locations'),
+      href: '/contact#map',
     },
     {
       text: 'Testimonials',
@@ -47,11 +47,11 @@ export const footerData = {
     {
       title: 'Service Areas',
       links: [
-        { text: 'Gillette, WY', href: getPermalink('/locations#gillette') },
-        { text: 'Casper, WY', href: getPermalink('/locations#casper') },
-        { text: 'Dickinson, ND', href: getPermalink('/locations#dickinson') },
-        { text: 'Williston, ND', href: getPermalink('/locations#williston') },
-        { text: 'View All Locations', href: getPermalink('/locations') },
+        { text: 'Gillette, WY', href: '/contact#gillette' },
+        { text: 'Casper, WY', href: '/contact#casper' },
+        { text: 'Dickinson, ND', href: '/contact#dickinson' },
+        { text: 'Williston, ND', href: '/contact#williston' },
+        { text: 'View All Locations', href: '/contact#map' },
       ],
     },
     {
