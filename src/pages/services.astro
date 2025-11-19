@@ -610,7 +610,10 @@ const defaultServiceId = services[0]?.id ?? '';
         const isTarget = panel.id === targetId;
         if (isTarget) {
           targetPanel = panel;
+          // Force the panel open
           panel.open = true;
+          // Trigger a reflow to ensure the open state is applied
+          panel.offsetHeight;
         } else if (force || mediaDesktop.matches) {
           panel.open = false;
         }
@@ -619,10 +622,13 @@ const defaultServiceId = services[0]?.id ?? '';
       if (targetPanel) {
         setActiveLink(targetId);
         if (scroll) {
-          // Small delay to ensure panel is open before scrolling
-          setTimeout(() => {
-            targetPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }, 100);
+          // Wait for the details element to fully expand before scrolling
+          // Use requestAnimationFrame to ensure the browser has painted the expanded content
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              targetPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+          });
         }
       }
     };
@@ -667,10 +673,10 @@ const defaultServiceId = services[0]?.id ?? '';
     // Handle initial hash on page load
     const initialHash = window.location.hash?.replace('#', '');
     if (initialHash) {
-      // Add a small delay to ensure DOM is ready
+      // Add a delay to ensure DOM is ready and images/content are loaded
       setTimeout(() => {
         openPanel(initialHash, { force: true, scroll: true });
-      }, 300);
+      }, 500);
     } else if (panels[0]) {
       openPanel(panels[0].id, { force: true });
     }
