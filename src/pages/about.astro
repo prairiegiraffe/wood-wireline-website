@@ -1,11 +1,9 @@
 ---
 import Hero from '~/components/widgets/Hero.astro';
-import Stats from '~/components/widgets/Stats.astro';
-import Steps2 from '~/components/widgets/Steps2.astro';
 import Content from '~/components/widgets/Content.astro';
-import Features3 from '~/components/widgets/Features3.astro';
 import Layout from '~/layouts/PageLayout.astro';
 import Image from '~/components/common/Image.astro';
+import TablerIcon from '~/components/ui/TablerIcon.astro';
 
 const metadata = {
   title: 'About Us',
@@ -197,45 +195,90 @@ const metadata = {
     </Fragment>
   </Content>
 
-  <!-- Enhanced Values Section ****************** -->
+  <!-- Operating Principles Section ****************** -->
 
-  <Steps2
-    id="values"
-    title="Operating Principles"
-    subtitle="48 years of field experience distilled into five core principles that guide every job."
-    items={[
-      {
-        title: 'Field Experience',
-        description:
-          "Decades of combined wireline experience across multiple basins. Our operators have handled complex wells, challenging formations, and time-critical operations. Experience reduces risk and improves outcomes.",
-        icon: 'tabler:briefcase',
-      },
-      {
-        title: 'Operational Standards',
-        description:
-          "Maintained equipment, organized job sites, and professional execution. Our standards ensure consistent performance regardless of conditions or complexity.",
-        icon: 'tabler:award',
-      },
-      {
-        title: 'Team Stability',
-        description:
-          "Low turnover means experienced hands on your jobs. We invest in our people through competitive benefits and professional development, resulting in a stable, skilled workforce.",
-        icon: 'tabler:users',
-      },
-      {
-        title: 'Responsive Service',
-        description:
-          "24/7 availability and rapid mobilization. Our dispatch team coordinates efficient scheduling to minimize your downtime and keep operations moving.",
-        icon: 'tabler:headset',
-      },
-      {
-        title: 'Safety Protocols',
-        description:
-          "Comprehensive safety programs on every job site. Our safety record reflects our commitment to protecting personnel, equipment, and the environment.",
-        icon: 'tabler:shield-check',
-      },
-    ]}
-  />
+  <section class="py-16 md:py-24 bg-white dark:bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12 md:mb-16">
+        <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
+          Our Foundation
+        </p>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-4">
+          Operating Principles
+        </h2>
+        <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
+          48 years of field experience distilled into five core principles that guide every job.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <!-- Field Experience -->
+        <div class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-primary">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
+              <TablerIcon name="tabler:briefcase" className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold dark:text-white">Field Experience</h3>
+          </div>
+          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+            Decades of combined wireline experience across multiple basins. Our operators have handled complex wells, challenging formations, and time-critical operations. Experience reduces risk and improves outcomes.
+          </p>
+        </div>
+
+        <!-- Operational Standards -->
+        <div class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-secondary">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mr-4">
+              <TablerIcon name="tabler:award" className="w-6 h-6 text-secondary" />
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold dark:text-white">Operational Standards</h3>
+          </div>
+          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+            Maintained equipment, organized job sites, and professional execution. Our standards ensure consistent performance regardless of conditions or complexity.
+          </p>
+        </div>
+
+        <!-- Team Stability -->
+        <div class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-primary">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
+              <TablerIcon name="tabler:users" className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold dark:text-white">Team Stability</h3>
+          </div>
+          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+            Low turnover means experienced hands on your jobs. We invest in our people through competitive benefits and professional development, resulting in a stable, skilled workforce.
+          </p>
+        </div>
+
+        <!-- Responsive Service -->
+        <div class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-secondary">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mr-4">
+              <TablerIcon name="tabler:headset" className="w-6 h-6 text-secondary" />
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold dark:text-white">Responsive Service</h3>
+          </div>
+          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+            24/7 availability and rapid mobilization. Our dispatch team coordinates efficient scheduling to minimize your downtime and keep operations moving.
+          </p>
+        </div>
+
+        <!-- Safety Protocols -->
+        <div class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-primary md:col-span-2 lg:col-span-1">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
+              <TablerIcon name="tabler:shield-check" className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold dark:text-white">Safety Protocols</h3>
+          </div>
+          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+            Comprehensive safety programs on every job site. Our safety record reflects our commitment to protecting personnel, equipment, and the environment.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Enhanced Leadership Team Section with Photos ****************** -->
 
