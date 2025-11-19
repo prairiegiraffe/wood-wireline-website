@@ -613,7 +613,7 @@ const defaultServiceId = services[0]?.id ?? '';
           // Force the panel open
           panel.open = true;
           // Trigger a reflow to ensure the open state is applied
-          panel.offsetHeight;
+          void panel.offsetHeight;
         } else if (force || mediaDesktop.matches) {
           panel.open = false;
         }
