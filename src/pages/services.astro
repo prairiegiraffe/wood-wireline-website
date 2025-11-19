@@ -271,7 +271,7 @@ const defaultServiceId = services[0]?.id ?? '';
     tagline="Our Services"
     actions={[
       { variant: 'primary', text: 'Get Quote', href: '/contact', icon: 'tabler:phone' },
-      { variant: 'secondary', text: 'View Locations', href: '/locations' },
+      { variant: 'secondary', text: 'View Locations', href: '/contact#map' },
     ]}
   >
     <Fragment slot="title">
@@ -574,7 +574,7 @@ const defaultServiceId = services[0]?.id ?? '';
       {
         variant: 'secondary',
         text: 'View Our Locations',
-        href: '/locations',
+        href: '/contact#map',
       },
     ]}
     title="Ready to Get Started?"
@@ -604,7 +604,7 @@ const defaultServiceId = services[0]?.id ?? '';
       });
     };
 
-    const openPanel = (targetId, { force = false } = {}) => {
+    const openPanel = (targetId, { force = false, scroll = false } = {}) => {
       let targetPanel = null;
       panels.forEach((panel) => {
         const isTarget = panel.id === targetId;
@@ -618,6 +618,12 @@ const defaultServiceId = services[0]?.id ?? '';
 
       if (targetPanel) {
         setActiveLink(targetId);
+        if (scroll) {
+          // Small delay to ensure panel is open before scrolling
+          setTimeout(() => {
+            targetPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 100);
+        }
       }
     };
 
@@ -650,7 +656,7 @@ const defaultServiceId = services[0]?.id ?? '';
 
     const initialHash = window.location.hash?.replace('#', '');
     if (initialHash) {
-      openPanel(initialHash, { force: true });
+      openPanel(initialHash, { force: true, scroll: true });
     } else if (panels[0]) {
       openPanel(panels[0].id, { force: true });
     }
