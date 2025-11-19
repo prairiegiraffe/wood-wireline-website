@@ -354,11 +354,13 @@ const basins = [
   },
 ] as const;
 
-// Basin overlays component using polygon shapes
-function BasinOverlays() {
-  const [shapes, setShapes] = useState<Array<{ name: string; shape: THREE.Shape; color: string; opacity: number }>>([]);
+// Individual basin overlay mesh component
+function BasinMesh({ basin }: { basin: (typeof basins)[number] }) {
+  const meshRef = useRef<THREE.Mesh>(null);
 
   useEffect(() => {
+    if (!meshRef.current) return;
+
     // Lat/Lon bounds for North America view
     const minLat = 22;
     const maxLat = 61.5;
@@ -369,42 +371,46 @@ function BasinOverlays() {
     const latLonToTerrain = (lon: number, lat: number) => {
       const x = ((lon - minLon) / (maxLon - minLon)) * TERRAIN_WIDTH - TERRAIN_WIDTH / 2;
       const z = ((lat - minLat) / (maxLat - minLat)) * TERRAIN_HEIGHT - TERRAIN_HEIGHT / 2;
-      return { x, z: -z }; // Flip Z because latitude increases north but Z increases south
+      return { x, z: -z };
     };
 
-    const newShapes = basins.map((basin) => {
-      // Convert polygon lat/lon points to terrain coordinates
-      const terrainPoints = basin.polygon.map(([lon, lat]) => latLonToTerrain(lon, lat));
+    // Convert polygon lat/lon points to terrain coordinates
+    const terrainPoints = basin.polygon.map(([lon, lat]) => latLonToTerrain(lon, lat));
 
-      // Create a shape from the polygon points (project to 2D for Shape)
-      const shape = new THREE.Shape();
-      terrainPoints.forEach((point, i) => {
-        if (i === 0) {
-          shape.moveTo(point.x, point.z);
-        } else {
-          shape.lineTo(point.x, point.z);
-        }
-      });
-      shape.closePath();
-
-      return {
-        name: basin.name,
-        shape,
-        color: basin.color,
-        opacity: basin.opacity,
-      };
+    // Create a shape from the polygon points
+    const shape = new THREE.Shape();
+    terrainPoints.forEach((point, i) => {
+      if (i === 0) {
+        shape.moveTo(point.x, point.z);
+      } else {
+        shape.lineTo(point.x, point.z);
+      }
     });
+    shape.closePath();
 
-    setShapes(newShapes);
-  }, []);
+    // Create geometry and apply to mesh
+    const geometry = new THREE.ShapeGeometry(shape);
+    meshRef.current.geometry = geometry;
+
+    return () => {
+      geometry.dispose();
+    };
+  }, [basin]);
 
   return (
+    <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.05, 0]}>
+      <shapeGeometry />
+      <meshBasicMaterial color={basin.color} transparent opacity={basin.opacity} side={THREE.DoubleSide} />
+    </mesh>
+  );
+}
+
+// Basin overlays component
+function BasinOverlays() {
+  return (
     <group>
-      {shapes.map((shapeData) => (
-        <mesh key={shapeData.name} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.05, 0]}>
-          <shapeGeometry args={[shapeData.shape]} />
-          <meshBasicMaterial color={shapeData.color} transparent opacity={shapeData.opacity} side={THREE.DoubleSide} />
-        </mesh>
+      {basins.map((basin) => (
+        <BasinMesh key={basin.name} basin={basin} />
       ))}
     </group>
   );
