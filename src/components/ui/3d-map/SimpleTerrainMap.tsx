@@ -43,7 +43,7 @@ const towns: readonly Town[] = [
     z: -2.9,
     address: '3106 East 2nd Street<br/>Gillette, WY',
     phone: '307-682-0143',
-    email: 'alicia@kutthru.com',
+    email: null,
     services: ['Cased Hole Wireline', 'Open Hole Wireline', 'Pipe Recovery', 'Gyroscopic Survey', 'TCP', 'CCL'],
     description: 'Primary operations base serving the Powder River Basin',
   },
