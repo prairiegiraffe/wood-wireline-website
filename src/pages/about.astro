@@ -280,120 +280,161 @@ const metadata = {
     </div>
   </section>
 
-  <!-- Enhanced Leadership Team Section with Photos ****************** -->
+  <!-- Leadership & History Combined Section ****************** -->
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-24 bg-gray-50 dark:bg-gray-800">
-    <div class="text-center mb-16">
-      <p class="text-base font-semibold text-secondary uppercase tracking-wide mb-2">
-        Leadership
-      </p>
-      <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-6">
-        Executive Team
-      </h2>
-      <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
-        Decades of combined wireline operations and business management experience.
-      </p>
+  <section class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <!-- Leadership Team -->
+      <div class="mb-20 md:mb-28">
+        <div class="text-center mb-12 md:mb-16">
+          <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
+            Leadership
+          </p>
+          <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-4">
+            Executive Team
+          </h2>
+          <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
+            Decades of combined wireline operations and business management experience.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border-t-4 border-primary">
+            <div class="relative h-72 overflow-hidden">
+              <Image
+                src="~/assets/images/team/Dusty.jpg"
+                alt="Dusty - Operations Leadership"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                widths={[400, 600]}
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-2xl font-bold dark:text-white mb-1">Dusty</h3>
+              <p class="text-primary font-semibold mb-3">Operations Leadership</p>
+              <p class="text-base text-muted dark:text-slate-400">
+                Field operations and technical oversight across all service locations.
+              </p>
+            </div>
+          </div>
+          <div class="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border-t-4 border-secondary">
+            <div class="relative h-72 overflow-hidden">
+              <Image
+                src="~/assets/images/team/Justin.jpg"
+                alt="Justin - Business Development"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                widths={[400, 600]}
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-2xl font-bold dark:text-white mb-1">Justin</h3>
+              <p class="text-secondary font-semibold mb-3">Business Development</p>
+              <p class="text-base text-muted dark:text-slate-400">
+                Client relations and strategic growth across service territories.
+              </p>
+            </div>
+          </div>
+          <div class="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all border-t-4 border-primary">
+            <div class="relative h-72 overflow-hidden">
+              <Image
+                src="~/assets/images/team/Tiffany.jpg"
+                alt="Tiffany - Safety & Compliance"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                widths={[400, 600]}
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-2xl font-bold dark:text-white mb-1">Tiffany</h3>
+              <p class="text-primary font-semibold mb-3">Safety & Compliance</p>
+              <p class="text-base text-muted dark:text-slate-400">
+                Safety programs, regulatory compliance, and quality assurance.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Company History Timeline -->
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <!-- Content Column -->
+        <div>
+          <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
+            Our History
+          </p>
+          <h2 class="text-4xl md:text-5xl font-bold tracking-tight dark:text-white mb-6">
+            48 Years of Wireline Services
+          </h2>
+          <p class="text-lg md:text-xl text-muted dark:text-slate-300 mb-8 leading-relaxed">
+            Nearly five decades of continuous operations in the Rocky Mountain region. Wood Wireline's longevity reflects our commitment to safe, efficient service delivery.
+          </p>
+          <p class="text-base text-muted dark:text-slate-400 mb-8 leading-relaxed">
+            Our reputation is built on performance: experienced crews, maintained equipment, and professional execution on every job site.
+          </p>
+
+          <!-- Timeline -->
+          <div class="space-y-6">
+            <div class="flex">
+              <div class="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                <span class="text-primary font-bold">1977</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold dark:text-white mb-1">Founded in Gillette</h3>
+                <p class="text-base text-muted dark:text-slate-400">
+                  Wood Wireline established operations in Gillette, WY, serving Powder River Basin operators with professional wireline services.
+                </p>
+              </div>
+            </div>
+            <div class="flex">
+              <div class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mr-4">
+                <TablerIcon name="tabler:map-pin" className="w-6 h-6 text-secondary" />
+              </div>
+              <div>
+                <h3 class="text-lg font-bold dark:text-white mb-1">Regional Expansion</h3>
+                <p class="text-base text-muted dark:text-slate-400">
+                  Strategic expansion into Williston, Bakken, DJ, and Big Horn basins. Four locations providing comprehensive regional coverage.
+                </p>
+              </div>
+            </div>
+            <div class="flex">
+              <div class="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                <TablerIcon name="tabler:tool" className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <h3 class="text-lg font-bold dark:text-white mb-1">Service Capabilities</h3>
+                <p class="text-base text-muted dark:text-slate-400">
+                  Continuous investment in equipment and technology. Recent addition of Slick E-line combines traditional capabilities with modern efficiency.
+                </p>
+              </div>
+            </div>
+            <div class="flex">
+              <div class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mr-4">
+                <TablerIcon name="tabler:handshake" className="w-6 h-6 text-secondary" />
+              </div>
+              <div>
+                <h3 class="text-lg font-bold dark:text-white mb-1">Industry Partnerships</h3>
+                <p class="text-base text-muted dark:text-slate-400">
+                  Long-term relationships with major and independent operators built on consistent performance and professional service delivery.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Image Column -->
+        <div class="relative">
+          <Image
+            src="~/assets/images/All Images/Oilfield Operations With Crane And Truck.webp"
+            alt="Wood Wireline Operations History"
+            class="w-full h-[600px] object-cover rounded-xl shadow-2xl"
+            widths={[600, 900]}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+          <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-primary/20 rounded-lg -z-10"></div>
+          <div class="absolute -top-6 -right-6 w-24 h-24 bg-secondary/20 rounded-lg -z-10"></div>
+        </div>
+      </div>
     </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-      <div class="group bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all">
-        <div class="relative h-80 overflow-hidden">
-          <Image
-            src="~/assets/images/team/Dusty.jpg"
-            alt="Leadership Team Member"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            widths={[400, 600]}
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
-        </div>
-        <div class="p-6">
-          <h3 class="text-2xl font-bold dark:text-white mb-2">Dusty</h3>
-          <p class="text-primary font-semibold mb-3">Operations Leadership</p>
-          <p class="text-base text-muted dark:text-slate-400">
-            Field operations and technical oversight across all service locations.
-          </p>
-        </div>
-      </div>
-      <div class="group bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all">
-        <div class="relative h-80 overflow-hidden">
-          <Image
-            src="~/assets/images/team/Justin.jpg"
-            alt="Leadership Team Member"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            widths={[400, 600]}
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
-        </div>
-        <div class="p-6">
-          <h3 class="text-2xl font-bold dark:text-white mb-2">Justin</h3>
-          <p class="text-primary font-semibold mb-3">Business Development</p>
-          <p class="text-base text-muted dark:text-slate-400">
-            Client relations and strategic growth across service territories.
-          </p>
-        </div>
-      </div>
-      <div class="group bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all">
-        <div class="relative h-80 overflow-hidden">
-          <Image
-            src="~/assets/images/team/Tiffany.jpg"
-            alt="Leadership Team Member"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            widths={[400, 600]}
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
-        </div>
-        <div class="p-6">
-          <h3 class="text-2xl font-bold dark:text-white mb-2">Tiffany</h3>
-          <p class="text-primary font-semibold mb-3">Safety & Compliance</p>
-          <p class="text-base text-muted dark:text-slate-400">
-            Safety programs, regulatory compliance, and quality assurance.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Enhanced Company History Section ****************** -->
-
-  <Content
-    isAfterContent
-    tagline="Our History"
-    title="48 Years of Wireline Services"
-    items={[
-      {
-        title: 'Founded 1977',
-        description:
-          'Wood Wireline established operations in Gillette, WY, serving Powder River Basin operators with professional wireline services.',
-      },
-      {
-        title: 'Regional Expansion',
-        description:
-          "Strategic expansion into Williston, Bakken, DJ, and Big Horn basins. Four locations providing comprehensive regional coverage.",
-      },
-      {
-        title: 'Service Capabilities',
-        description:
-          "Continuous investment in equipment and technology. Recent addition of Slick E-line combines traditional capabilities with modern efficiency.",
-      },
-      {
-        title: 'Industry Partnerships',
-        description:
-          'Long-term relationships with major and independent operators built on consistent performance and professional service delivery.',
-      },
-    ]}
-    image={{
-      src: '~/assets/images/All Images/Oilfield Operations With Crane And Truck.webp',
-      alt: 'Company History',
-    }}
-  >
-    <Fragment slot="content">
-      <h3 class="text-3xl md:text-4xl font-bold tracking-tight dark:text-white mb-6">Proven Track Record</h3>
-      <p class="text-lg md:text-xl text-muted dark:text-slate-300 mb-4 leading-relaxed">
-        Nearly five decades of continuous operations in the Rocky Mountain region. Wood Wireline's longevity reflects our commitment to safe, efficient service delivery.
-      </p>
-      <p class="text-base md:text-lg text-muted dark:text-slate-400 leading-relaxed">
-        Our reputation is built on performance: experienced crews, maintained equipment, and professional execution on every job site.
-      </p>
-    </Fragment>
-  </Content>
+  </section>
 </Layout>
