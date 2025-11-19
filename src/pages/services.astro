@@ -654,9 +654,23 @@ const defaultServiceId = services[0]?.id ?? '';
       });
     });
 
+    const handleHashChange = () => {
+      const hash = window.location.hash?.replace('#', '');
+      if (hash) {
+        openPanel(hash, { force: true, scroll: true });
+      }
+    };
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashChange);
+
+    // Handle initial hash on page load
     const initialHash = window.location.hash?.replace('#', '');
     if (initialHash) {
-      openPanel(initialHash, { force: true, scroll: true });
+      // Add a small delay to ensure DOM is ready
+      setTimeout(() => {
+        openPanel(initialHash, { force: true, scroll: true });
+      }, 300);
     } else if (panels[0]) {
       openPanel(panels[0].id, { force: true });
     }

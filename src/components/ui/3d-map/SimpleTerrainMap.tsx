@@ -51,7 +51,7 @@ const towns: readonly Town[] = [
     id: 'casper',
     name: 'Casper, WY',
     badge: null,
-    x: -7.0,
+    x: -8.0,
     z: -1.5,
     address: '2384 Mine Rd<br/>Casper, WY 82604',
     phone: '307-262-3055',
