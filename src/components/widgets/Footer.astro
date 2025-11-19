@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components';
 import { getHomePermalink } from '~/utils/permalinks';
 import logoImage from '~/assets/images/logos/Wood Wireline Logo White.svg';
 import { Image } from 'astro:assets';
@@ -95,19 +96,38 @@ const { secondaryLinks = [], links = [], footNote = '', theme = 'light' } = Astr
         <div class="text-sm text-muted dark:text-gray-400">
           <Fragment set:html={footNote} />
         </div>
-        {
-          secondaryLinks?.length ? (
-            <div class="flex gap-4 text-sm">
-              {secondaryLinks.map(({ text, href }) => (
-                <a
-                  class="text-muted hover:text-primary dark:text-gray-400 dark:hover:text-primary hover:underline transition duration-150 ease-in-out"
-                  href={href}
-                  set:html={text}
-                />
-              ))}
-            </div>
-          ) : null
-        }
+        <div class="flex flex-col sm:flex-row items-center gap-4">
+          {
+            socialLinks?.length ? (
+              <div class="flex gap-2">
+                {socialLinks.map(({ ariaLabel, href, icon }) => (
+                  <a
+                    class="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
+                    aria-label={ariaLabel}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Icon name={icon} class="w-5 h-5" />
+                  </a>
+                ))}
+              </div>
+            ) : null
+          }
+          {
+            secondaryLinks?.length ? (
+              <div class="flex gap-4 text-sm">
+                {secondaryLinks.map(({ text, href }) => (
+                  <a
+                    class="text-muted hover:text-primary dark:text-gray-400 dark:hover:text-primary hover:underline transition duration-150 ease-in-out"
+                    href={href}
+                    set:html={text}
+                  />
+                ))}
+              </div>
+            ) : null
+          }
+        </div>
       </div>
     </div>
   </div>

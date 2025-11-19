@@ -1,0 +1,164 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Image from '~/components/common/Image.astro';
+
+const metadata = {
+  title: 'Terms of Service - Wood Wireline',
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero Section -->
+  <Hero tagline="Legal">
+    <Fragment slot="title">
+      <span class="text-gray-900 dark:text-white">TERMS OF SERVICE</span>
+    </Fragment>
+
+    <Fragment slot="bg">
+      <Image
+        src="~/assets/images/All Images/Wood Wireline Truck-BdikWvmwck.webp"
+        alt="Terms of Service"
+        class="absolute inset-0 w-full h-full object-cover opacity-30 dark:opacity-20"
+        widths={[1920, 2560]}
+        sizes="100vw"
+        style="min-width: 100%; width: 100%; height: 100%; object-fit: cover;"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/50"></div>
+    </Fragment>
+  </Hero>
+
+  <!-- Terms Content -->
+  <section class="py-16 md:py-24 bg-white dark:bg-gray-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <div class="prose prose-lg dark:prose-invert max-w-none">
+        <p class="text-sm text-muted dark:text-slate-400 mb-8">
+          <strong>Last Updated:</strong>
+          {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </p>
+
+        <p class="lead text-xl text-muted dark:text-slate-300 mb-8">
+          Please read these Terms of Service carefully before using Wood Wireline services or accessing our website.
+        </p>
+
+        <h2>1. Acceptance of Terms</h2>
+        <p>
+          By accessing or using Wood Wireline's website and services, you agree to be bound by these Terms of Service
+          and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from
+          using or accessing this site and our services.
+        </p>
+
+        <h2>2. Service Description</h2>
+        <p>
+          Wood Wireline provides wireline services to the oil and gas industry, including but not limited to E-Line,
+          Slickline, Swabbing, Perforating, Hydrotesting, and related oilfield services. Service availability, pricing,
+          and specifications are subject to change without notice.
+        </p>
+
+        <h2>3. Service Agreements</h2>
+        <p>
+          All wireline services provided by Wood Wireline are subject to individual service agreements. These agreements
+          outline specific terms including:
+        </p>
+        <ul>
+          <li>Scope of work and service specifications</li>
+          <li>Pricing and payment terms</li>
+          <li>Safety requirements and protocols</li>
+          <li>Insurance and liability provisions</li>
+          <li>Termination conditions</li>
+        </ul>
+
+        <h2>4. Safety and Compliance</h2>
+        <p>All parties utilizing Wood Wireline services must:</p>
+        <ul>
+          <li>Comply with all applicable federal, state, and local regulations</li>
+          <li>Adhere to industry safety standards and best practices</li>
+          <li>Provide accurate information regarding well conditions and site hazards</li>
+          <li>Maintain appropriate insurance coverage</li>
+          <li>Follow Wood Wireline's safety protocols and procedures</li>
+        </ul>
+
+        <h2>5. Intellectual Property</h2>
+        <p>
+          The content on this website, including text, graphics, logos, images, and software, is the property of Wood
+          Wireline and is protected by copyright and other intellectual property laws. You may not reproduce,
+          distribute, or create derivative works without express written permission.
+        </p>
+
+        <h2>6. Limitation of Liability</h2>
+        <p>
+          Wood Wireline shall not be liable for any indirect, incidental, special, consequential, or punitive damages
+          resulting from your use of our services or website. Our liability for direct damages shall be limited to the
+          amount paid for the specific services in question.
+        </p>
+
+        <h2>7. Indemnification</h2>
+        <p>
+          You agree to indemnify and hold harmless Wood Wireline, its officers, directors, employees, and agents from
+          any claims, damages, losses, liabilities, and expenses (including attorneys' fees) arising from your use of
+          our services or violation of these terms.
+        </p>
+
+        <h2>8. Force Majeure</h2>
+        <p>
+          Wood Wireline shall not be liable for any failure or delay in performance due to circumstances beyond our
+          reasonable control, including but not limited to acts of God, weather conditions, equipment failure, strikes,
+          or government restrictions.
+        </p>
+
+        <h2>9. Payment Terms</h2>
+        <p>
+          Payment for services is due according to the terms specified in individual service agreements. Late payments
+          may be subject to interest charges and may result in suspension of services.
+        </p>
+
+        <h2>10. Termination</h2>
+        <p>
+          Either party may terminate service agreements according to the terms specified in the individual agreement.
+          Wood Wireline reserves the right to refuse service or terminate agreements for safety violations, non-payment,
+          or breach of terms.
+        </p>
+
+        <h2>11. Modifications to Terms</h2>
+        <p>
+          Wood Wireline reserves the right to modify these Terms of Service at any time. Changes will be effective
+          immediately upon posting to the website. Your continued use of our services constitutes acceptance of any
+          modifications.
+        </p>
+
+        <h2>12. Governing Law</h2>
+        <p>
+          These Terms of Service shall be governed by and construed in accordance with the laws of the State of Wyoming,
+          without regard to its conflict of law provisions. Any disputes shall be resolved in the courts of Campbell
+          County, Wyoming.
+        </p>
+
+        <h2>13. Severability</h2>
+        <p>
+          If any provision of these Terms of Service is found to be unenforceable or invalid, that provision shall be
+          limited or eliminated to the minimum extent necessary so that the remaining terms remain in full force and
+          effect.
+        </p>
+
+        <h2>14. Contact Information</h2>
+        <p>For questions regarding these Terms of Service, please contact us at:</p>
+        <p>
+          <strong>Wood Wireline</strong><br />
+          3106 East 2nd Street<br />
+          Gillette, WY 82716<br />
+          Phone: <a href="tel:307-682-0143" class="text-primary hover:underline">307-682-0143</a>
+        </p>
+
+        <div
+          class="mt-12 p-6 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg"
+        >
+          <p class="text-sm text-muted dark:text-slate-300 mb-0">
+            <strong>Disclaimer:</strong> This is a general template for Terms of Service. It should be reviewed and customized
+            by a qualified attorney to ensure it meets all legal requirements and adequately protects your business interests.
+            This template does not constitute legal advice.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
