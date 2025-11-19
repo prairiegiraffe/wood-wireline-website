@@ -799,7 +799,7 @@ export default function SimpleTerrainMap() {
           .terrain-map-container {
             max-width: 100vw;
             height: auto;
-            min-height: 100vh;
+            min-height: auto;
             display: flex;
             flex-direction: column;
             border-radius: 0;
@@ -815,16 +815,17 @@ export default function SimpleTerrainMap() {
             border-top: 3px solid #C0C0C0;
             border-radius: 0;
             order: 2;
+            margin-top: 0;
           }
 
           .terrain-canvas-wrapper {
             order: 1;
-            height: 60vh;
-            min-height: 400px;
+            height: 350px;
+            min-height: 350px;
           }
 
           .terrain-canvas-wrapper canvas {
-            border-radius: 16px 16px 0 0 !important;
+            border-radius: 0 !important;
           }
         }
       `}</style>

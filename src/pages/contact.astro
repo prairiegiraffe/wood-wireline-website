@@ -84,7 +84,7 @@ const metadata = {
     <!-- Map Header (Desktop & Mobile) -->
     <div class="py-12 md:py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="text-center mb-8">
+        <div class="text-center mb-8 md:mb-8 mb-4">
           <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
             Interactive Map
           </p>
@@ -96,8 +96,8 @@ const metadata = {
           </p>
         </div>
 
-        <!-- Map Container - Larger on mobile, regular on desktop -->
-        <div class="h-[300px] md:h-[600px] lg:h-[700px]">
+        <!-- Map Container - Taller on mobile to accommodate the full experience -->
+        <div class="h-auto md:h-[600px] lg:h-[700px]">
           <SimpleTerrainMap client:load />
         </div>
       </div>
