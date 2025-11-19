@@ -34,34 +34,32 @@ export const headerData: HeaderProps = {
 export const footerData = {
   links: [
     {
-      title: 'Services',
-      links: [
-        { text: 'E-Line Logging', href: getPermalink('/services#e-line') },
-        { text: 'Slickline', href: getPermalink('/services#slickline') },
-        { text: 'Swabbing', href: getPermalink('/services#swabbing') },
-        { text: 'Perforating', href: getPermalink('/services#perforating') },
-        { text: 'Plug & Abandonment', href: getPermalink('/services#p-a') },
-        { text: 'Hydrotesting', href: getPermalink('/services#hydrotesting') },
-      ],
-    },
-    {
-      title: 'Service Areas',
-      links: [
-        { text: 'Gillette, WY', href: '/contact#gillette' },
-        { text: 'Casper, WY', href: '/contact#casper' },
-        { text: 'Dickinson, ND', href: '/contact#dickinson' },
-        { text: 'Williston, ND', href: '/contact#williston' },
-        { text: 'View All Locations', href: '/contact#map' },
-      ],
-    },
-    {
       title: 'Company',
       links: [
         { text: 'About Us', href: getPermalink('/about') },
-        { text: 'Our Mission', href: getPermalink('/about#mission') },
-        { text: 'Our Values', href: getPermalink('/about#values') },
+        { text: 'Services', href: getPermalink('/services') },
         { text: 'Testimonials', href: getPermalink('/testimonials') },
         { text: 'Contact', href: getPermalink('/contact') },
+      ],
+    },
+    {
+      title: 'Services',
+      links: [
+        { text: 'E-Line', href: '/services#e-line' },
+        { text: 'Slickline', href: '/services#slickline' },
+        { text: 'Slick E-Line', href: '/services#slick-eline' },
+        { text: 'TCP', href: '/services#tcp' },
+        { text: 'View All Services', href: getPermalink('/services') },
+      ],
+    },
+    {
+      title: 'Locations',
+      links: [
+        { text: 'Gillette, WY (HQ)', href: '/contact#gillette' },
+        { text: 'Casper, WY', href: '/contact#casper' },
+        { text: 'Dickinson, ND', href: '/contact#dickinson' },
+        { text: 'Williston, ND', href: '/contact#williston' },
+        { text: 'Interactive Map', href: '/contact#map' },
       ],
     },
   ],
@@ -70,8 +68,5 @@ export const footerData = {
     { text: 'Privacy Policy', href: getPermalink('/privacy') },
   ],
   socialLinks: [],
-  footNote: `
-    © ${new Date().getFullYear()} Wood Wireline · Established 1977 · All rights reserved.<br>
-    3106 East 2nd Street, Gillette, WY · <a href="tel:307-682-0143" class="text-blue-600 underline dark:text-muted">307-682-0143</a>
-  `,
+  footNote: `© ${new Date().getFullYear()} Wood Wireline. All rights reserved. Established 1977.`,
 };

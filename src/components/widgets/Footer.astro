@@ -3,6 +3,7 @@ import { Icon } from 'astro-icon/components';
 import { getHomePermalink } from '~/utils/permalinks';
 import logoImage from '~/assets/images/logos/Wood Wireline Logo White.svg';
 import { Image } from 'astro:assets';
+import TablerIcon from '~/components/ui/TablerIcon.astro';
 
 interface Link {
   text?: string;
@@ -29,78 +30,85 @@ const { socialLinks = [], secondaryLinks = [], links = [], footNote = '', theme 
 
 <footer class:list={[{ dark: theme === 'dark' }, 'relative border-t border-gray-200 dark:border-slate-800 not-prose']}>
   <div class="dark:bg-dark absolute inset-0 pointer-events-none" aria-hidden="true"></div>
-  <div
-    class="relative max-w-7xl mx-auto px-4 sm:px-6 dark:text-slate-300 intersect-once intersect-quarter intersect-no-queue motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade"
-  >
-    <div class="grid grid-cols-12 gap-4 gap-y-8 sm:gap-8 py-8 md:py-12">
-      <div class="col-span-12 lg:col-span-4">
-        <div class="mb-2">
-          <a class="inline-block" href={getHomePermalink()}>
-            <Image src={logoImage} alt="Wood Wireline" class="h-8 w-auto" width={160} height={32} />
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 dark:text-slate-300">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12 mb-8">
+      <!-- Company Info Section -->
+      <div class="lg:col-span-4">
+        <div class="bg-gray-900 dark:bg-transparent px-5 py-2 rounded-lg inline-block mb-4">
+          <a href={getHomePermalink()}>
+            <Image src={logoImage} alt="Wood Wireline" class="h-10 w-auto" width={200} height={40} />
           </a>
         </div>
-        <div class="text-sm text-muted flex gap-1">
+        <p class="text-sm text-muted dark:text-gray-400 mb-4 max-w-sm">
+          Professional wireline services across five major basins since 1977. Efficient. Reliable. Ready.
+        </p>
+        <div class="space-y-2 text-sm">
+          <div class="flex items-start gap-2">
+            <TablerIcon name="tabler:map-pin" className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+            <div>
+              <div class="font-semibold text-gray-900 dark:text-white">Headquarters</div>
+              <div class="text-muted dark:text-gray-400">3106 East 2nd Street<br />Gillette, WY 82716</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <TablerIcon name="tabler:phone" className="w-5 h-5 text-primary flex-shrink-0" />
+            <a href="tel:307-682-0143" class="text-primary hover:underline font-semibold">307-682-0143</a>
+          </div>
+          <div class="flex items-center gap-2">
+            <TablerIcon name="tabler:clock" className="w-5 h-5 text-primary flex-shrink-0" />
+            <span class="text-muted dark:text-gray-400">24/7 Emergency Service</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Links Sections -->
+      <div class="lg:col-span-8">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-8">
           {
-            secondaryLinks.map(({ text, href }, index) => (
-              <>
-                {index !== 0 ? ' · ' : ''}
-                <a
-                  class="text-muted hover:text-gray-700 dark:text-gray-400 hover:underline transition duration-150 ease-in-out"
-                  href={href}
-                  set:html={text}
-                />
-              </>
+            links.map(({ title, links }) => (
+              <div>
+                <h3 class="font-bold text-gray-900 dark:text-white mb-4">{title}</h3>
+                {links && Array.isArray(links) && links.length > 0 && (
+                  <ul class="space-y-2 text-sm">
+                    {links.map(({ text, href, ariaLabel }) => (
+                      <li>
+                        <a
+                          class="text-muted hover:text-primary dark:text-gray-400 dark:hover:text-primary transition duration-150 ease-in-out"
+                          href={href}
+                          aria-label={ariaLabel}
+                        >
+                          <Fragment set:html={text} />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             ))
           }
         </div>
       </div>
-      {
-        links.map(({ title, links }) => (
-          <div class="col-span-6 md:col-span-3 lg:col-span-2">
-            <div class="dark:text-gray-300 font-medium mb-2">{title}</div>
-            {links && Array.isArray(links) && links.length > 0 && (
-              <ul class="text-sm">
-                {links.map(({ text, href, ariaLabel }) => (
-                  <li class="mb-2">
-                    <a
-                      class="text-muted hover:text-gray-700 hover:underline dark:text-gray-400 transition duration-150 ease-in-out"
-                      href={href}
-                      aria-label={ariaLabel}
-                    >
-                      <Fragment set:html={text} />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        ))
-      }
     </div>
-    <div class="md:flex md:items-center md:justify-between py-6 md:py-8">
-      {
-        socialLinks?.length ? (
-          <ul class="flex mb-4 md:order-1 -ml-2 md:ml-4 md:mb-0 rtl:ml-0 rtl:-mr-2 rtl:md:ml-0 rtl:md:mr-4">
-            {socialLinks.map(({ ariaLabel, href, text, icon }) => (
-              <li>
-                <a
-                  class="text-muted dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 inline-flex items-center"
-                  aria-label={ariaLabel}
-                  href={href}
-                >
-                  {icon && <Icon name={icon} class="w-5 h-5" />}
-                  <Fragment set:html={text} />
-                </a>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          ''
-        )
-      }
 
-      <div class="text-sm mr-4 dark:text-muted">
-        <Fragment set:html={footNote} />
+    <!-- Bottom Bar -->
+    <div class="border-t border-gray-200 dark:border-gray-700 pt-8">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="text-sm text-muted dark:text-gray-400">
+          <Fragment set:html={footNote} />
+        </div>
+        {
+          secondaryLinks?.length ? (
+            <div class="flex gap-4 text-sm">
+              {secondaryLinks.map(({ text, href }) => (
+                <a
+                  class="text-muted hover:text-primary dark:text-gray-400 dark:hover:text-primary hover:underline transition duration-150 ease-in-out"
+                  href={href}
+                  set:html={text}
+                />
+              ))}
+            </div>
+          ) : null
+        }
       </div>
     </div>
   </div>
