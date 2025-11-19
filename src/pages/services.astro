@@ -379,11 +379,11 @@ const services = [
     </div>
   </section>
 
-  <!-- Detailed Services with Tabs ******************* -->
+  <!-- Services with Sidebar Navigation ******************* -->
 
-  <section class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
+  <section class="py-8 md:py-12 bg-gray-50 dark:bg-gray-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
-      <div class="text-center mb-12">
+      <div class="text-center mb-8 md:mb-12">
         <p class="text-base font-semibold text-secondary dark:text-blue-200 uppercase tracking-wide mb-2">
           Service Details
         </p>
@@ -391,50 +391,62 @@ const services = [
           Explore Our Services
         </h2>
         <p class="text-xl text-muted dark:text-slate-300 max-w-3xl mx-auto">
-          Click any service below to view detailed capabilities and applications.
+          Select a service from the navigation to view detailed capabilities and applications.
         </p>
       </div>
 
-      <!-- Services Grid with Cards -->
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {services.map((service) => (
-          <a
-            href={`#${service.id}`}
-            class="group bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all border-t-4 border-primary hover:border-secondary"
-          >
-            <div class="flex items-start mb-4">
-              <div class="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-secondary/10 transition-colors">
-                <TablerIcon name={service.icon} className="w-7 h-7 text-primary group-hover:text-secondary transition-colors" />
-              </div>
-              <div>
-                <h3 class="text-xl font-bold dark:text-white mb-1 group-hover:text-primary transition-colors">{service.title}</h3>
-                <p class="text-sm text-secondary dark:text-blue-200 font-semibold">{service.category}</p>
-              </div>
+      <div class="flex gap-8">
+        <!-- Sticky Sidebar Navigation -->
+        <aside class="hidden lg:block w-72 flex-shrink-0">
+          <div class="sticky top-24 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+              <h3 class="text-lg font-bold dark:text-white flex items-center">
+                <TablerIcon name="tabler:list" className="w-5 h-5 text-primary mr-2" />
+                Services Menu
+              </h3>
             </div>
-            <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
-              {service.shortDesc}
-            </p>
-            <div class="mt-4 flex items-center text-primary font-semibold text-sm group-hover:text-secondary transition-colors">
-              <span>View Details</span>
-              <TablerIcon name="tabler:arrow-right" className="w-4 h-4 ml-2" />
+            <nav class="p-4">
+              <ul class="space-y-1">
+                {services.map((service, index) => (
+                  <li>
+                    <a
+                      href={`#${service.id}`}
+                      class="group flex items-center gap-3 rounded-lg p-3 text-sm font-semibold transition-all hover:bg-primary/10 dark:hover:bg-primary/20"
+                      data-service-link={service.id}
+                    >
+                      <div class="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 dark:group-hover:bg-primary/30 transition-colors">
+                        <TablerIcon name={service.icon} className="w-5 h-5 text-primary" />
+                      </div>
+                      <span class="text-gray-700 dark:text-gray-300 group-hover:text-primary dark:group-hover:text-primary transition-colors truncate">
+                        {service.title}
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            <div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+              <a
+                href="/contact"
+                class="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors text-sm"
+              >
+                <TablerIcon name="tabler:phone" className="w-4 h-4" />
+                Request Quote
+              </a>
             </div>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
+          </div>
+        </aside>
 
-  <!-- Individual Service Detail Sections ******************* -->
+        <!-- Main Content Area -->
+        <div class="flex-1 min-w-0">
+          <!-- Individual Service Detail Sections ******************* -->
 
   {services.map((service, index) => (
-    <section
+    <div
       id={service.id}
-      class:list={[
-        'py-16 md:py-24 scroll-mt-20',
-        index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50 dark:bg-gray-900'
-      ]}
+      class="scroll-mt-20 mb-16 last:mb-0"
     >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 border border-gray-200 dark:border-gray-700">
         <div class="grid md:grid-cols-2 gap-12 items-start">
           <!-- Content Column -->
           <div>
@@ -536,8 +548,12 @@ const services = [
           </div>
         </div>
       </div>
-    </section>
+    </div>
   ))}
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Call to Action ******************* -->
 
