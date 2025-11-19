@@ -663,3 +663,11 @@ const defaultServiceId = services[0]?.id ?? '';
     initServiceNavigation();
   }
 </script>
+
+<style>
+  @media (min-width: 1024px) {
+    [data-service-panel]:not([open]) {
+      display: none;
+    }
+  }
+</style>
