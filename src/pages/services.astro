@@ -608,8 +608,19 @@ const defaultServiceId = services[0]?.id ?? '';
     };
 
     const openPanel = (targetId, { force = false, scroll = false } = {}) => {
-      console.log('openPanel called:', targetId, 'scroll:', scroll);
+      console.log('openPanel called:', targetId, 'scroll:', scroll, 'force:', force);
       let targetPanel = null;
+
+      // First pass: close all panels if force is true
+      if (force) {
+        panels.forEach((panel) => {
+          panel.open = false;
+        });
+        // Force a reflow
+        void document.body.offsetHeight;
+      }
+
+      // Second pass: open the target panel
       panels.forEach((panel) => {
         const isTarget = panel.id === targetId;
         if (isTarget) {
@@ -620,7 +631,7 @@ const defaultServiceId = services[0]?.id ?? '';
           // Trigger a reflow to ensure the open state is applied
           void panel.offsetHeight;
           console.log('Panel opened:', targetId);
-        } else if (force || mediaDesktop.matches) {
+        } else if (mediaDesktop.matches && !force) {
           panel.open = false;
         }
       });
@@ -640,7 +651,7 @@ const defaultServiceId = services[0]?.id ?? '';
 
             window.scrollTo({ top: y, behavior: 'smooth' });
             console.log('Scroll initiated to position:', y);
-          }, 200);
+          }, 300);
         }
       } else {
         console.warn('Target panel not found:', targetId);
@@ -678,12 +689,26 @@ const defaultServiceId = services[0]?.id ?? '';
       const hash = window.location.hash?.replace('#', '');
       console.log('Hash changed:', hash);
       if (hash) {
-        openPanel(hash, { force: true, scroll: true });
+        // Small delay to ensure the URL has updated
+        setTimeout(() => {
+          openPanel(hash, { force: true, scroll: true });
+        }, 50);
       }
     };
 
     // Listen for hash changes
     window.addEventListener('hashchange', handleHashChange);
+
+    // Also listen for popstate (browser back/forward)
+    window.addEventListener('popstate', () => {
+      const hash = window.location.hash?.replace('#', '');
+      console.log('Popstate event, hash:', hash);
+      if (hash) {
+        setTimeout(() => {
+          openPanel(hash, { force: true, scroll: true });
+        }, 50);
+      }
+    });
 
     // Handle initial hash on page load
     const initialHash = window.location.hash?.replace('#', '');
