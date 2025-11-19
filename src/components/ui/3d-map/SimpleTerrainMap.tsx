@@ -249,6 +249,83 @@ function Terrain() {
   );
 }
 
+// Basin overlay regions with approximate boundaries
+const basins = [
+  {
+    name: 'Powder River Basin',
+    color: '#FF6B35', // Orange-red
+    opacity: 0.15,
+    // Approximate lat/lon bounds: SE Montana, NE Wyoming
+    bounds: { minLat: 42.5, maxLat: 46.5, minLon: -107.5, maxLon: -104.5 },
+  },
+  {
+    name: 'Bighorn Basin',
+    color: '#F38181', // Coral pink
+    opacity: 0.15,
+    // Approximate lat/lon bounds: North-central Wyoming (120mi x 90mi)
+    bounds: { minLat: 43.5, maxLat: 45.5, minLon: -109.5, maxLon: -107.0 },
+  },
+  {
+    name: 'DJ Basin',
+    color: '#4ECDC4', // Turquoise
+    opacity: 0.15,
+    // Approximate lat/lon bounds: SE Wyoming, NE Colorado
+    bounds: { minLat: 40.0, maxLat: 43.0, minLon: -106.0, maxLon: -103.0 },
+  },
+  {
+    name: 'Williston Basin',
+    color: '#95E1D3', // Mint green
+    opacity: 0.15,
+    // Approximate lat/lon bounds: Western ND, Eastern MT, Southern Canada
+    bounds: { minLat: 45.5, maxLat: 51.0, minLon: -106.0, maxLon: -100.0 },
+  },
+  {
+    name: 'Bakken Formation',
+    color: '#AAD9CD', // Light seafoam (lighter than Williston to show overlap)
+    opacity: 0.18,
+    // Approximate lat/lon bounds: Core Bakken area within Williston Basin
+    bounds: { minLat: 46.5, maxLat: 49.5, minLon: -104.5, maxLon: -101.5 },
+  },
+] as const;
+
+// Basin overlays component
+function BasinOverlays() {
+  const meshes = basins.map((basin) => {
+    // Lat/Lon bounds for North America view
+    const minLat = 22;
+    const maxLat = 61.5;
+    const minLon = -136;
+    const maxLon = -53.5;
+
+    // Convert basin bounds to terrain coordinates
+    const x1 = ((basin.bounds.minLon - minLon) / (maxLon - minLon)) * TERRAIN_WIDTH - TERRAIN_WIDTH / 2;
+    const x2 = ((basin.bounds.maxLon - minLon) / (maxLon - minLon)) * TERRAIN_WIDTH - TERRAIN_WIDTH / 2;
+    const z1 = -((basin.bounds.minLat - minLat) / (maxLat - minLat)) * TERRAIN_HEIGHT + TERRAIN_HEIGHT / 2;
+    const z2 = -((basin.bounds.maxLat - minLat) / (maxLat - minLat)) * TERRAIN_HEIGHT + TERRAIN_HEIGHT / 2;
+
+    const centerX = (x1 + x2) / 2;
+    const centerZ = (z1 + z2) / 2;
+    const width = Math.abs(x2 - x1);
+    const depth = Math.abs(z2 - z1);
+
+    // Get height at center for positioning
+    const height = getHeight(centerX, centerZ);
+
+    return { basin, centerX, centerZ, width, depth, height };
+  });
+
+  return (
+    <group>
+      {meshes.map(({ basin, centerX, centerZ, width, depth, height }) => (
+        <mesh key={basin.name} position={[centerX, height + 0.05, centerZ]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[width, depth]} />
+          <meshBasicMaterial color={basin.color} transparent opacity={basin.opacity} side={THREE.DoubleSide} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
 // State border lines from GeoJSON
 function StateBorders() {
   const [borderGeometries, setBorderGeometries] = useState<THREE.BufferGeometry[]>([]);
@@ -518,6 +595,9 @@ function Scene({
 
       {/* Terrain */}
       <Terrain />
+
+      {/* Basin Overlays */}
+      <BasinOverlays />
 
       {/* State Borders */}
       <StateBorders />
