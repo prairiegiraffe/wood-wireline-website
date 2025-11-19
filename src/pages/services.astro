@@ -643,14 +643,36 @@ const defaultServiceId = services[0]?.id ?? '';
           // Wait longer for the details element to fully expand before scrolling
           // The details element needs time to render its content
           setTimeout(() => {
-            console.log('Scrolling to panel:', targetId);
-            // Scroll with offset to account for sticky header
-            const yOffset = -100; // Offset for header
-            const element = targetPanel;
-            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            // Check if element is actually visible and has dimensions
+            const rect = targetPanel.getBoundingClientRect();
+            console.log('Panel rect:', rect.top, rect.height);
 
-            window.scrollTo({ top: y, behavior: 'smooth' });
-            console.log('Scroll initiated to position:', y);
+            // Only scroll if the element has been rendered and has height
+            if (rect.height > 0) {
+              console.log('Scrolling to panel:', targetId);
+              // Scroll with offset to account for sticky header
+              const yOffset = -100; // Offset for header
+              const y = rect.top + window.pageYOffset + yOffset;
+
+              // Ensure we don't scroll to negative positions
+              const scrollPosition = Math.max(0, y);
+
+              window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+              console.log('Scroll initiated to position:', scrollPosition);
+            } else {
+              console.warn('Panel not visible yet, retrying scroll in 100ms');
+              // Retry after another delay
+              setTimeout(() => {
+                const retryRect = targetPanel.getBoundingClientRect();
+                if (retryRect.height > 0) {
+                  const yOffset = -100;
+                  const y = retryRect.top + window.pageYOffset + yOffset;
+                  const scrollPosition = Math.max(0, y);
+                  window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+                  console.log('Retry scroll to position:', scrollPosition);
+                }
+              }, 100);
+            }
           }, 300);
         }
       } else {
