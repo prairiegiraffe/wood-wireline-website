@@ -23,9 +23,9 @@ const variants = {
 
 {
   type === 'button' || type === 'submit' || type === 'reset' ? (
-    <button 
-      type={type} 
-      class={twMerge(variants[variant] || '', className)} 
+    <button
+      type={type}
+      class={twMerge(variants[variant] || '', className)}
       {...rest}
       aria-label={typeof text === 'string' && !rest['aria-label'] ? text : undefined}
     >

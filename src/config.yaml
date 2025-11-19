@@ -11,7 +11,7 @@ metadata:
   title:
     default: Wood Wireline
     template: '%s — Wood Wireline'
-  description: "Efficient. Reliable. Ready. Professional wireline services across the Powder River Basin and beyond. Established 1977."
+  description: 'Efficient. Reliable. Ready. Professional wireline services across the Powder River Basin and beyond. Established 1977.'
   robots:
     index: true
     follow: true

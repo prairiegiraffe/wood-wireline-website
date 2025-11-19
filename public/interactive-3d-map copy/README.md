@@ -34,11 +34,13 @@ This directory contains the archived 3D terrain map component that was originall
    ```
 3. Copy the heightmap and GeoJSON files to your `public` directory
 4. Import and use the component:
+
    ```tsx
    import SimpleTerrainMap from './path/to/SimpleTerrainMap';
 
-   <SimpleTerrainMap client:load />
+   <SimpleTerrainMap client:load />;
    ```
+
 5. Update the `towns` array in the component with your new location data
 6. Adjust colors and styling to match your client's brand
 
@@ -78,6 +80,7 @@ The component expects location data in this format:
 ## Original Use Case
 
 Created for MTN Mud Service & Supply to showcase their three locations:
+
 - Gillette, WY (Headquarters)
 - Cheyenne, WY
 - Williston, ND

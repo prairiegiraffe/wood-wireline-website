@@ -41,7 +41,10 @@ const {
           )}
         >
           {(icon || defaultIcon) && (
-            <TablerIcon name={icon || defaultIcon} className={twMerge('mb-2 w-10 h-10', defaultIconClass, itemClasses?.icon)} />
+            <TablerIcon
+              name={icon || defaultIcon}
+              className={twMerge('mb-2 w-10 h-10', defaultIconClass, itemClasses?.icon)}
+            />
           )}
           <div class={twMerge('text-xl font-bold', titleClass, itemClasses?.title)}>{title}</div>
           {description && (

@@ -15,7 +15,11 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
               {label && (
                 <label for={name} class="block text-sm font-medium mb-1">
                   {label}
-                  {required && <span class="text-red-500" aria-label="required">*</span>}
+                  {required && (
+                    <span class="text-red-500" aria-label="required">
+                      *
+                    </span>
+                  )}
                 </label>
               )}
               <input
@@ -29,7 +33,7 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
                 aria-invalid="false"
                 class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent transition-colors invalid:border-red-500 invalid:focus:ring-red-500"
               />
-              <span class="hidden text-sm text-red-500 mt-1" id={`${name}-error`} role="alert" aria-live="polite"></span>
+              <span class="hidden text-sm text-red-500 mt-1" id={`${name}-error`} role="alert" aria-live="polite" />
             </div>
           )
       )
@@ -40,7 +44,9 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
       <div class="mb-6">
         <label for="textarea" class="block text-sm font-medium mb-1">
           {textarea.label}
-          <span class="text-red-500" aria-label="required">*</span>
+          <span class="text-red-500" aria-label="required">
+            *
+          </span>
         </label>
         <textarea
           id="textarea"
@@ -52,33 +58,37 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
           aria-invalid="false"
           class="py-3 px-4 block w-full text-md rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent transition-colors invalid:border-red-500 invalid:focus:ring-red-500"
         />
-        <span class="hidden text-sm text-red-500 mt-1" id="textarea-error" role="alert" aria-live="polite"></span>
+        <span class="hidden text-sm text-red-500 mt-1" id="textarea-error" role="alert" aria-live="polite" />
       </div>
     )
   }
 
   {
     disclaimer && (
-      <div class="mt-3 flex items-start">
-        <div class="flex mt-0.5">
-          <input
-            id="disclaimer"
-            name="disclaimer"
-            type="checkbox"
-            required
-            aria-required="true"
-            aria-invalid="false"
-            class="cursor-pointer mt-1 w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary focus:ring-2"
-          />
+      <Fragment>
+        <div class="mt-3 flex items-start">
+          <div class="flex mt-0.5">
+            <input
+              id="disclaimer"
+              name="disclaimer"
+              type="checkbox"
+              required
+              aria-required="true"
+              aria-invalid="false"
+              class="cursor-pointer mt-1 w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary focus:ring-2"
+            />
+          </div>
+          <div class="ml-3">
+            <label for="disclaimer" class="cursor-pointer select-none text-sm text-gray-600 dark:text-gray-400">
+              {disclaimer.label}
+              <span class="text-red-500" aria-label="required">
+                *
+              </span>
+            </label>
+          </div>
         </div>
-        <div class="ml-3">
-          <label for="disclaimer" class="cursor-pointer select-none text-sm text-gray-600 dark:text-gray-400">
-            {disclaimer.label}
-            <span class="text-red-500" aria-label="required">*</span>
-          </label>
-        </div>
-      </div>
-      <span class="hidden text-sm text-red-500 mt-1 ml-7" id="disclaimer-error" role="alert" aria-live="polite"></span>
+        <span class="hidden text-sm text-red-500 mt-1 ml-7" id="disclaimer-error" role="alert" aria-live="polite" />
+      </Fragment>
     )
   }
 
@@ -103,12 +113,12 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
 
 <script>
   // Form validation script
-  (function() {
-    const form = document.getElementById('contact-form');
+  (function () {
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
     if (!form) return;
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^[\d\s\-\(\)\+]+$/;
+    const phoneRegex = /^[\d\s()+-]+$/;
 
     function showError(input: HTMLInputElement | HTMLTextAreaElement, message: string) {
       const errorId = `${input.id}-error`;
@@ -135,8 +145,6 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
     function validateField(input: HTMLInputElement | HTMLTextAreaElement) {
       const value = input.value.trim();
       const type = input.type;
-      const name = input.name;
-
       // Clear previous errors
       hideError(input);
 
@@ -180,9 +188,11 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
     // Form submission validation
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      
+
       let isValid = true;
-      const fields = form.querySelectorAll('input[required], textarea[required]') as NodeListOf<HTMLInputElement | HTMLTextAreaElement>;
+      const fields = form.querySelectorAll('input[required], textarea[required]') as NodeListOf<
+        HTMLInputElement | HTMLTextAreaElement
+      >;
 
       fields.forEach((field) => {
         if (!validateField(field)) {
@@ -212,7 +222,9 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
       if (isValid) {
         // Form is valid - here you would typically submit to a backend
         // For now, we'll show a success message
-        alert('Thank you for your message! We will get back to you soon.\n\nNote: Form submission is not yet configured. Please contact us directly at 307-682-0143 or alicia@kutthru.com');
+        alert(
+          'Thank you for your message! We will get back to you soon.\n\nNote: Form submission is not yet configured. Please contact us directly at 307-682-0143 or alicia@kutthru.com'
+        );
         form.reset();
       } else {
         // Focus first invalid field

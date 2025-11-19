@@ -1,6 +1,7 @@
 import { getPermalink } from './utils/permalinks';
+import type { Props as HeaderProps } from '~/components/widgets/Header.astro';
 
-export const headerData = {
+export const headerData: HeaderProps = {
   links: [
     {
       text: 'Home',
