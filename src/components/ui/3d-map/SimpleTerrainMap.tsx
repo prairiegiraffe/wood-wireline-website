@@ -249,45 +249,6 @@ function Terrain() {
   );
 }
 
-// Basin overlay regions with approximate boundaries
-const basins = [
-  {
-    name: 'Powder River Basin',
-    color: '#FF6B35', // Orange-red
-    opacity: 0.15,
-    // Approximate lat/lon bounds: SE Montana, NE Wyoming - adjusted for softer edges
-    bounds: { minLat: 42.5, maxLat: 46.3, minLon: -107.5, maxLon: -104.7 },
-  },
-  {
-    name: 'Bighorn Basin',
-    color: '#F38181', // Coral pink
-    opacity: 0.15,
-    // Approximate lat/lon bounds: North-central Wyoming (120mi x 90mi)
-    bounds: { minLat: 43.5, maxLat: 45.3, minLon: -109.5, maxLon: -107.2 },
-  },
-  {
-    name: 'DJ Basin',
-    color: '#4ECDC4', // Turquoise
-    opacity: 0.15,
-    // Approximate lat/lon bounds: SE Wyoming, NE Colorado
-    bounds: { minLat: 40.0, maxLat: 42.8, minLon: -106.0, maxLon: -103.2 },
-  },
-  {
-    name: 'Williston Basin',
-    color: '#95E1D3', // Mint green
-    opacity: 0.15,
-    // Approximate lat/lon bounds: Western ND, Eastern MT, Southern Canada
-    bounds: { minLat: 45.5, maxLat: 50.8, minLon: -106.0, maxLon: -100.2 },
-  },
-  {
-    name: 'Bakken Formation',
-    color: '#AAD9CD', // Light seafoam (lighter than Williston to show overlap)
-    opacity: 0.18,
-    // Approximate lat/lon bounds: Core Bakken area within Williston Basin
-    bounds: { minLat: 46.5, maxLat: 49.3, minLon: -104.5, maxLon: -101.7 },
-  },
-] as const;
-
 // State border lines from GeoJSON
 function StateBorders() {
   const [borderGeometries, setBorderGeometries] = useState<THREE.BufferGeometry[]>([]);
