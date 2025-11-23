@@ -30,7 +30,7 @@ const {
               </div>
             )}
             {amount && (
-              <div class="font-heading text-primary text-[2.6rem] font-bold dark:text-white lg:text-5xl xl:text-6xl">
+              <div class="font-heading text-primary text-[2.6rem] font-bold dark:text-white lg:text-5xl xl:text-6xl count-up" data-target={amount}>
                 {amount}
               </div>
             )}
@@ -45,3 +45,47 @@ const {
     }
   </div>
 </WidgetWrapper>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const countUpElements = document.querySelectorAll('.count-up');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const element = entry.target;
+          const target = element.getAttribute('data-target');
+
+          // Parse the target value
+          const hasPlus = target.includes('+');
+          const hasComma = target.includes(',');
+          const numericValue = parseInt(target.replace(/[^0-9]/g, ''));
+
+          // Animate the count
+          let current = 0;
+          const duration = 2000; // 2 seconds
+          const increment = numericValue / (duration / 16); // 60fps
+
+          const updateCount = () => {
+            current += increment;
+            if (current < numericValue) {
+              let displayValue = Math.floor(current);
+              if (hasComma && displayValue >= 1000) {
+                displayValue = displayValue.toLocaleString();
+              }
+              element.textContent = displayValue + (hasPlus ? '+' : '');
+              requestAnimationFrame(updateCount);
+            } else {
+              element.textContent = target; // Set final value
+            }
+          };
+
+          updateCount();
+          observer.unobserve(element);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    countUpElements.forEach(el => observer.observe(el));
+  });
+</script>
