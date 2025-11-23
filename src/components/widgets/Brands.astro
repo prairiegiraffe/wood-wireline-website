@@ -18,21 +18,21 @@ const {
 } = Astro.props;
 ---
 
-<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-6xl mx-auto ${classes?.container ?? ''}`} bg={bg}>
+<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-7xl mx-auto ${classes?.container ?? ''}`} bg={bg}>
   <Headline title={title} subtitle={subtitle} tagline={tagline} />
 
-  <div class="flex flex-wrap justify-center gap-x-6 sm:gap-x-12 lg:gap-x-24">
+  <div class="flex flex-wrap justify-center gap-3 sm:gap-4 lg:gap-6">
     {icons && icons.map((icon) => <Icon name={icon} class="py-3 lg:py-5 w-12 h-auto mx-auto sm:mx-0 text-gray-500" />)}
     {
       images &&
         images.map(
           (image) =>
             image.src && (
-              <div class="flex justify-center items-center col-span-1 my-2 lg:my-4 p-5 rounded-[20px] bg-white shadow-sm">
+              <div class="flex justify-center items-center p-3 sm:p-4 rounded-xl bg-white shadow-sm">
                 <Image
                   src={image.src}
                   alt={image.alt || ''}
-                  class="max-h-12 w-auto"
+                  class="h-8 sm:h-10 lg:h-12 w-auto object-contain"
                   width={120}
                   height={48}
                   layout="fixed"
