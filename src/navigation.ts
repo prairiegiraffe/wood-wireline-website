@@ -89,6 +89,7 @@ export const footerData = {
     { ariaLabel: 'Instagram', icon: 'tabler:brand-instagram', href: '#' },
     { ariaLabel: 'TikTok', icon: 'tabler:brand-tiktok', href: '#' },
     { ariaLabel: 'LinkedIn', icon: 'tabler:brand-linkedin', href: '#' },
+    { ariaLabel: 'YouTube', icon: 'tabler:brand-youtube', href: '#' },
     { ariaLabel: 'Linktree', icon: 'tabler:tree', href: '#' },
   ],
   footNote: `© ${new Date().getFullYear()} Wood Wireline. All rights reserved. Established 1977.`,
