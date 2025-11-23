@@ -272,116 +272,143 @@ const metadata = {
         </p>
       </div>
 
-      <!-- Services Grid -->
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <a
-          href="/services/#e-line"
-          class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-primary"
+      <!-- Services Carousel -->
+      <div class="relative mb-8">
+        <!-- Navigation Arrows (Desktop) -->
+        <button
+          id="services-prev"
+          class="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-10 h-10 bg-white dark:bg-gray-800 rounded-full shadow-lg items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          aria-label="Previous service"
         >
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
-              <TablerIcon name="tabler:chart-line" className="w-6 h-6 text-primary" />
-            </div>
-            <h3 class="text-xl md:text-2xl font-bold dark:text-white">E-Line</h3>
-          </div>
-          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
-            Complete E-Line services including advanced logging tools, pipe recovery systems, perforating capabilities,
-            and plug/packer setting.
-          </p>
-        </a>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+        <button
+          id="services-next"
+          class="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-10 h-10 bg-white dark:bg-gray-800 rounded-full shadow-lg items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          aria-label="Next service"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
 
-        <a
-          href="/services/#slickline"
-          class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-secondary"
+        <!-- Scrollable Container -->
+        <div
+          id="services-carousel"
+          class="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 -mx-4 px-4"
+          style="scroll-behavior: smooth;"
         >
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mr-4">
-              <TablerIcon name="tabler:settings" className="w-6 h-6 text-secondary" />
+          <a
+            href="/services/#e-line"
+            class="group flex-shrink-0 w-[300px] md:w-[350px] bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-primary snap-start"
+          >
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
+                <TablerIcon name="tabler:chart-line" className="w-6 h-6 text-primary" />
+              </div>
+              <h3 class="text-xl md:text-2xl font-bold dark:text-white">E-Line</h3>
             </div>
-            <h3 class="text-xl md:text-2xl font-bold dark:text-white">Slickline</h3>
-          </div>
-          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
-            Professional slickline services including quick rig units, memory logging, and H2S capabilities for well
-            intervention.
-          </p>
-        </a>
+            <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+              Complete E-Line services including advanced logging tools, pipe recovery systems, perforating capabilities,
+              and plug/packer setting.
+            </p>
+          </a>
 
-        <a
-          href="/services/#swabbing"
-          class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-primary"
-        >
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
-              <TablerIcon name="tabler:droplet" className="w-6 h-6 text-primary" />
+          <a
+            href="/services/#slickline"
+            class="group flex-shrink-0 w-[300px] md:w-[350px] bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-secondary snap-start"
+          >
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mr-4">
+                <TablerIcon name="tabler:settings" className="w-6 h-6 text-secondary" />
+              </div>
+              <h3 class="text-xl md:text-2xl font-bold dark:text-white">Slickline</h3>
             </div>
-            <h3 class="text-xl md:text-2xl font-bold dark:text-white">Swabbing</h3>
-          </div>
-          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
-            Enclosed cab swab rigs with hydraulic systems for safe, efficient well cleanup and fluid removal operations.
-          </p>
-        </a>
+            <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+              Professional slickline services including quick rig units, memory logging, and H2S capabilities for well
+              intervention.
+            </p>
+          </a>
 
-        <a
-          href="/services/#tcp"
-          class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-secondary"
-        >
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mr-4">
-              <TablerIcon name="tabler:rocket" className="w-6 h-6 text-secondary" />
+          <a
+            href="/services/#swabbing"
+            class="group flex-shrink-0 w-[300px] md:w-[350px] bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-primary snap-start"
+          >
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
+                <TablerIcon name="tabler:droplet" className="w-6 h-6 text-primary" />
+              </div>
+              <h3 class="text-xl md:text-2xl font-bold dark:text-white">Swabbing</h3>
             </div>
-            <h3 class="text-xl md:text-2xl font-bold dark:text-white">TCP</h3>
-          </div>
-          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
-            Full TCP capabilities including pipe recovery, plug setting, and frac support for underbalanced and long
-            interval operations.
-          </p>
-        </a>
+            <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+              Enclosed cab swab rigs with hydraulic systems for safe, efficient well cleanup and fluid removal operations.
+            </p>
+          </a>
 
-        <a
-          href="/services/#kinley"
-          class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-primary"
-        >
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
-              <TablerIcon name="tabler:cut" className="w-6 h-6 text-primary" />
+          <a
+            href="/services/#tcp"
+            class="group flex-shrink-0 w-[300px] md:w-[350px] bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-secondary snap-start"
+          >
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mr-4">
+                <TablerIcon name="tabler:rocket" className="w-6 h-6 text-secondary" />
+              </div>
+              <h3 class="text-xl md:text-2xl font-bold dark:text-white">TCP</h3>
             </div>
-            <h3 class="text-xl md:text-2xl font-bold dark:text-white">Kinley Cutter</h3>
-          </div>
-          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
-            Sand line cutters for stuck line recovery and horizontal operations with variable timer options to reduce
-            NPT.
-          </p>
-        </a>
+            <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+              Full TCP capabilities including pipe recovery, plug setting, and frac support for underbalanced and long
+              interval operations.
+            </p>
+          </a>
 
-        <a
-          href="/services/#hydrotesting"
-          class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-secondary"
-        >
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mr-4">
-              <TablerIcon name="tabler:gauge" className="w-6 h-6 text-secondary" />
+          <a
+            href="/services/#kinley"
+            class="group flex-shrink-0 w-[300px] md:w-[350px] bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-primary snap-start"
+          >
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
+                <TablerIcon name="tabler:cut" className="w-6 h-6 text-primary" />
+              </div>
+              <h3 class="text-xl md:text-2xl font-bold dark:text-white">Kinley Cutter</h3>
             </div>
-            <h3 class="text-xl md:text-2xl font-bold dark:text-white">Hydrotesting</h3>
-          </div>
-          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
-            Complete testing services up to 15,000 psi with no-drop slip tools for all pipe types and sizes.
-          </p>
-        </a>
+            <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+              Sand line cutters for stuck line recovery and horizontal operations with variable timer options to reduce
+              NPT.
+            </p>
+          </a>
 
-        <a
-          href="/services/#slick-eline"
-          class="group bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-primary md:col-span-2 lg:col-span-1"
-        >
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
-              <TablerIcon name="tabler:cable" className="w-6 h-6 text-primary" />
+          <a
+            href="/services/#hydrotesting"
+            class="group flex-shrink-0 w-[300px] md:w-[350px] bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-secondary snap-start"
+          >
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mr-4">
+                <TablerIcon name="tabler:gauge" className="w-6 h-6 text-secondary" />
+              </div>
+              <h3 class="text-xl md:text-2xl font-bold dark:text-white">Hydrotesting</h3>
             </div>
-            <h3 class="text-xl md:text-2xl font-bold dark:text-white">Slick E-Line</h3>
-          </div>
-          <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
-            Our newest addition: 25,000' Inconel line with H2S capabilities and real-time production logging.
-          </p>
-        </a>
+            <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+              Complete testing services up to 15,000 psi with no-drop slip tools for all pipe types and sizes.
+            </p>
+          </a>
+
+          <a
+            href="/services/#slick-eline"
+            class="group flex-shrink-0 w-[300px] md:w-[350px] bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 hover:shadow-xl transition-all border-l-4 border-primary snap-start"
+          >
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mr-4">
+                <TablerIcon name="tabler:cable" className="w-6 h-6 text-primary" />
+              </div>
+              <h3 class="text-xl md:text-2xl font-bold dark:text-white">Slick E-Line</h3>
+            </div>
+            <p class="text-base text-muted dark:text-slate-400 leading-relaxed">
+              Our newest addition: 25,000' Inconel line with H2S capabilities and real-time production logging.
+            </p>
+          </a>
+        </div>
       </div>
 
       <div class="text-center">
@@ -389,6 +416,36 @@ const metadata = {
           View All Services <span class="ml-2">→</span>
         </a>
       </div>
+
+      <script is:inline>
+        document.addEventListener('DOMContentLoaded', () => {
+          const carousel = document.getElementById('services-carousel');
+          const prevBtn = document.getElementById('services-prev');
+          const nextBtn = document.getElementById('services-next');
+
+          if (carousel && prevBtn && nextBtn) {
+            const scrollAmount = 370; // Card width + gap
+
+            prevBtn.addEventListener('click', () => {
+              carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            });
+
+            nextBtn.addEventListener('click', () => {
+              carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            });
+          }
+        });
+      </script>
+
+      <style is:inline>
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      </style>
     </div>
   </section>
 
