@@ -288,44 +288,6 @@ const basins = [
   },
 ] as const;
 
-// Basin overlays component with rounded corners
-function BasinOverlays() {
-  const meshes = basins.map((basin) => {
-    // Lat/Lon bounds for North America view
-    const minLat = 22;
-    const maxLat = 61.5;
-    const minLon = -136;
-    const maxLon = -53.5;
-
-    // Convert basin bounds to terrain coordinates
-    const x1 = ((basin.bounds.minLon - minLon) / (maxLon - minLon)) * TERRAIN_WIDTH - TERRAIN_WIDTH / 2;
-    const x2 = ((basin.bounds.maxLon - minLon) / (maxLon - minLon)) * TERRAIN_WIDTH - TERRAIN_WIDTH / 2;
-    const z1 = -((basin.bounds.minLat - minLat) / (maxLat - minLat)) * TERRAIN_HEIGHT + TERRAIN_HEIGHT / 2;
-    const z2 = -((basin.bounds.maxLat - minLat) / (maxLat - minLat)) * TERRAIN_HEIGHT + TERRAIN_HEIGHT / 2;
-
-    const centerX = (x1 + x2) / 2;
-    const centerZ = (z1 + z2) / 2;
-    const width = Math.abs(x2 - x1);
-    const depth = Math.abs(z2 - z1);
-
-    // Get height at center for positioning
-    const height = getHeight(centerX, centerZ);
-
-    return { basin, centerX, centerZ, width, depth, height };
-  });
-
-  return (
-    <group>
-      {meshes.map(({ basin, centerX, centerZ, width, depth, height }) => (
-        <mesh key={basin.name} position={[centerX, height + 0.05, centerZ]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[width, depth]} />
-          <meshBasicMaterial color={basin.color} transparent opacity={basin.opacity} side={THREE.DoubleSide} />
-        </mesh>
-      ))}
-    </group>
-  );
-}
-
 // State border lines from GeoJSON
 function StateBorders() {
   const [borderGeometries, setBorderGeometries] = useState<THREE.BufferGeometry[]>([]);
