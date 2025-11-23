@@ -118,6 +118,7 @@ const metadata = {
 
   <Stats
     title="Wood Wireline by the Numbers"
+    isDark={true}
     stats={[
       {
         title: 'Leadership Experience',
@@ -140,7 +141,20 @@ const metadata = {
         subtitle: 'Locations serving 6 states',
       },
     ]}
-  />
+  >
+    <Fragment slot="bg">
+      <div class="absolute inset-0">
+        <Image
+          src="~/assets/images/All Images/Industrial Machinery Close Up-HTHLs-7YAI.webp"
+          alt="Industrial machinery background"
+          class="w-full h-full object-cover"
+          widths={[800, 1200, 1920]}
+          sizes="100vw"
+        />
+        <div class="absolute inset-0 bg-black/60"></div>
+      </div>
+    </Fragment>
+  </Stats>
 
   <!-- Company Introduction Section ******************* -->
 
