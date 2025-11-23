@@ -6,6 +6,14 @@ import Brands from '~/components/widgets/Brands.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import Image from '~/components/common/Image.astro';
 
+// Partner logos
+import logoConocoPhillips from '~/assets/images/partner-logos/ConocoPhillips-Logo.svg';
+import logoContinental from '~/assets/images/partner-logos/Continental Resources.svg';
+import logoDevon from '~/assets/images/partner-logos/Devon logo.svg';
+import logoEOG from '~/assets/images/partner-logos/EOG-logo.svg';
+import logoExxon from '~/assets/images/partner-logos/Exxon.svg';
+import logoSchlumberger from '~/assets/images/partner-logos/schlumberger.svg';
+
 const metadata = {
   title: 'Testimonials — Wood Wireline',
 };
@@ -85,12 +93,12 @@ const metadata = {
     title="Industry Leaders Across the Basin"
     subtitle="We're proud to serve operators and companies throughout the Powder River Basin, Williston Basin, Bakken Basin, DJ Basin, Big Horn Basin, and beyond. Our commitment to excellence has earned the trust of industry leaders."
     images={[
-      { src: '~/assets/images/partner-logos/ConocoPhillips-Logo.svg', alt: 'ConocoPhillips' },
-      { src: '~/assets/images/partner-logos/Continental Resources.svg', alt: 'Continental Resources' },
-      { src: '~/assets/images/partner-logos/Devon logo.svg', alt: 'Devon Energy' },
-      { src: '~/assets/images/partner-logos/EOG-logo.svg', alt: 'EOG Resources' },
-      { src: '~/assets/images/partner-logos/Exxon.svg', alt: 'ExxonMobil' },
-      { src: '~/assets/images/partner-logos/schlumberger.svg', alt: 'Schlumberger' },
+      { src: logoConocoPhillips, alt: 'ConocoPhillips' },
+      { src: logoContinental, alt: 'Continental Resources' },
+      { src: logoDevon, alt: 'Devon Energy' },
+      { src: logoEOG, alt: 'EOG Resources' },
+      { src: logoExxon, alt: 'ExxonMobil' },
+      { src: logoSchlumberger, alt: 'Schlumberger' },
     ]}
   >
     <Fragment slot="bg">
