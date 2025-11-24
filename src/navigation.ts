@@ -32,10 +32,11 @@ export const headerData: HeaderProps = {
       text: 'Locations',
       href: '/contact/#map',
     },
-    {
-      text: 'Testimonials',
-      href: getPermalink('/testimonials'),
-    },
+    // HIDDEN UNTIL CLIENT READY
+    // {
+    //   text: 'Testimonials',
+    //   href: getPermalink('/testimonials'),
+    // },
     {
       text: 'Contact',
       href: getPermalink('/contact'),
@@ -55,7 +56,8 @@ export const footerData = {
       links: [
         { text: 'About Us', href: getPermalink('/about') },
         { text: 'Services', href: getPermalink('/services') },
-        { text: 'Testimonials', href: getPermalink('/testimonials') },
+        // HIDDEN UNTIL CLIENT READY
+        // { text: 'Testimonials', href: getPermalink('/testimonials') },
         { text: 'Contact', href: getPermalink('/contact') },
       ],
     },
