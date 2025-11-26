@@ -456,7 +456,7 @@ const metadata = {
           const scrollAmount = 370; // Card width + gap
 
           // Define handlers
-          const handlePrevClick = (e) => {
+          const handlePrevClick = (e: Event) => {
             e.preventDefault();
             const currentScroll = carousel.scrollLeft;
             carousel.scrollTo({
@@ -465,7 +465,7 @@ const metadata = {
             });
           };
 
-          const handleNextClick = (e) => {
+          const handleNextClick = (e: Event) => {
             e.preventDefault();
             const currentScroll = carousel.scrollLeft;
             carousel.scrollTo({
@@ -476,14 +476,17 @@ const metadata = {
 
           // Remove any existing listeners before adding new ones (cleanup)
           // We clone and replace to remove all event listeners
-          const newPrevBtn = prevBtn.cloneNode(true);
-          const newNextBtn = nextBtn.cloneNode(true);
-          prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
-          nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+          const newPrevBtn = prevBtn.cloneNode(true) as HTMLElement;
+          const newNextBtn = nextBtn.cloneNode(true) as HTMLElement;
 
-          // Add event listeners to the new buttons
-          newPrevBtn.addEventListener('click', handlePrevClick);
-          newNextBtn.addEventListener('click', handleNextClick);
+          if (prevBtn.parentNode && nextBtn.parentNode) {
+            prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
+            nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+
+            // Add event listeners to the new buttons
+            newPrevBtn.addEventListener('click', handlePrevClick);
+            newNextBtn.addEventListener('click', handleNextClick);
+          }
         }
 
         // Initialize on page load
