@@ -755,9 +755,12 @@ const defaultServiceId = services[0]?.id ?? '';
 
   // Handle subsection accordion behavior (close others when one opens)
   const initSubsectionAccordions = () => {
-    // Find all details elements within each service panel
-    panels.forEach((panel) => {
-      const subsectionDetails = panel.querySelectorAll('details');
+    // Find all service panels
+    const servicePanels = Array.from(document.querySelectorAll('[data-service-panel]'));
+
+    // For each service panel, find its subsection details
+    servicePanels.forEach((panel) => {
+      const subsectionDetails = Array.from(panel.querySelectorAll('details'));
 
       subsectionDetails.forEach((detail) => {
         detail.addEventListener('toggle', () => {
