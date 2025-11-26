@@ -64,7 +64,7 @@ const towns: readonly Town[] = [
     name: 'Dickinson, ND',
     badge: null,
     x: -5.0,
-    z: -4.5,
+    z: -5.8,
     address: '2780 East Villard<br/>Dickinson, ND 58601',
     phone: '701-590-9750',
     email: null,
