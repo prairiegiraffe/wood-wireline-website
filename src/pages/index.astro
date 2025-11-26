@@ -489,8 +489,11 @@ const metadata = {
           }
         }
 
-        // Initialize on page load
+        // Initialize on page load and after view transitions
         initServicesCarousel();
+
+        // Re-initialize after Astro view transitions (client-side navigation)
+        document.addEventListener('astro:page-load', initServicesCarousel);
       </script>
 
       <style is:inline>
