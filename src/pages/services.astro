@@ -103,16 +103,17 @@ const services = [
     ],
   },
   {
-    id: 'cameras',
-    icon: 'tabler:camera',
-    title: 'Cameras',
+    id: 'third-party',
+    icon: 'tabler:users',
+    title: 'Third Party Services',
     category: 'Inspection & Diagnostics',
-    shortDesc: 'Advanced downhole camera systems including Schlumberger tools and gyros',
+    shortDesc: 'Advanced third-party downhole tools and services',
     description:
-      'High-resolution downhole camera services for visual wellbore inspection using industry-leading Schlumberger Hepta line systems and precision gyro tools.',
+      'Comprehensive third-party services including advanced camera systems, precision gyroscopic tools, and Schlumberger Hepta line systems for specialized downhole operations.',
     capabilities: [
-      'Schlumberger Tools- Hepta line',
-      'Gyros',
+      'Third Party Gyros - Precision orientation and directional surveys',
+      'Third Party Cameras - High-resolution wellbore inspection',
+      'Schlumberger Hepta line - Industry-leading camera and inspection systems',
       'High-definition video recording',
       'Still image capture',
       'Wellbore condition assessment',
@@ -123,6 +124,7 @@ const services = [
       'Pre-completion inspection',
       'Orientation surveys',
       'Quality verification',
+      'Directional surveys',
     ],
   },
   {
@@ -693,14 +695,13 @@ const defaultServiceId = services[0]?.id ?? '';
 
     panels.forEach((panel) => {
       panel.addEventListener('toggle', () => {
-        if (panel.open && mediaMobile.matches) {
+        // Close other panels when one is opened (on all screen sizes)
+        if (panel.open) {
           panels.forEach((other) => {
             if (other !== panel) {
               other.open = false;
             }
           });
-        }
-        if (panel.open) {
           setActiveLink(panel.id);
         }
       });

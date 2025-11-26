@@ -17,12 +17,12 @@ export const headerData: HeaderProps = {
       links: [
         { text: 'All Services', href: getPermalink('/services') },
         { text: 'E-Line', href: '/services/#e-line' },
+        { text: 'Third Party Services', href: '/services/#third-party' },
         { text: 'Slickline', href: '/services/#slickline' },
         { text: 'Slick E-Line', href: '/services/#slick-eline' },
         { text: 'Swabbing', href: '/services/#swabbing' },
         { text: 'TCP', href: '/services/#tcp' },
         { text: 'Plug & Abandonment', href: '/services/#plug-abandonment' },
-        { text: 'Cameras', href: '/services/#cameras' },
         { text: 'Fishing', href: '/services/#fishing' },
         { text: 'Kinley Cutter', href: '/services/#kinley' },
         { text: 'Hydrotesting', href: '/services/#hydrotesting' },
