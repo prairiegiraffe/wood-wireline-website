@@ -442,8 +442,8 @@ const metadata = {
         </a>
       </div>
 
-      <script is:inline>
-        document.addEventListener('DOMContentLoaded', () => {
+      <script>
+        const initServicesCarousel = () => {
           const carousel = document.getElementById('services-carousel');
           const prevBtn = document.getElementById('services-prev');
           const nextBtn = document.getElementById('services-next');
@@ -459,7 +459,14 @@ const metadata = {
               carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
             });
           }
-        });
+        };
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initServicesCarousel);
+        } else {
+          initServicesCarousel();
+        }
       </script>
 
       <style is:inline>
