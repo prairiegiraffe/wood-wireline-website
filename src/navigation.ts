@@ -87,10 +87,18 @@ export const footerData = {
     { text: 'Privacy Policy', href: getPermalink('/privacy') },
   ],
   socialLinks: [
-    { ariaLabel: 'Facebook', icon: 'tabler:brand-facebook', href: 'https://www.facebook.com/profile.php?id=61574999590044' },
+    {
+      ariaLabel: 'Facebook',
+      icon: 'tabler:brand-facebook',
+      href: 'https://www.facebook.com/profile.php?id=61574999590044',
+    },
     { ariaLabel: 'Instagram', icon: 'tabler:brand-instagram', href: 'https://www.instagram.com/woodwireline/' },
     { ariaLabel: 'TikTok', icon: 'tabler:brand-tiktok', href: 'https://www.tiktok.com/@woodwireline' },
-    { ariaLabel: 'LinkedIn', icon: 'tabler:brand-linkedin', href: 'https://www.linkedin.com/company/wood-wireline-service-inc/?viewAsMember=true' },
+    {
+      ariaLabel: 'LinkedIn',
+      icon: 'tabler:brand-linkedin',
+      href: 'https://www.linkedin.com/company/wood-wireline-service-inc/?viewAsMember=true',
+    },
     { ariaLabel: 'YouTube', icon: 'tabler:brand-youtube', href: 'https://www.youtube.com/@WoodWireline' },
     { ariaLabel: 'Linktree', icon: 'tabler:tree', href: '#' },
   ],
