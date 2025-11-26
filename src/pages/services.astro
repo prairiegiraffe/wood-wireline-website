@@ -752,6 +752,34 @@ const defaultServiceId = services[0]?.id ?? '';
   } else {
     initServiceNavigation();
   }
+
+  // Handle subsection accordion behavior (close others when one opens)
+  const initSubsectionAccordions = () => {
+    // Find all details elements within each service panel
+    panels.forEach((panel) => {
+      const subsectionDetails = panel.querySelectorAll('details');
+
+      subsectionDetails.forEach((detail) => {
+        detail.addEventListener('toggle', () => {
+          if (detail.open) {
+            // Close all other subsection details within the same panel
+            subsectionDetails.forEach((other) => {
+              if (other !== detail) {
+                other.open = false;
+              }
+            });
+          }
+        });
+      });
+    });
+  };
+
+  // Initialize subsection accordions after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSubsectionAccordions);
+  } else {
+    initSubsectionAccordions();
+  }
 </script>
 
 <style>
