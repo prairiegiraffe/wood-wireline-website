@@ -443,23 +443,42 @@ const metadata = {
       </div>
 
       <script is:inline>
-        document.addEventListener('DOMContentLoaded', () => {
-          const carousel = document.getElementById('services-carousel');
-          const prevBtn = document.getElementById('services-prev');
-          const nextBtn = document.getElementById('services-next');
+        (function () {
+          const initServicesCarousel = () => {
+            const carousel = document.getElementById('services-carousel');
+            const prevBtn = document.getElementById('services-prev');
+            const nextBtn = document.getElementById('services-next');
 
-          if (carousel && prevBtn && nextBtn) {
-            const scrollAmount = 370; // Card width + gap
+            if (carousel && prevBtn && nextBtn) {
+              const scrollAmount = 370; // Card width + gap
 
-            prevBtn.addEventListener('click', () => {
-              carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-            });
+              prevBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const currentScroll = carousel.scrollLeft;
+                carousel.scrollTo({
+                  left: currentScroll - scrollAmount,
+                  behavior: 'smooth',
+                });
+              });
 
-            nextBtn.addEventListener('click', () => {
-              carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            });
+              nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const currentScroll = carousel.scrollLeft;
+                carousel.scrollTo({
+                  left: currentScroll + scrollAmount,
+                  behavior: 'smooth',
+                });
+              });
+            }
+          };
+
+          // Initialize when DOM is ready
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initServicesCarousel);
+          } else {
+            initServicesCarousel();
           }
-        });
+        })();
       </script>
 
       <style is:inline>
