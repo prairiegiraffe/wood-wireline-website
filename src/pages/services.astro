@@ -562,8 +562,15 @@ const defaultServiceId = services[0]?.id ?? '';
   />
 </Layout>
 
-<script is:inline>
+<script>
+  // Store cleanup functions to prevent memory leaks
+  let cleanupFunctions: (() => void)[] = [];
+
   const initServiceNavigation = () => {
+    // Clean up previous event listeners
+    cleanupFunctions.forEach((cleanup) => cleanup());
+    cleanupFunctions = [];
+
     const links = Array.from(document.querySelectorAll('[data-service-link]'));
     const panels = Array.from(document.querySelectorAll('[data-service-panel]'));
 
@@ -574,10 +581,10 @@ const defaultServiceId = services[0]?.id ?? '';
 
     const mediaDesktop = window.matchMedia('(min-width: 1024px)');
 
-    const setActiveLink = (targetId) => {
+    const setActiveLink = (targetId: string) => {
       links.forEach((link) => {
-        const isActive = link.dataset.serviceLink === targetId;
-        link.dataset.active = isActive ? 'true' : 'false';
+        const isActive = (link as HTMLElement).dataset.serviceLink === targetId;
+        (link as HTMLElement).dataset.active = isActive ? 'true' : 'false';
         if (isActive) {
           link.setAttribute('aria-current', 'true');
         } else {
@@ -586,14 +593,14 @@ const defaultServiceId = services[0]?.id ?? '';
       });
     };
 
-    const openPanel = (targetId, { force = false, scroll = false } = {}) => {
+    const openPanel = (targetId: string, { force = false, scroll = false } = {}) => {
       console.log('openPanel called:', targetId, 'scroll:', scroll, 'force:', force);
-      let targetPanel = null;
+      let targetPanel: HTMLDetailsElement | null = null;
 
       // First pass: close all panels if force is true
       if (force) {
         panels.forEach((panel) => {
-          panel.open = false;
+          (panel as HTMLDetailsElement).open = false;
         });
         // Force a reflow
         void document.body.offsetHeight;
@@ -603,15 +610,15 @@ const defaultServiceId = services[0]?.id ?? '';
       panels.forEach((panel) => {
         const isTarget = panel.id === targetId;
         if (isTarget) {
-          targetPanel = panel;
-          console.log('Found target panel:', targetId, 'currently open:', panel.open);
+          targetPanel = panel as HTMLDetailsElement;
+          console.log('Found target panel:', targetId, 'currently open:', targetPanel.open);
           // Force the panel open
-          panel.open = true;
+          targetPanel.open = true;
           // Trigger a reflow to ensure the open state is applied
-          void panel.offsetHeight;
+          void targetPanel.offsetHeight;
           console.log('Panel opened:', targetId);
         } else if (mediaDesktop.matches && !force) {
-          panel.open = false;
+          (panel as HTMLDetailsElement).open = false;
         }
       });
 
@@ -623,6 +630,7 @@ const defaultServiceId = services[0]?.id ?? '';
           // The details element needs time to render its content
           const attemptScroll = (retries = 3) => {
             setTimeout(() => {
+              if (!targetPanel) return;
               // Check if element is actually visible and has dimensions
               const rect = targetPanel.getBoundingClientRect();
               console.log('Panel rect:', rect.top, rect.height, 'retries left:', retries);
@@ -654,29 +662,51 @@ const defaultServiceId = services[0]?.id ?? '';
       }
     };
 
+    // Add click handlers to links
+    const linkHandlers = new Map<Element, (event: Event) => void>();
     links.forEach((link) => {
-      link.addEventListener('click', (event) => {
-        const targetId = link.dataset.serviceLink;
+      const handler = (event: Event) => {
+        const targetId = (link as HTMLElement).dataset.serviceLink;
         if (!targetId) return;
 
         if (mediaDesktop.matches) {
           event.preventDefault();
           openPanel(targetId, { force: true });
         }
+      };
+      link.addEventListener('click', handler);
+      linkHandlers.set(link, handler);
+    });
+
+    // Cleanup function for link handlers
+    cleanupFunctions.push(() => {
+      linkHandlers.forEach((handler, link) => {
+        link.removeEventListener('click', handler);
       });
     });
 
+    // Add toggle handlers to panels
+    const panelHandlers = new Map<Element, () => void>();
     panels.forEach((panel) => {
-      panel.addEventListener('toggle', () => {
+      const handler = () => {
         // Close other panels when one is opened (on all screen sizes)
-        if (panel.open) {
+        if ((panel as HTMLDetailsElement).open) {
           panels.forEach((other) => {
             if (other !== panel) {
-              other.open = false;
+              (other as HTMLDetailsElement).open = false;
             }
           });
           setActiveLink(panel.id);
         }
+      };
+      panel.addEventListener('toggle', handler);
+      panelHandlers.set(panel, handler);
+    });
+
+    // Cleanup function for panel handlers
+    cleanupFunctions.push(() => {
+      panelHandlers.forEach((handler, panel) => {
+        panel.removeEventListener('toggle', handler);
       });
     });
 
@@ -691,11 +721,7 @@ const defaultServiceId = services[0]?.id ?? '';
       }
     };
 
-    // Listen for hash changes
-    window.addEventListener('hashchange', handleHashChange);
-
-    // Also listen for popstate (browser back/forward)
-    window.addEventListener('popstate', () => {
+    const handlePopstate = () => {
       const hash = window.location.hash?.replace('#', '');
       console.log('Popstate event, hash:', hash);
       if (hash) {
@@ -703,6 +729,16 @@ const defaultServiceId = services[0]?.id ?? '';
           openPanel(hash, { force: true, scroll: true });
         }, 50);
       }
+    };
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handlePopstate);
+
+    // Cleanup function for window handlers
+    cleanupFunctions.push(() => {
+      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('popstate', handlePopstate);
     });
 
     // Handle initial hash on page load
@@ -721,7 +757,7 @@ const defaultServiceId = services[0]?.id ?? '';
           // Double-check after another delay to ensure it worked
           setTimeout(() => {
             const targetPanel = document.getElementById(initialHash);
-            if (targetPanel && !targetPanel.open) {
+            if (targetPanel && !(targetPanel as HTMLDetailsElement).open) {
               console.log('Panel was not open, retrying:', initialHash);
               openPanel(initialHash, { force: true, scroll: true });
             }
@@ -734,12 +770,6 @@ const defaultServiceId = services[0]?.id ?? '';
     }
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initServiceNavigation);
-  } else {
-    initServiceNavigation();
-  }
-
   // Handle subsection accordion behavior (close others when one opens)
   const initSubsectionAccordions = () => {
     // Find all service panels
@@ -750,26 +780,30 @@ const defaultServiceId = services[0]?.id ?? '';
       const subsectionDetails = Array.from(panel.querySelectorAll('details'));
 
       subsectionDetails.forEach((detail) => {
-        detail.addEventListener('toggle', () => {
-          if (detail.open) {
+        const handler = () => {
+          if ((detail as HTMLDetailsElement).open) {
             // Close all other subsection details within the same panel
             subsectionDetails.forEach((other) => {
               if (other !== detail) {
-                other.open = false;
+                (other as HTMLDetailsElement).open = false;
               }
             });
           }
-        });
+        };
+        detail.addEventListener('toggle', handler);
       });
     });
   };
 
-  // Initialize subsection accordions after DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSubsectionAccordions);
-  } else {
+  // Initialize both functions
+  const initAll = () => {
+    initServiceNavigation();
     initSubsectionAccordions();
-  }
+  };
+
+  // Run on initial page load and after view transitions
+  initAll();
+  document.addEventListener('astro:page-load', initAll);
 </script>
 
 <style>
