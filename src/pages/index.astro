@@ -444,32 +444,59 @@ const metadata = {
 
       <script is:inline>
         (function () {
+          // Store handlers globally within this scope so they can be properly managed
+          let handlePrevClick = null;
+          let handleNextClick = null;
+
           const initServicesCarousel = () => {
             const carousel = document.getElementById('services-carousel');
             const prevBtn = document.getElementById('services-prev');
             const nextBtn = document.getElementById('services-next');
 
-            if (carousel && prevBtn && nextBtn) {
-              const scrollAmount = 370; // Card width + gap
-
-              prevBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const currentScroll = carousel.scrollLeft;
-                carousel.scrollTo({
-                  left: currentScroll - scrollAmount,
-                  behavior: 'smooth',
-                });
-              });
-
-              nextBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const currentScroll = carousel.scrollLeft;
-                carousel.scrollTo({
-                  left: currentScroll + scrollAmount,
-                  behavior: 'smooth',
-                });
-              });
+            if (!carousel || !prevBtn || !nextBtn) {
+              return;
             }
+
+            // Check if already initialized to prevent duplicate listeners
+            if (carousel.dataset.carouselInitialized === 'true') {
+              return;
+            }
+
+            const scrollAmount = 370; // Card width + gap
+
+            // Remove any existing listeners before adding new ones
+            if (handlePrevClick) {
+              prevBtn.removeEventListener('click', handlePrevClick);
+            }
+            if (handleNextClick) {
+              nextBtn.removeEventListener('click', handleNextClick);
+            }
+
+            // Define handlers
+            handlePrevClick = (e) => {
+              e.preventDefault();
+              const currentScroll = carousel.scrollLeft;
+              carousel.scrollTo({
+                left: currentScroll - scrollAmount,
+                behavior: 'smooth',
+              });
+            };
+
+            handleNextClick = (e) => {
+              e.preventDefault();
+              const currentScroll = carousel.scrollLeft;
+              carousel.scrollTo({
+                left: currentScroll + scrollAmount,
+                behavior: 'smooth',
+              });
+            };
+
+            // Add new listeners
+            prevBtn.addEventListener('click', handlePrevClick);
+            nextBtn.addEventListener('click', handleNextClick);
+
+            // Mark as initialized
+            carousel.dataset.carouselInitialized = 'true';
           };
 
           // Initialize when DOM is ready
@@ -478,6 +505,16 @@ const metadata = {
           } else {
             initServicesCarousel();
           }
+
+          // Also listen for page show event (fires when navigating back via browser history)
+          window.addEventListener('pageshow', (event) => {
+            // Reset initialization flag when page is shown from cache
+            const carousel = document.getElementById('services-carousel');
+            if (carousel && event.persisted) {
+              carousel.dataset.carouselInitialized = 'false';
+              initServicesCarousel();
+            }
+          });
         })();
       </script>
 
