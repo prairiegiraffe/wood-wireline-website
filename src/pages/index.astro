@@ -445,29 +445,30 @@ const metadata = {
       <script is:inline>
         (function () {
           const initServicesCarousel = () => {
-            console.log('Initializing services carousel...');
             const carousel = document.getElementById('services-carousel');
             const prevBtn = document.getElementById('services-prev');
             const nextBtn = document.getElementById('services-next');
 
-            console.log('Carousel elements:', { carousel, prevBtn, nextBtn });
-
             if (carousel && prevBtn && nextBtn) {
               const scrollAmount = 370; // Card width + gap
 
-              prevBtn.addEventListener('click', () => {
-                console.log('Previous button clicked');
-                carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+              prevBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const currentScroll = carousel.scrollLeft;
+                carousel.scrollTo({
+                  left: currentScroll - scrollAmount,
+                  behavior: 'smooth'
+                });
               });
 
-              nextBtn.addEventListener('click', () => {
-                console.log('Next button clicked');
-                carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+              nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const currentScroll = carousel.scrollLeft;
+                carousel.scrollTo({
+                  left: currentScroll + scrollAmount,
+                  behavior: 'smooth'
+                });
               });
-
-              console.log('Services carousel initialized successfully');
-            } else {
-              console.warn('Services carousel elements not found');
             }
           };
 
