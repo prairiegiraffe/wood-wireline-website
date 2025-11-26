@@ -442,80 +442,52 @@ const metadata = {
         </a>
       </div>
 
-      <script is:inline>
-        (function () {
-          // Store handlers globally within this scope so they can be properly managed
-          let handlePrevClick = null;
-          let handleNextClick = null;
+      <script>
+        // Use a function to initialize carousel that can be called multiple times safely
+        function initServicesCarousel() {
+          const carousel = document.getElementById('services-carousel');
+          const prevBtn = document.getElementById('services-prev');
+          const nextBtn = document.getElementById('services-next');
 
-          const initServicesCarousel = () => {
-            const carousel = document.getElementById('services-carousel');
-            const prevBtn = document.getElementById('services-prev');
-            const nextBtn = document.getElementById('services-next');
-
-            if (!carousel || !prevBtn || !nextBtn) {
-              return;
-            }
-
-            // Check if already initialized to prevent duplicate listeners
-            if (carousel.dataset.carouselInitialized === 'true') {
-              return;
-            }
-
-            const scrollAmount = 370; // Card width + gap
-
-            // Remove any existing listeners before adding new ones
-            if (handlePrevClick) {
-              prevBtn.removeEventListener('click', handlePrevClick);
-            }
-            if (handleNextClick) {
-              nextBtn.removeEventListener('click', handleNextClick);
-            }
-
-            // Define handlers
-            handlePrevClick = (e) => {
-              e.preventDefault();
-              const currentScroll = carousel.scrollLeft;
-              carousel.scrollTo({
-                left: currentScroll - scrollAmount,
-                behavior: 'smooth',
-              });
-            };
-
-            handleNextClick = (e) => {
-              e.preventDefault();
-              const currentScroll = carousel.scrollLeft;
-              carousel.scrollTo({
-                left: currentScroll + scrollAmount,
-                behavior: 'smooth',
-              });
-            };
-
-            // Add new listeners
-            prevBtn.addEventListener('click', handlePrevClick);
-            nextBtn.addEventListener('click', handleNextClick);
-
-            // Mark as initialized
-            carousel.dataset.carouselInitialized = 'true';
-          };
-
-          // Initialize when DOM is ready
-          if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initServicesCarousel);
-          } else {
-            initServicesCarousel();
+          if (!carousel || !prevBtn || !nextBtn) {
+            return;
           }
 
-          // Also listen for page show event (fires when navigating back via browser history)
-          window.addEventListener('pageshow', (event) => {
-            // Reset initialization flag when page is shown from cache
-            const carousel = document.getElementById('services-carousel');
-            if (carousel && event.persisted) {
-              carousel.dataset.carouselInitialized = 'false';
-              initServicesCarousel();
-            }
-          });
-        })();
+          const scrollAmount = 370; // Card width + gap
+
+          // Define handlers
+          const handlePrevClick = (e) => {
+            e.preventDefault();
+            const currentScroll = carousel.scrollLeft;
+            carousel.scrollTo({
+              left: currentScroll - scrollAmount,
+              behavior: 'smooth',
+            });
+          };
+
+          const handleNextClick = (e) => {
+            e.preventDefault();
+            const currentScroll = carousel.scrollLeft;
+            carousel.scrollTo({
+              left: currentScroll + scrollAmount,
+              behavior: 'smooth',
+            });
+          };
+
+          // Remove any existing listeners before adding new ones (cleanup)
+          // We clone and replace to remove all event listeners
+          const newPrevBtn = prevBtn.cloneNode(true);
+          const newNextBtn = nextBtn.cloneNode(true);
+          prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
+          nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+
+          // Add event listeners to the new buttons
+          newPrevBtn.addEventListener('click', handlePrevClick);
+          newNextBtn.addEventListener('click', handleNextClick);
+        }
+
+        // Initialize on page load
+        initServicesCarousel();
       </script>
 
       <style is:inline>
