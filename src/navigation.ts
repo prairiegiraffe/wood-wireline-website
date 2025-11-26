@@ -17,7 +17,6 @@ export const headerData: HeaderProps = {
       links: [
         { text: 'All Services', href: getPermalink('/services') },
         { text: 'E-Line', href: '/services/#e-line' },
-        { text: 'Third Party Services', href: '/services/#third-party' },
         { text: 'Slickline', href: '/services/#slickline' },
         { text: 'Slick E-Line', href: '/services/#slick-eline' },
         { text: 'Swabbing', href: '/services/#swabbing' },
