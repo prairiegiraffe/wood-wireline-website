@@ -267,25 +267,107 @@ const metadata = {
   </section>
 </Layout>
 
-<script is:inline>
-  const form = document.getElementById('applicationForm');
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
+<script>
+  const form = document.getElementById('applicationForm') as HTMLFormElement | null;
+
+  async function submitApplication(form: HTMLFormElement) {
+    const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    const originalButtonText = submitButton?.textContent || 'Submit Application';
+
+    try {
+      // Disable button and show loading state
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Submitting...';
+      }
 
       // Get form data
       const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
+      const resumeFile = formData.get('resume') as File;
 
-      console.log('Application submitted:', data);
+      // Convert resume to base64 if it exists
+      let resumeData = null;
+      if (resumeFile && resumeFile.size > 0) {
+        const base64 = await fileToBase64(resumeFile);
+        resumeData = {
+          filename: resumeFile.name,
+          content: base64,
+          type: resumeFile.type,
+          size: resumeFile.size,
+        };
+      }
 
-      // Show success message
+      // Build submission data
+      const data: Record<string, any> = {};
+      formData.forEach((value, key) => {
+        if (key !== 'resume') {
+          data[key] = value.toString();
+        }
+      });
+
+      // Add metadata
+      data.resume = resumeData;
+      data.timestamp = new Date().toISOString();
+      data.source = 'Wood Wireline Application Form';
+      data.page_url = window.location.href;
+
+      // Get webhook URL from environment variable
+      const webhookUrl = import.meta.env.PUBLIC_MAKE_APPLICATION_WEBHOOK_URL;
+
+      if (!webhookUrl) {
+        throw new Error('Webhook URL not configured');
+      }
+
+      // Send to Make.com
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit application');
+      }
+
+      // Success!
       alert(
-        'Thank you for your application!\n\nWe have received your submission and will review it carefully. If your qualifications match our current openings, we will contact you to schedule an interview.\n\nFor immediate inquiries, please call us at 307-682-0143.\n\nNote: Form submission is not yet configured. Please email your resume to careers@woodwireline.com'
+        'Thank you for your application!\n\nWe have received your submission and will review it carefully. If your qualifications match our current openings, we will contact you to schedule an interview.\n\nFor immediate inquiries, please call us at 307-682-0143.'
       );
-
-      // Reset form
       form.reset();
+    } catch (error) {
+      console.error('Application submission error:', error);
+      alert(
+        'There was an error submitting your application. Please try again or email your resume to careers@woodwireline.com or call us at 307-682-0143.'
+      );
+    } finally {
+      // Re-enable button
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
+      }
+    }
+  }
+
+  function fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const result = reader.result as string;
+        // Remove the data:*/*;base64, prefix
+        const base64 = result.split(',')[1];
+        resolve(base64);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  }
+
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      submitApplication(form);
     });
   }
 </script>

@@ -169,6 +169,69 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
       return true;
     }
 
+    async function submitToMake(form: HTMLFormElement) {
+      const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const originalButtonText = submitButton?.textContent || 'Contact us';
+
+      try {
+        // Disable button and show loading state
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = 'Sending...';
+        }
+
+        // Get form data
+        const formData = new FormData(form);
+        const data: Record<string, string> = {};
+
+        formData.forEach((value, key) => {
+          if (key !== 'disclaimer') {
+            data[key] = value.toString();
+          }
+        });
+
+        // Add timestamp and source
+        data.timestamp = new Date().toISOString();
+        data.source = 'Wood Wireline Contact Form';
+        data.page_url = window.location.href;
+
+        // Get webhook URL from environment variable
+        const webhookUrl = import.meta.env.PUBLIC_MAKE_CONTACT_WEBHOOK_URL;
+
+        if (!webhookUrl) {
+          throw new Error('Webhook URL not configured');
+        }
+
+        // Send to Make.com
+        const response = await fetch(webhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to submit form');
+        }
+
+        // Success! Show message and reset form
+        alert('Thank you for your message! We\'ll get back to you as soon as possible.');
+        form.reset();
+      } catch (error) {
+        console.error('Form submission error:', error);
+        alert(
+          'There was an error submitting your form. Please try again or call us directly at 307-682-0143.'
+        );
+      } finally {
+        // Re-enable button
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = originalButtonText;
+        }
+      }
+    }
+
     // Real-time validation on blur
     form.querySelectorAll('input, textarea').forEach((field) => {
       const input = field as HTMLInputElement | HTMLTextAreaElement;
@@ -220,12 +283,8 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
       }
 
       if (isValid) {
-        // Form is valid - here you would typically submit to a backend
-        // For now, we'll show a success message
-        alert(
-          'Thank you for your message! We will get back to you soon.\n\nNote: Form submission is not yet configured. Please contact us directly at 307-682-0143'
-        );
-        form.reset();
+        // Form is valid - submit to Make.com webhook
+        submitToMake(form);
       } else {
         // Focus first invalid field
         const firstInvalid = form.querySelector('[aria-invalid="true"]') as HTMLElement;
