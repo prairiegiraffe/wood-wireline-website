@@ -96,7 +96,7 @@ export const footerData = {
     {
       ariaLabel: 'LinkedIn',
       icon: 'tabler:brand-linkedin',
-      href: 'https://www.linkedin.com/company/wood-wireline-service-inc/?viewAsMember=true',
+      href: 'https://www.linkedin.com/company/wood-wireline-service-inc/',
     },
     { ariaLabel: 'YouTube', icon: 'tabler:brand-youtube', href: 'https://www.youtube.com/@WoodWireline' },
     { ariaLabel: 'Linktree', icon: 'tabler:tree', href: '#' },
