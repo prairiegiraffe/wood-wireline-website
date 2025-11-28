@@ -1,6 +1,7 @@
 # Make.com Webhook Integration Setup
 
 ## Overview
+
 Both the Contact Form and Application Form now send submissions to Make.com webhooks, which can then route the data to Google Sheets for both the client and your white-label partner.
 
 ## Setup Instructions
@@ -8,6 +9,7 @@ Both the Contact Form and Application Form now send submissions to Make.com webh
 ### 1. Get Your Make.com Webhook URL
 
 In Make.com:
+
 1. Create a new scenario
 2. Add a "Custom Webhook" trigger module
 3. Click "Add" to create a new webhook
@@ -113,6 +115,7 @@ Webhook → Router
 ### Decoding Resume in Make.com
 
 The resume file is sent as base64. In Make.com:
+
 1. Use "Google Drive - Upload a File" module
 2. Map the data:
    - File Name: `{{resume.filename}}`
@@ -122,12 +125,14 @@ The resume file is sent as base64. In Make.com:
 ## Testing
 
 ### Local Testing
+
 1. Set up your `.env` file with webhook URLs
 2. Run `npm run dev`
 3. Fill out and submit the contact or application form
 4. Check Make.com scenario history to see the data
 
 ### Production Testing
+
 1. Deploy to Cloudflare Pages with environment variables set
 2. Submit a test form on the live site
 3. Verify data appears in your Google Sheets
@@ -135,16 +140,19 @@ The resume file is sent as base64. In Make.com:
 ## Troubleshooting
 
 **Forms not submitting:**
+
 - Check browser console for errors
 - Verify webhook URLs are correct
 - Check Make.com scenario is active
 
 **Environment variables not working:**
+
 - Make sure variables start with `PUBLIC_` prefix
 - Verify they're set in Cloudflare Pages
 - Redeploy after adding variables
 
 **Resume not uploading:**
+
 - Check file size (max 5MB enforced by form)
 - Verify Make.com can handle the base64 data
 - Check Google Drive permissions in Make.com
@@ -152,6 +160,7 @@ The resume file is sent as base64. In Make.com:
 ## Support
 
 For issues with:
+
 - Form functionality: Check browser console
 - Make.com integration: Check scenario execution history
 - Environment variables: Verify Cloudflare Pages settings

@@ -286,7 +286,7 @@ const metadata = {
       const resumeFile = formData.get('resume') as File;
 
       // Convert resume to base64 if it exists
-      let resumeData = null;
+      let resumeData: { filename: string; content: string; type: string; size: number } | null = null;
       if (resumeFile && resumeFile.size > 0) {
         const base64 = await fileToBase64(resumeFile);
         resumeData = {
@@ -298,6 +298,7 @@ const metadata = {
       }
 
       // Build submission data
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const data: Record<string, any> = {};
       formData.forEach((value, key) => {
         if (key !== 'resume') {

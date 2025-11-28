@@ -217,13 +217,11 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
         }
 
         // Success! Show message and reset form
-        alert('Thank you for your message! We\'ll get back to you as soon as possible.');
+        alert("Thank you for your message! We'll get back to you as soon as possible.");
         form.reset();
       } catch (error) {
         console.error('Form submission error:', error);
-        alert(
-          'There was an error submitting your form. Please try again or call us directly at 307-682-0143.'
-        );
+        alert('There was an error submitting your form. Please try again or call us directly at 307-682-0143.');
       } finally {
         // Re-enable button
         if (submitButton) {
