@@ -190,13 +190,14 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
           }
         });
 
-        // Add timestamp and source
+        // Add timestamp, source, and form type
+        data.formType = 'contact';
         data.timestamp = new Date().toISOString();
         data.source = 'Wood Wireline Contact Form';
         data.page_url = window.location.href;
 
         // Get webhook URL from environment variable
-        const webhookUrl = import.meta.env.PUBLIC_MAKE_CONTACT_WEBHOOK_URL;
+        const webhookUrl = import.meta.env.PUBLIC_MAKE_WEBHOOK_URL;
 
         if (!webhookUrl) {
           throw new Error('Webhook URL not configured');

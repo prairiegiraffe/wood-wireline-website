@@ -5,28 +5,23 @@ Both the Contact Form and Application Form now send submissions to Make.com webh
 
 ## Setup Instructions
 
-### 1. Get Your Make.com Webhook URLs
+### 1. Get Your Make.com Webhook URL
 
 In Make.com:
-1. Create a new scenario (or use existing)
-2. Add a "Webhook" trigger module
+1. Create a new scenario
+2. Add a "Custom Webhook" trigger module
 3. Click "Add" to create a new webhook
 4. Copy the webhook URL
 
-You'll need TWO webhooks (or you can use the same one for both):
-- One for Contact Form submissions
-- One for Application Form submissions
+**Note:** You only need ONE webhook URL. Both forms will send to the same webhook and be routed based on the `formType` field.
 
 ### 2. Configure Environment Variables
 
-Create a `.env` file in the project root with your webhook URLs:
+Create a `.env` file in the project root with your webhook URL:
 
 ```bash
-# Contact Form Webhook
-PUBLIC_MAKE_CONTACT_WEBHOOK_URL=https://hook.us2.make.com/your-contact-webhook-url
-
-# Application Form Webhook
-PUBLIC_MAKE_APPLICATION_WEBHOOK_URL=https://hook.us2.make.com/your-application-webhook-url
+# Make.com Webhook URL (handles both contact and application forms)
+PUBLIC_MAKE_WEBHOOK_URL=https://hook.us2.make.com/your-webhook-url-here
 ```
 
 **Important:** Never commit the `.env` file to git (it's already in `.gitignore`)
@@ -38,9 +33,8 @@ Since this is a static site, the environment variables need to be added to Cloud
 1. Go to your Cloudflare Pages dashboard
 2. Select your project
 3. Go to Settings → Environment variables
-4. Add the following variables for Production:
-   - `PUBLIC_MAKE_CONTACT_WEBHOOK_URL` = your contact webhook URL
-   - `PUBLIC_MAKE_APPLICATION_WEBHOOK_URL` = your application webhook URL
+4. Add the following variable for Production:
+   - `PUBLIC_MAKE_WEBHOOK_URL` = your webhook URL
 5. Click "Save"
 6. Redeploy your site
 
@@ -50,6 +44,7 @@ Since this is a static site, the environment variables need to be added to Cloud
 
 ```json
 {
+  "formType": "contact",
   "name": "John Smith",
   "email": "john@example.com",
   "phone": "307-555-1234",
@@ -65,6 +60,7 @@ Since this is a static site, the environment variables need to be added to Cloud
 
 ```json
 {
+  "formType": "careers",
   "name": "Jane Doe",
   "email": "jane@example.com",
   "phone": "307-555-5678",
@@ -84,22 +80,35 @@ Since this is a static site, the environment variables need to be added to Cloud
 }
 ```
 
+**Key Field:** Both submissions include `formType` which is either `"contact"` or `"careers"` for routing in Make.com.
+
 ## Make.com Scenario Setup
 
-### Recommended Flow
+### Recommended Flow (Single Webhook with Router)
 
-**For Contact Form:**
-1. Webhook Trigger
-2. Google Sheets - Add Row (Client Sheet)
-3. Google Sheets - Add Row (Partner Sheet)
-4. Optional: Email notification to team
+1. **Custom Webhook** - Receives all form submissions
+2. **Router** - Routes based on `formType` field
 
-**For Application Form:**
-1. Webhook Trigger
-2. Google Drive - Upload File (from base64 resume data)
-3. Google Sheets - Add Row (Client Sheet) with link to resume
-4. Google Sheets - Add Row (Partner Sheet) with link to resume
-5. Optional: Email notification to HR
+   **Route 1: Contact Form** (`formType` = "contact")
+   - Filter: `formType` equals `contact`
+   - Google Sheets - Add Row (Client Contact Sheet)
+   - Google Sheets - Add Row (Partner Contact Sheet)
+   - Optional: Email notification to sales team
+
+   **Route 2: Application Form** (`formType` = "careers")
+   - Filter: `formType` equals `careers`
+   - Google Drive - Upload File (from base64 resume)
+   - Google Sheets - Add Row (Client Careers Sheet) with resume link
+   - Google Sheets - Add Row (Partner Careers Sheet) with resume link
+   - Optional: Email notification to HR
+
+### Example Make.com Router Setup
+
+```
+Webhook → Router
+           ├─ [formType = "contact"] → Contact Flow
+           └─ [formType = "careers"] → Careers Flow
+```
 
 ### Decoding Resume in Make.com
 

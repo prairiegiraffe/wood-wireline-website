@@ -307,12 +307,13 @@ const metadata = {
 
       // Add metadata
       data.resume = resumeData;
+      data.formType = 'careers';
       data.timestamp = new Date().toISOString();
       data.source = 'Wood Wireline Application Form';
       data.page_url = window.location.href;
 
       // Get webhook URL from environment variable
-      const webhookUrl = import.meta.env.PUBLIC_MAKE_APPLICATION_WEBHOOK_URL;
+      const webhookUrl = import.meta.env.PUBLIC_MAKE_WEBHOOK_URL;
 
       if (!webhookUrl) {
         throw new Error('Webhook URL not configured');
