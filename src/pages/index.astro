@@ -78,11 +78,9 @@ const metadata = {
           playPromise
             .then(() => {
               // Video is playing
-              console.log('Video autoplay started');
             })
             .catch((_error) => {
-              // Autoplay was prevented
-              console.log('Video autoplay prevented, attempting fallback');
+              // Autoplay was prevented, try on user interaction
 
               // Try playing on user interaction
               const playOnInteraction = () => {

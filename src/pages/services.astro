@@ -575,7 +575,6 @@ const defaultServiceId = services[0]?.id ?? '';
     const panels = Array.from(document.querySelectorAll('[data-service-panel]'));
 
     if (!links.length || !panels.length) {
-      console.warn('Service navigation: links or panels not found');
       return;
     }
 
@@ -594,7 +593,6 @@ const defaultServiceId = services[0]?.id ?? '';
     };
 
     const openPanel = (targetId: string, { force = false, scroll = false } = {}) => {
-      console.log('openPanel called:', targetId, 'scroll:', scroll, 'force:', force);
       let targetPanel: HTMLDetailsElement | null = null;
 
       // First pass: close all panels if force is true
@@ -611,12 +609,10 @@ const defaultServiceId = services[0]?.id ?? '';
         const isTarget = panel.id === targetId;
         if (isTarget) {
           targetPanel = panel as HTMLDetailsElement;
-          console.log('Found target panel:', targetId, 'currently open:', targetPanel.open);
           // Force the panel open
           targetPanel.open = true;
           // Trigger a reflow to ensure the open state is applied
           void targetPanel.offsetHeight;
-          console.log('Panel opened:', targetId);
         } else if (mediaDesktop.matches && !force) {
           (panel as HTMLDetailsElement).open = false;
         }
@@ -625,40 +621,24 @@ const defaultServiceId = services[0]?.id ?? '';
       if (targetPanel) {
         setActiveLink(targetId);
         if (scroll) {
-          console.log('Preparing to scroll to:', targetId);
           // Wait for the details element to fully expand before scrolling
-          // The details element needs time to render its content
           const attemptScroll = (retries = 3) => {
             setTimeout(() => {
               if (!targetPanel) return;
-              // Check if element is actually visible and has dimensions
               const rect = targetPanel.getBoundingClientRect();
-              console.log('Panel rect:', rect.top, rect.height, 'retries left:', retries);
 
-              // Only scroll if the element has been rendered and has height
               if (rect.height > 0) {
-                console.log('Scrolling to panel:', targetId);
-                // Scroll with offset to account for sticky header
-                const yOffset = -100; // Offset for header
+                const yOffset = -100;
                 const y = rect.top + window.pageYOffset + yOffset;
-
-                // Ensure we don't scroll to negative positions
                 const scrollPosition = Math.max(0, y);
-
                 window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
-                console.log('Scroll initiated to position:', scrollPosition);
               } else if (retries > 0) {
-                console.warn('Panel not visible yet, retrying scroll');
                 attemptScroll(retries - 1);
-              } else {
-                console.error('Failed to scroll to panel after multiple retries');
               }
             }, 150);
           };
           attemptScroll();
         }
-      } else {
-        console.warn('Target panel not found:', targetId);
       }
     };
 
@@ -712,7 +692,6 @@ const defaultServiceId = services[0]?.id ?? '';
 
     const handleHashChange = () => {
       const hash = window.location.hash?.replace('#', '');
-      console.log('Hash changed:', hash);
       if (hash) {
         // Small delay to ensure the URL has updated
         setTimeout(() => {
@@ -723,7 +702,6 @@ const defaultServiceId = services[0]?.id ?? '';
 
     const handlePopstate = () => {
       const hash = window.location.hash?.replace('#', '');
-      console.log('Popstate event, hash:', hash);
       if (hash) {
         setTimeout(() => {
           openPanel(hash, { force: true, scroll: true });
@@ -743,29 +721,22 @@ const defaultServiceId = services[0]?.id ?? '';
 
     // Handle initial hash on page load
     const initialHash = window.location.hash?.replace('#', '');
-    console.log('Initial hash on load:', initialHash);
     if (initialHash) {
-      // Add a delay to ensure DOM is ready and images/content are loaded
-      console.log('Will open panel in 800ms:', initialHash);
-
       // Use a combination of requestAnimationFrame and setTimeout for better reliability
       requestAnimationFrame(() => {
         setTimeout(() => {
-          console.log('Timeout fired, opening panel:', initialHash);
           openPanel(initialHash, { force: true, scroll: true });
 
           // Double-check after another delay to ensure it worked
           setTimeout(() => {
             const targetPanel = document.getElementById(initialHash);
             if (targetPanel && !(targetPanel as HTMLDetailsElement).open) {
-              console.log('Panel was not open, retrying:', initialHash);
               openPanel(initialHash, { force: true, scroll: true });
             }
           }, 200);
         }, 600);
       });
     } else if (panels[0]) {
-      console.log('No hash, opening first panel');
       openPanel(panels[0].id, { force: true });
     }
   };
