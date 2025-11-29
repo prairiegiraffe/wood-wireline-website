@@ -170,9 +170,6 @@ function Terrain() {
       }
       heightmapStats = { min, max };
 
-      console.log('✅ Heightmap loaded:', img.width, 'x', img.height);
-      console.log('📈 Heightmap range:', min, 'to', max);
-
       // Create colorized texture from heightmap
       const colorCanvas = document.createElement('canvas');
       colorCanvas.width = img.width;
@@ -221,16 +218,11 @@ function Terrain() {
       }
 
       colorCtx.putImageData(imageData, 0, 0);
-      console.log('🎨 Colorized sample:', imageData.data[0], imageData.data[1], imageData.data[2]);
-      console.log('✅ Colorized texture created');
-      const topLeft = colorCtx.getImageData(0, 0, 1, 1).data;
-      console.log('🧪 Canvas top-left pixel:', topLeft[0], topLeft[1], topLeft[2]);
 
       const texture = new THREE.CanvasTexture(colorCanvas);
       if (typeof window !== 'undefined') {
         window.__terrainColorCanvas = colorCanvas;
         window.__terrainColorDataUrl = colorCanvas.toDataURL('image/png');
-        console.log('🧪 Debug texture URL preview:', window.__terrainColorDataUrl.slice(0, 80), '...');
       }
       texture.colorSpace = THREE.SRGBColorSpace;
       texture.wrapS = THREE.ClampToEdgeWrapping;
@@ -238,9 +230,6 @@ function Terrain() {
       texture.flipY = false; // THREE.js flips textures by default, we want it NOT flipped
       texture.anisotropy = 8;
       texture.needsUpdate = true;
-
-      console.log('🎨 Texture created:', texture);
-      console.log('📊 Canvas dimensions:', colorCanvas.width, 'x', colorCanvas.height);
 
       // Don't apply the texture - we're using solid color instead
       // setHeightTexture(texture);
