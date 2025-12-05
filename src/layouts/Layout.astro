@@ -39,12 +39,14 @@ const { language, textDirection } = I18N;
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-SXGH03MHQY" is:inline></script>
     <script is:inline>
+      /* eslint-disable prefer-rest-params */
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
       gtag('js', new Date());
       gtag('config', 'G-SXGH03MHQY');
+      /* eslint-enable prefer-rest-params */
     </script>
 
     <!-- Performance optimizations: Preconnect to external domains -->
