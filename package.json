@@ -1,7 +1,7 @@
 {
-  "name": "@onwidget/astrowind",
-  "version": "1.0.0-beta.52",
-  "description": "AstroWind: A free template using Astro 5.0 and Tailwind CSS. Astro starter theme.",
+  "name": "wood-wireline-website",
+  "version": "1.0.0",
+  "description": "Wood Wireline Service Inc - Professional wireline services across the Powder River Basin and beyond. Established 1977.",
   "type": "module",
   "private": true,
   "engines": {
