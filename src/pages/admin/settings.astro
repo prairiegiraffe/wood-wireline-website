@@ -1,0 +1,234 @@
+---
+// Admin Settings / Profile
+// All users can change their password here
+
+import '~/assets/styles/tailwind.css';
+
+export const prerender = false;
+
+const user = Astro.locals.user;
+
+if (!user) {
+  return Astro.redirect('/admin/login');
+}
+
+const isAgency = user.role === 'agency';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings - Admin Dashboard</title>
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-gray-900 text-white shadow-lg">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+          <div class="flex items-center gap-8">
+            <a href="/admin" class="font-bold text-xl">Admin Dashboard</a>
+            <div class="hidden md:flex gap-6">
+              <a href="/admin" class="text-gray-300 hover:text-white">Dashboard</a>
+              <a href="/admin/submissions" class="text-gray-300 hover:text-white">All Submissions</a>
+              {isAgency && <a href="/admin/users" class="text-gray-300 hover:text-white">Users</a>}
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <a href="/admin/settings" class="text-white hover:text-gray-300 text-sm">Settings</a>
+            <span class="text-gray-300 text-sm">
+              {user?.name}
+              {isAgency && <span class="ml-1 text-xs bg-purple-600 px-2 py-0.5 rounded">Agency</span>}
+            </span>
+            <a
+              href="/api/admin/logout"
+              class="text-gray-300 hover:text-white text-sm bg-gray-800 px-3 py-1.5 rounded hover:bg-gray-700"
+            >
+              Logout
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Header -->
+      <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-900">Account Settings</h1>
+        <p class="text-gray-600">Manage your account and security settings.</p>
+      </div>
+
+      <!-- Profile Info -->
+      <div class="bg-white rounded-xl shadow p-6 mb-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Profile Information</h2>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center py-2 border-b border-gray-100">
+            <span class="text-gray-600">Name</span>
+            <span class="font-medium text-gray-900">{user.name}</span>
+          </div>
+          <div class="flex justify-between items-center py-2 border-b border-gray-100">
+            <span class="text-gray-600">Email</span>
+            <span class="font-medium text-gray-900">{user.email}</span>
+          </div>
+          {/* Only show role/tenant info to agency users - company users don't need to see this */}
+          {isAgency && (
+            <>
+              <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                <span class="text-gray-600">Role</span>
+                <span class="inline-flex px-2 py-1 text-xs font-medium rounded bg-purple-100 text-purple-800">
+                  {user.role}
+                </span>
+              </div>
+              {user.tenant_id && (
+                <div class="flex justify-between items-center py-2">
+                  <span class="text-gray-600">Tenant</span>
+                  <span class="font-medium text-gray-900">{user.tenant_id}</span>
+                </div>
+              )}
+            </>
+          )}
+          {!isAgency && (
+            <div class="flex justify-between items-center py-2">
+              <span class="text-gray-600">Access Level</span>
+              <span class={`inline-flex px-2 py-1 text-xs font-medium rounded ${
+                user.role === 'admin' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
+              }`}>
+                {user.role === 'admin' ? 'Administrator' : 'Viewer'}
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <!-- Change Password -->
+      <div class="bg-white rounded-xl shadow p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Change Password</h2>
+        <form id="password-form" class="space-y-4">
+          <div>
+            <label for="current-password" class="block text-sm font-medium text-gray-700 mb-1">
+              Current Password
+            </label>
+            <input
+              type="password"
+              id="current-password"
+              name="current_password"
+              required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="••••••••"
+            />
+          </div>
+
+          <div>
+            <label for="new-password" class="block text-sm font-medium text-gray-700 mb-1">
+              New Password
+            </label>
+            <input
+              type="password"
+              id="new-password"
+              name="new_password"
+              required
+              minlength="8"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="••••••••"
+            />
+            <p class="mt-1 text-xs text-gray-500">Minimum 8 characters</p>
+          </div>
+
+          <div>
+            <label for="confirm-password" class="block text-sm font-medium text-gray-700 mb-1">
+              Confirm New Password
+            </label>
+            <input
+              type="password"
+              id="confirm-password"
+              name="confirm_password"
+              required
+              minlength="8"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="••••••••"
+            />
+          </div>
+
+          <div id="password-error" class="hidden p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700"></div>
+          <div id="password-success" class="hidden p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700"></div>
+
+          <div class="pt-4">
+            <button
+              type="submit"
+              id="submit-btn"
+              class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Update Password
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <script>
+      const form = document.getElementById('password-form') as HTMLFormElement;
+      const errorDiv = document.getElementById('password-error') as HTMLDivElement;
+      const successDiv = document.getElementById('password-success') as HTMLDivElement;
+      const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+      const newPasswordInput = document.getElementById('new-password') as HTMLInputElement;
+      const confirmPasswordInput = document.getElementById('confirm-password') as HTMLInputElement;
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorDiv.classList.add('hidden');
+        successDiv.classList.add('hidden');
+
+        const currentPassword = (document.getElementById('current-password') as HTMLInputElement).value;
+        const newPassword = newPasswordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+
+        // Validate passwords match
+        if (newPassword !== confirmPassword) {
+          errorDiv.textContent = 'New passwords do not match';
+          errorDiv.classList.remove('hidden');
+          return;
+        }
+
+        // Validate password length
+        if (newPassword.length < 8) {
+          errorDiv.textContent = 'Password must be at least 8 characters';
+          errorDiv.classList.remove('hidden');
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Updating...';
+
+        try {
+          const response = await fetch('/api/admin/change-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              current_password: currentPassword,
+              new_password: newPassword,
+            }),
+          });
+
+          const result = await response.json();
+
+          if (response.ok && result.success) {
+            successDiv.textContent = 'Password updated successfully!';
+            successDiv.classList.remove('hidden');
+            form.reset();
+          } else {
+            errorDiv.textContent = result.error || 'Failed to update password';
+            errorDiv.classList.remove('hidden');
+          }
+        } catch (error) {
+          errorDiv.textContent = 'An error occurred';
+          errorDiv.classList.remove('hidden');
+        }
+
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Update Password';
+      });
+    </script>
+  </body>
+</html>

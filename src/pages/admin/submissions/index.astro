@@ -1,0 +1,353 @@
+---
+// Admin Submissions List
+// Server-rendered with auth
+
+import '~/assets/styles/tailwind.css';
+
+export const prerender = false;
+
+const env = Astro.locals.runtime?.env;
+const user = Astro.locals.user;
+const DB = env?.DB;
+
+// Get query params
+const url = new URL(Astro.request.url);
+const page = parseInt(url.searchParams.get('page') || '1');
+const status = url.searchParams.get('status') || '';
+const formType = url.searchParams.get('type') || '';
+const search = url.searchParams.get('search') || '';
+const limit = 20;
+const offset = (page - 1) * limit;
+
+// Get submissions
+let submissions: any[] = [];
+let totalCount = 0;
+
+if (DB && user) {
+  try {
+    // Build query based on user role
+    const isAgency = user.role === 'agency';
+    let whereClause = isAgency ? 'is_agency_copy = 1' : `is_agency_copy = 0 AND tenant_id = '${user.tenant_id || env.TENANT_ID || 'default'}'`;
+    whereClause += ' AND deleted_at IS NULL';
+
+    // Add filters
+    if (status) {
+      whereClause += ` AND status = '${status}'`;
+    }
+    if (formType) {
+      whereClause += ` AND form_type = '${formType}'`;
+    }
+    if (search) {
+      const searchEscaped = search.replace(/'/g, "''");
+      whereClause += ` AND (name LIKE '%${searchEscaped}%' OR email LIKE '%${searchEscaped}%' OR phone LIKE '%${searchEscaped}%')`;
+    }
+
+    // Get total count
+    const countResult = await DB.prepare(`SELECT COUNT(*) as count FROM submissions WHERE ${whereClause}`).first();
+    totalCount = (countResult?.count as number) || 0;
+
+    // Get paginated submissions
+    const result = await DB.prepare(`
+      SELECT id, tenant_id, form_type, name, email, phone, status, location, created_at, resume_filename
+      FROM submissions
+      WHERE ${whereClause}
+      ORDER BY created_at DESC
+      LIMIT ? OFFSET ?
+    `)
+      .bind(limit, offset)
+      .all();
+
+    submissions = result.results || [];
+  } catch (error) {
+    console.error('Submissions list error:', error);
+  }
+}
+
+const totalPages = Math.ceil(totalCount / limit);
+
+// Format date helper
+function formatDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+}
+
+// Status badge color
+function getStatusColor(status: string): string {
+  const colors: Record<string, string> = {
+    new: 'bg-yellow-100 text-yellow-800',
+    reviewed: 'bg-blue-100 text-blue-800',
+    contacted: 'bg-purple-100 text-purple-800',
+    hired: 'bg-green-100 text-green-800',
+    archived: 'bg-gray-100 text-gray-800',
+  };
+  return colors[status] || colors.new;
+}
+
+// Build pagination URL
+function pageUrl(pageNum: number): string {
+  const params = new URLSearchParams();
+  params.set('page', pageNum.toString());
+  if (status) params.set('status', status);
+  if (formType) params.set('type', formType);
+  if (search) params.set('search', search);
+  return `/admin/submissions?${params.toString()}`;
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Submissions - Admin Dashboard</title>
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-gray-900 text-white shadow-lg">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+          <div class="flex items-center gap-8">
+            <a href="/admin" class="font-bold text-xl">Admin Dashboard</a>
+            <div class="hidden md:flex gap-6">
+              <a href="/admin" class="text-gray-300 hover:text-white">Dashboard</a>
+              <a href="/admin/submissions" class="text-white hover:text-gray-300">All Submissions</a>
+              {user?.role === 'agency' && <a href="/admin/users" class="text-gray-300 hover:text-white">Users</a>}
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <a href="/admin/settings" class="text-gray-300 hover:text-white text-sm">Settings</a>
+            <span class="text-gray-300 text-sm">
+              {user?.name}
+              {user?.role === 'agency' && <span class="ml-1 text-xs bg-purple-600 px-2 py-0.5 rounded">Agency</span>}
+            </span>
+            <a
+              href="/api/admin/logout"
+              class="text-gray-300 hover:text-white text-sm bg-gray-800 px-3 py-1.5 rounded hover:bg-gray-700"
+            >
+              Logout
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Header -->
+      <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">All Submissions</h1>
+          <p class="text-gray-600">{totalCount} total submission{totalCount !== 1 ? 's' : ''}</p>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white rounded-xl shadow mb-6 p-4">
+        <form method="GET" class="flex flex-col sm:flex-row gap-4">
+          <div class="flex-1">
+            <input
+              type="text"
+              name="search"
+              value={search}
+              placeholder="Search by name, email, or phone..."
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+          <div>
+            <select
+              name="status"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">All Statuses</option>
+              <option value="new" selected={status === 'new'}>New</option>
+              <option value="reviewed" selected={status === 'reviewed'}>Reviewed</option>
+              <option value="contacted" selected={status === 'contacted'}>Contacted</option>
+              <option value="hired" selected={status === 'hired'}>Hired</option>
+              <option value="archived" selected={status === 'archived'}>Archived</option>
+            </select>
+          </div>
+          <div>
+            <select
+              name="type"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">All Types</option>
+              <option value="contact" selected={formType === 'contact'}>Contact</option>
+              <option value="application" selected={formType === 'application'}>Application</option>
+            </select>
+          </div>
+          <div class="flex gap-2">
+            <button
+              type="submit"
+              class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Filter
+            </button>
+            {
+              (status || formType || search) && (
+                <a
+                  href="/admin/submissions"
+                  class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+                >
+                  Clear
+                </a>
+              )
+            }
+          </div>
+        </form>
+      </div>
+
+      <!-- Submissions Table -->
+      <div class="bg-white rounded-xl shadow overflow-hidden">
+        {
+          submissions.length === 0 ? (
+            <div class="px-6 py-12 text-center text-gray-500">
+              <svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+                />
+              </svg>
+              <p>No submissions found</p>
+              {(status || formType || search) && (
+                <a href="/admin/submissions" class="text-blue-600 hover:text-blue-800 text-sm mt-2 inline-block">
+                  Clear filters
+                </a>
+              )}
+            </div>
+          ) : (
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Contact
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Resume
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider" />
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                  {submissions.map((sub) => (
+                    <tr class="hover:bg-gray-50">
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span
+                          class={`inline-flex px-2 py-1 text-xs font-medium rounded ${
+                            sub.form_type === 'application' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+                          }`}
+                        >
+                          {sub.form_type}
+                        </span>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="font-medium text-gray-900">{sub.name}</div>
+                        {sub.location && <div class="text-sm text-gray-500">{sub.location}</div>}
+                      </td>
+                      <td class="px-6 py-4">
+                        <div class="text-gray-900">{sub.email}</div>
+                        {sub.phone && <div class="text-sm text-gray-500">{sub.phone}</div>}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <span class={`inline-flex px-2 py-1 text-xs font-medium rounded ${getStatusColor(sub.status)}`}>
+                          {sub.status}
+                        </span>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        {sub.resume_filename ? (
+                          <span class="inline-flex items-center text-sm text-green-600">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                              />
+                            </svg>
+                            Yes
+                          </span>
+                        ) : (
+                          <span class="text-sm text-gray-400">—</span>
+                        )}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatDate(sub.created_at)}</td>
+                      <td class="px-6 py-4 whitespace-nowrap text-right">
+                        <a
+                          href={`/admin/submissions/${sub.id}`}
+                          class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                        >
+                          View →
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )
+        }
+
+        <!-- Pagination -->
+        {
+          totalPages > 1 && (
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+              <div class="text-sm text-gray-500">
+                Showing {offset + 1} to {Math.min(offset + limit, totalCount)} of {totalCount} results
+              </div>
+              <div class="flex gap-2">
+                {page > 1 && (
+                  <a
+                    href={pageUrl(page - 1)}
+                    class="px-3 py-1 bg-white border border-gray-300 rounded hover:bg-gray-50 text-sm"
+                  >
+                    Previous
+                  </a>
+                )}
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((p) => p === 1 || p === totalPages || Math.abs(p - page) <= 2)
+                  .map((p, idx, arr) => (
+                    <>
+                      {idx > 0 && arr[idx - 1] !== p - 1 && <span class="px-2 text-gray-400">...</span>}
+                      <a
+                        href={pageUrl(p)}
+                        class={`px-3 py-1 rounded text-sm ${
+                          p === page
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-white border border-gray-300 hover:bg-gray-50 text-gray-700'
+                        }`}
+                      >
+                        {p}
+                      </a>
+                    </>
+                  ))}
+                {page < totalPages && (
+                  <a
+                    href={pageUrl(page + 1)}
+                    class="px-3 py-1 bg-white border border-gray-300 rounded hover:bg-gray-50 text-sm"
+                  >
+                    Next
+                  </a>
+                )}
+              </div>
+            </div>
+          )
+        }
+      </div>
+    </main>
+  </body>
+</html>

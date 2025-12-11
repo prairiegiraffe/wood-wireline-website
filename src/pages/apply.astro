@@ -281,56 +281,22 @@ const metadata = {
         submitButton.textContent = 'Submitting...';
       }
 
-      // Get form data
+      // Get form data as multipart (for file upload)
       const formData = new FormData(form);
-      const resumeFile = formData.get('resume') as File;
 
-      // Convert resume to base64 if it exists
-      let resumeData: { filename: string; content: string; type: string; size: number } | null = null;
-      if (resumeFile && resumeFile.size > 0) {
-        const base64 = await fileToBase64(resumeFile);
-        resumeData = {
-          filename: resumeFile.name,
-          content: base64,
-          type: resumeFile.type,
-          size: resumeFile.size,
-        };
-      }
+      // Add page URL
+      formData.append('page_url', window.location.href);
 
-      // Build submission data
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const data: Record<string, any> = {};
-      formData.forEach((value, key) => {
-        if (key !== 'resume') {
-          data[key] = value.toString();
-        }
-      });
-
-      // Add metadata
-      data.resume = resumeData;
-      data.formType = 'careers';
-      data.timestamp = new Date().toISOString();
-      data.source = 'Wood Wireline Application Form';
-      data.page_url = window.location.href;
-
-      // Get webhook URL from environment variable
-      const webhookUrl = import.meta.env.PUBLIC_MAKE_WEBHOOK_URL;
-
-      if (!webhookUrl) {
-        throw new Error('Webhook URL not configured');
-      }
-
-      // Send to Make.com
-      const response = await fetch(webhookUrl, {
+      // Send to our API endpoint
+      const response = await fetch('/api/apply', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+        body: formData,
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to submit application');
+      const result = (await response.json()) as { success?: boolean; error?: string };
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Failed to submit application');
       }
 
       // Success!
@@ -340,8 +306,9 @@ const metadata = {
       form.reset();
     } catch (error) {
       console.error('Application submission error:', error);
+      const message = error instanceof Error ? error.message : 'Unknown error';
       alert(
-        'There was an error submitting your application. Please try again or email your resume to careers@woodwireline.com or call us at 307-682-0143.'
+        `There was an error submitting your application: ${message}\n\nPlease try again or email your resume to careers@woodwireline.com or call us at 307-682-0143.`
       );
     } finally {
       // Re-enable button
@@ -350,20 +317,6 @@ const metadata = {
         submitButton.textContent = originalButtonText;
       }
     }
-  }
-
-  function fileToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        const result = reader.result as string;
-        // Remove the data:*/*;base64, prefix
-        const base64 = result.split(',')[1];
-        resolve(base64);
-      };
-      reader.onerror = (error) => reject(error);
-    });
   }
 
   if (form) {

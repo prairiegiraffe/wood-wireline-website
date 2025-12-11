@@ -25,3 +25,7 @@ pnpm-lock.yaml
 
 # Large video files (exceed GitHub 100MB limit)
 public/background-video.mp4
+
+# Cloudflare local dev
+.dev.vars
+.wrangler/

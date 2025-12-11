@@ -169,7 +169,7 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
       return true;
     }
 
-    async function submitToMake(form: HTMLFormElement) {
+    async function submitContact(form: HTMLFormElement) {
       const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
       const originalButtonText = submitButton?.textContent || 'Contact us';
 
@@ -190,21 +190,11 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
           }
         });
 
-        // Add timestamp, source, and form type
-        data.formType = 'contact';
-        data.timestamp = new Date().toISOString();
-        data.source = 'Wood Wireline Contact Form';
+        // Add page URL
         data.page_url = window.location.href;
 
-        // Get webhook URL from environment variable
-        const webhookUrl = import.meta.env.PUBLIC_MAKE_WEBHOOK_URL;
-
-        if (!webhookUrl) {
-          throw new Error('Webhook URL not configured');
-        }
-
-        // Send to Make.com
-        const response = await fetch(webhookUrl, {
+        // Send to our API endpoint
+        const response = await fetch('/api/contact', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -212,8 +202,10 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
           body: JSON.stringify(data),
         });
 
-        if (!response.ok) {
-          throw new Error('Failed to submit form');
+        const result = (await response.json()) as { success?: boolean; error?: string };
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.error || 'Failed to submit form');
         }
 
         // Success! Show message and reset form
@@ -221,7 +213,8 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
         form.reset();
       } catch (error) {
         console.error('Form submission error:', error);
-        alert('There was an error submitting your form. Please try again or call us directly at 307-682-0143.');
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        alert(`There was an error submitting your form: ${message}\n\nPlease try again or call us directly at 307-682-0143.`);
       } finally {
         // Re-enable button
         if (submitButton) {
@@ -282,8 +275,8 @@ const { inputs, textarea, disclaimer, button = 'Contact us', description = '' } 
       }
 
       if (isValid) {
-        // Form is valid - submit to Make.com webhook
-        submitToMake(form);
+        // Form is valid - submit to API
+        submitContact(form);
       } else {
         // Focus first invalid field
         const firstInvalid = form.querySelector('[aria-invalid="true"]') as HTMLElement;

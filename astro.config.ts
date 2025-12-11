@@ -2,6 +2,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import { defineConfig } from 'astro/config';
+import cloudflare from '@astrojs/cloudflare';
 
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
@@ -23,7 +24,12 @@ const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroInteg
   hasExternalScripts ? (Array.isArray(items) ? items.map((item) => item()) : [items()]) : [];
 
 export default defineConfig({
-  output: 'static',
+  output: 'server', // Server mode with static pages using prerender: true
+  adapter: cloudflare({
+    platformProxy: {
+      enabled: true, // Enable local dev with D1/R2
+    },
+  }),
 
   server: {
     host: true,
