@@ -19,6 +19,22 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const env = locals.runtime.env;
     const { DB } = env;
 
+    // Debug: Check if bindings exist
+    if (!DB) {
+      console.error('Login error: DB binding is missing');
+      return new Response(
+        JSON.stringify({ success: false, error: 'Database not configured' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+    if (!env.JWT_SECRET) {
+      console.error('Login error: JWT_SECRET is missing');
+      return new Response(
+        JSON.stringify({ success: false, error: 'JWT secret not configured' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Parse request body
     const body = (await request.json()) as { email?: string; password?: string };
     const { email, password } = body;
