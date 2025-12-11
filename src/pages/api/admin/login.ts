@@ -122,10 +122,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
     );
   } catch (error) {
     console.error('Login error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return new Response(
       JSON.stringify({
         success: false,
-        error: 'An error occurred during login',
+        error: `Login failed: ${errorMessage}`,
       }),
       {
         status: 500,
