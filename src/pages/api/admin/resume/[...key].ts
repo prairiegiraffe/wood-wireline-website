@@ -38,6 +38,7 @@ export const GET: APIRoute = async ({ params, request, locals, url }) => {
 
     // The key from [...key] route comes as the full path
     const decodedKey = decodeURIComponent(key);
+    console.log('Resume request - raw key:', key, 'decoded:', decodedKey);
 
     // For non-agency/non-superadmin users, verify they have access to this tenant's files
     if (payload.role !== 'agency' && payload.role !== 'superadmin') {
@@ -58,7 +59,8 @@ export const GET: APIRoute = async ({ params, request, locals, url }) => {
     const object = await STORAGE.get(decodedKey);
 
     if (!object) {
-      return new Response('Resume not found', { status: 404 });
+      console.error('Resume not found in R2 - key:', decodedKey);
+      return new Response(`Resume not found: ${decodedKey}`, { status: 404 });
     }
 
     // Get original filename from custom metadata or derive from key
