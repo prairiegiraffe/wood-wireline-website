@@ -111,14 +111,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     const notificationEmails: string[] = (usersToNotify.results || []).map((u: { email: string }) => u.email);
 
-    // Send notification email (don't block response)
-    console.log('Notification emails query returned:', notificationEmails.length, 'recipients:', notificationEmails);
+    // Send notification email
     if (notificationEmails.length > 0) {
       const fromEmail =
         (tenant?.from_email as string) || `noreply@${env.SITE_URL?.replace(/^https?:\/\//, '') || 'example.com'}`;
       const tenantName = (tenant?.name as string) || 'Website';
-
-      console.log('Sending contact notification from:', fromEmail, 'to:', notificationEmails);
 
       const submission: Partial<Submission> = {
         id: clientSubmissionId as number,
@@ -129,44 +126,23 @@ export const POST: APIRoute = async ({ request, locals }) => {
         created_at: new Date().toISOString(),
       };
 
-      // Send email synchronously for debugging
+      // Send email and wait for result to ensure delivery
       const emailResult = await sendContactNotification(env, submission, tenantName, fromEmail, notificationEmails);
-      console.log('Email notification result:', emailResult);
-
-      return new Response(
-        JSON.stringify({
-          success: true,
-          data: { id: clientSubmissionId },
-          debug: {
-            emailSent: emailResult.success,
-            emailError: emailResult.error,
-            messageId: emailResult.messageId,
-            fromEmail,
-            toEmails: notificationEmails,
-          },
-        }),
-        {
-          status: 201,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
-    } else {
-      console.log('No notification emails to send - no recipients matched query');
-      return new Response(
-        JSON.stringify({
-          success: true,
-          data: { id: clientSubmissionId },
-          debug: {
-            emailSent: false,
-            reason: 'No recipients matched notification query',
-          },
-        }),
-        {
-          status: 201,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      if (!emailResult.success) {
+        console.error('Email notification failed:', emailResult.error);
+      }
     }
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        data: { id: clientSubmissionId },
+      }),
+      {
+        status: 201,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   } catch (error) {
     console.error('Contact form error:', error);
     return new Response(

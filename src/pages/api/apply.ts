@@ -235,16 +235,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
         created_at: new Date().toISOString(),
       };
 
-      // Send email asynchronously (don't wait for it)
-      sendApplicationNotification(env, submission, tenantName, fromEmail, notificationEmails)
-        .then((result) => {
-          if (!result.success) {
-            console.error('Email notification failed:', result.error);
-          }
-        })
-        .catch((err) => {
-          console.error('Email notification error:', err);
-        });
+      // Send email and wait for result to ensure delivery
+      const emailResult = await sendApplicationNotification(env, submission, tenantName, fromEmail, notificationEmails);
+      if (!emailResult.success) {
+        console.error('Email notification failed:', emailResult.error);
+      }
     }
 
     return new Response(
