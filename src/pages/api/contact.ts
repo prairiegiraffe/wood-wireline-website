@@ -103,7 +103,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       SELECT email FROM admin_users
       WHERE is_active = 1
         AND (notify_forms = 'contact' OR notify_forms = 'all')
-        AND (tenant_id = ? OR tenant_id IS NULL OR role = 'agency')
+        AND (tenant_id = ? OR tenant_id IS NULL OR tenant_id = '' OR role = 'agency' OR role = 'superadmin')
     `
     )
       .bind(tenantId)
