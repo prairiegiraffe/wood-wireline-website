@@ -1,7 +1,6 @@
-// AWS SES Email Service
-// Sends notification emails when new submissions arrive
+// AWS SES Email Service (Cloudflare Workers compatible)
+// Uses raw AWS SES API with fetch instead of SDK to avoid DOMParser issues
 
-import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 import type { CloudflareEnv, Submission } from './types';
 
 interface EmailOptions {
@@ -13,58 +12,159 @@ interface EmailOptions {
 }
 
 /**
- * Create an SES client with credentials from environment
+ * Create AWS Signature Version 4 for SES API
  */
-function createSESClient(env: CloudflareEnv): SESClient {
-  return new SESClient({
-    region: env.AWS_REGION || 'us-east-1',
-    credentials: {
-      accessKeyId: env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
-    },
-  });
+async function createAWSSignature(
+  method: string,
+  url: URL,
+  body: string,
+  credentials: { accessKeyId: string; secretAccessKey: string },
+  region: string
+): Promise<Record<string, string>> {
+  const service = 'ses';
+  const host = url.hostname;
+  const amzDate = new Date().toISOString().replace(/[:-]|\.\d{3}/g, '');
+  const dateStamp = amzDate.slice(0, 8);
+
+  // Create canonical request
+  const canonicalUri = url.pathname;
+  const canonicalQuerystring = '';
+  const payloadHash = await sha256Hash(body);
+
+  const canonicalHeaders = `content-type:application/x-www-form-urlencoded\nhost:${host}\nx-amz-date:${amzDate}\n`;
+  const signedHeaders = 'content-type;host;x-amz-date';
+
+  const canonicalRequest = [
+    method,
+    canonicalUri,
+    canonicalQuerystring,
+    canonicalHeaders,
+    signedHeaders,
+    payloadHash,
+  ].join('\n');
+
+  // Create string to sign
+  const algorithm = 'AWS4-HMAC-SHA256';
+  const credentialScope = `${dateStamp}/${region}/${service}/aws4_request`;
+  const stringToSign = [algorithm, amzDate, credentialScope, await sha256Hash(canonicalRequest)].join('\n');
+
+  // Calculate signature
+  const signingKey = await getSignatureKey(credentials.secretAccessKey, dateStamp, region, service);
+  const signature = await hmacHex(signingKey, stringToSign);
+
+  // Create authorization header
+  const authorization = `${algorithm} Credential=${credentials.accessKeyId}/${credentialScope}, SignedHeaders=${signedHeaders}, Signature=${signature}`;
+
+  return {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'X-Amz-Date': amzDate,
+    Authorization: authorization,
+  };
+}
+
+async function sha256Hash(message: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hashBuffer))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+async function hmac(key: ArrayBuffer | Uint8Array, message: string): Promise<ArrayBuffer> {
+  const encoder = new TextEncoder();
+  const keyData = key instanceof Uint8Array ? new Uint8Array(key) : new Uint8Array(key);
+  const cryptoKey = await crypto.subtle.importKey('raw', keyData, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  return await crypto.subtle.sign('HMAC', cryptoKey, encoder.encode(message));
+}
+
+async function hmacHex(key: ArrayBuffer, message: string): Promise<string> {
+  const result = await hmac(key, message);
+  return Array.from(new Uint8Array(result))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+async function getSignatureKey(key: string, dateStamp: string, region: string, service: string): Promise<ArrayBuffer> {
+  const encoder = new TextEncoder();
+  const kDate = await hmac(encoder.encode('AWS4' + key), dateStamp);
+  const kRegion = await hmac(kDate, region);
+  const kService = await hmac(kRegion, service);
+  const kSigning = await hmac(kService, 'aws4_request');
+  return kSigning;
 }
 
 /**
- * Send an email using AWS SES
+ * Send an email using AWS SES raw API
  */
 export async function sendEmail(
   env: CloudflareEnv,
   options: EmailOptions
 ): Promise<{ success: boolean; messageId?: string; error?: string }> {
   try {
-    const client = createSESClient(env);
+    const region = env.AWS_REGION || 'us-east-1';
+    const endpoint = `https://email.${region}.amazonaws.com/`;
 
-    const command = new SendEmailCommand({
-      Source: options.from,
-      Destination: {
-        ToAddresses: options.to,
-      },
-      Message: {
-        Subject: {
-          Data: options.subject,
-          Charset: 'UTF-8',
-        },
-        Body: {
-          Html: {
-            Data: options.html,
-            Charset: 'UTF-8',
-          },
-          ...(options.text && {
-            Text: {
-              Data: options.text,
-              Charset: 'UTF-8',
-            },
-          }),
-        },
-      },
+    // Build form data for SES SendEmail action
+    const params = new URLSearchParams();
+    params.append('Action', 'SendEmail');
+    params.append('Version', '2010-12-01');
+    params.append('Source', options.from);
+
+    options.to.forEach((email, index) => {
+      params.append(`Destination.ToAddresses.member.${index + 1}`, email);
     });
 
-    const response = await client.send(command);
+    params.append('Message.Subject.Data', options.subject);
+    params.append('Message.Subject.Charset', 'UTF-8');
+    params.append('Message.Body.Html.Data', options.html);
+    params.append('Message.Body.Html.Charset', 'UTF-8');
+
+    if (options.text) {
+      params.append('Message.Body.Text.Data', options.text);
+      params.append('Message.Body.Text.Charset', 'UTF-8');
+    }
+
+    const body = params.toString();
+    const url = new URL(endpoint);
+
+    const headers = await createAWSSignature(
+      'POST',
+      url,
+      body,
+      {
+        accessKeyId: env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+      },
+      region
+    );
+
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers,
+      body,
+    });
+
+    const responseText = await response.text();
+
+    if (!response.ok) {
+      console.error('SES Error Response:', responseText);
+      // Parse error from XML response
+      const errorMatch = responseText.match(/<Message>([^<]+)<\/Message>/);
+      const errorMessage = errorMatch ? errorMatch[1] : 'Unknown SES error';
+      return {
+        success: false,
+        error: errorMessage,
+      };
+    }
+
+    // Parse MessageId from XML response
+    const messageIdMatch = responseText.match(/<MessageId>([^<]+)<\/MessageId>/);
+    const messageId = messageIdMatch ? messageIdMatch[1] : undefined;
 
     return {
       success: true,
-      messageId: response.MessageId,
+      messageId,
     };
   } catch (error) {
     console.error('SES Email Error:', error);
@@ -289,7 +389,7 @@ Review application: ${siteUrl}/admin/submissions/${submission.id}
   return sendEmail(env, {
     to: toEmails,
     from: fromEmail,
-    subject: `🆕 Job Application: ${submission.name} - ${locationMap[submission.location || ''] || 'Unknown Location'}`,
+    subject: `New Job Application: ${submission.name} - ${locationMap[submission.location || ''] || 'Unknown Location'}`,
     html,
     text,
   });
@@ -330,12 +430,12 @@ export async function sendTestEmail(
     <body>
       <div class="container">
         <div class="header">
-          <h1>🧪 Test Email</h1>
+          <h1>Test Email</h1>
           <span class="badge">Configuration Verified</span>
         </div>
         <div class="content">
           <div class="success-box">
-            <h3>✅ Email System Working!</h3>
+            <h3>Email System Working!</h3>
             <p>Hi ${escapeHtml(userName)}, this test email confirms that your email notifications are properly configured.</p>
           </div>
 
@@ -386,7 +486,7 @@ Sent on ${new Date().toLocaleString()}
   return sendEmail(env, {
     to: [toEmail],
     from: fromEmail,
-    subject: `🧪 Test Email - ${tenantName} Admin`,
+    subject: `Test Email - ${tenantName} Admin`,
     html,
     text,
   });
