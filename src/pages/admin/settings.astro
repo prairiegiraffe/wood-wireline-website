@@ -1,6 +1,6 @@
 ---
 // Admin Settings / Profile
-// All users can change their password here
+// All users can change their password and notification preferences here
 
 import '~/assets/styles/tailwind.css';
 
@@ -14,6 +14,20 @@ if (!user) {
 
 const isAgency = user.role === 'agency';
 const isSuperAdmin = user.role === 'superadmin';
+
+// Get notification labels for display
+function getNotifyLabel(value: string | null): string {
+  switch (value) {
+    case 'all':
+      return 'All form submissions';
+    case 'contact':
+      return 'Contact forms only';
+    case 'application':
+      return 'Job applications only';
+    default:
+      return 'None';
+  }
+}
 ---
 
 <!doctype html>
@@ -114,6 +128,57 @@ const isSuperAdmin = user.role === 'superadmin';
             )
           }
         </div>
+      </div>
+
+      <!-- Email Notifications -->
+      <div class="bg-white rounded-xl shadow p-6 mb-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Email Notifications</h2>
+        <p class="text-sm text-gray-600 mb-4">
+          Choose which form submissions you'd like to receive email notifications for.
+        </p>
+        <form id="notifications-form" class="space-y-4">
+          <div>
+            <label for="notify-select" class="block text-sm font-medium text-gray-700 mb-1">
+              Notify me about
+            </label>
+            <select
+              id="notify-select"
+              name="notify_forms"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="none" selected={user.notify_forms === 'none' || !user.notify_forms}>
+                None - No email notifications
+              </option>
+              <option value="contact" selected={user.notify_forms === 'contact'}>
+                Contact forms only
+              </option>
+              <option value="application" selected={user.notify_forms === 'application'}>
+                Job applications only
+              </option>
+              <option value="all" selected={user.notify_forms === 'all'}>
+                All form submissions
+              </option>
+            </select>
+            <p class="mt-1 text-xs text-gray-500">
+              Notifications are sent to: <strong>{user.email}</strong>
+            </p>
+          </div>
+
+          <div id="notify-error" class="hidden p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+          </div>
+          <div id="notify-success" class="hidden p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700">
+          </div>
+
+          <div class="pt-2">
+            <button
+              type="submit"
+              id="notify-submit-btn"
+              class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Save Notification Preferences
+            </button>
+          </div>
+        </form>
       </div>
 
       <!-- Change Password -->
@@ -245,6 +310,48 @@ const isSuperAdmin = user.role === 'superadmin';
 
         submitBtn.disabled = false;
         submitBtn.textContent = 'Update Password';
+      });
+
+      // Notification preferences form
+      const notifyForm = document.getElementById('notifications-form') as HTMLFormElement;
+      const notifySelect = document.getElementById('notify-select') as HTMLSelectElement;
+      const notifyErrorDiv = document.getElementById('notify-error') as HTMLDivElement;
+      const notifySuccessDiv = document.getElementById('notify-success') as HTMLDivElement;
+      const notifySubmitBtn = document.getElementById('notify-submit-btn') as HTMLButtonElement;
+
+      notifyForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        notifyErrorDiv.classList.add('hidden');
+        notifySuccessDiv.classList.add('hidden');
+
+        notifySubmitBtn.disabled = true;
+        notifySubmitBtn.textContent = 'Saving...';
+
+        try {
+          const response = await fetch('/api/admin/update-notifications', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              notify_forms: notifySelect.value,
+            }),
+          });
+
+          const result = (await response.json()) as { success?: boolean; error?: string };
+
+          if (response.ok && result.success) {
+            notifySuccessDiv.textContent = 'Notification preferences saved!';
+            notifySuccessDiv.classList.remove('hidden');
+          } else {
+            notifyErrorDiv.textContent = result.error || 'Failed to save preferences';
+            notifyErrorDiv.classList.remove('hidden');
+          }
+        } catch {
+          notifyErrorDiv.textContent = 'An error occurred';
+          notifyErrorDiv.classList.remove('hidden');
+        }
+
+        notifySubmitBtn.disabled = false;
+        notifySubmitBtn.textContent = 'Save Notification Preferences';
       });
     </script>
   </body>
