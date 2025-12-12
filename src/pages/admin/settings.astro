@@ -14,20 +14,6 @@ if (!user) {
 
 const isAgency = user.role === 'agency';
 const isSuperAdmin = user.role === 'superadmin';
-
-// Get notification labels for display
-function getNotifyLabel(value: string | null): string {
-  switch (value) {
-    case 'all':
-      return 'All form submissions';
-    case 'contact':
-      return 'Contact forms only';
-    case 'application':
-      return 'Job applications only';
-    default:
-      return 'None';
-  }
-}
 ---
 
 <!doctype html>
@@ -138,9 +124,7 @@ function getNotifyLabel(value: string | null): string {
         </p>
         <form id="notifications-form" class="space-y-4">
           <div>
-            <label for="notify-select" class="block text-sm font-medium text-gray-700 mb-1">
-              Notify me about
-            </label>
+            <label for="notify-select" class="block text-sm font-medium text-gray-700 mb-1"> Notify me about </label>
             <select
               id="notify-select"
               name="notify_forms"
@@ -149,15 +133,11 @@ function getNotifyLabel(value: string | null): string {
               <option value="none" selected={user.notify_forms === 'none' || !user.notify_forms}>
                 None - No email notifications
               </option>
-              <option value="contact" selected={user.notify_forms === 'contact'}>
-                Contact forms only
-              </option>
+              <option value="contact" selected={user.notify_forms === 'contact'}> Contact forms only </option>
               <option value="application" selected={user.notify_forms === 'application'}>
                 Job applications only
               </option>
-              <option value="all" selected={user.notify_forms === 'all'}>
-                All form submissions
-              </option>
+              <option value="all" selected={user.notify_forms === 'all'}> All form submissions </option>
             </select>
             <p class="mt-1 text-xs text-gray-500">
               Notifications are sent to: <strong>{user.email}</strong>
@@ -166,7 +146,10 @@ function getNotifyLabel(value: string | null): string {
 
           <div id="notify-error" class="hidden p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
           </div>
-          <div id="notify-success" class="hidden p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700">
+          <div
+            id="notify-success"
+            class="hidden p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700"
+          >
           </div>
 
           <div class="pt-2">
@@ -314,7 +297,7 @@ function getNotifyLabel(value: string | null): string {
 
       // Notification preferences form
       const notifyForm = document.getElementById('notifications-form') as HTMLFormElement;
-      const notifySelect = document.getElementById('notify-select') as HTMLSelectElement;
+      const notifySelect = document.getElementById('notify-select') as unknown as HTMLSelectElement;
       const notifyErrorDiv = document.getElementById('notify-error') as HTMLDivElement;
       const notifySuccessDiv = document.getElementById('notify-success') as HTMLDivElement;
       const notifySubmitBtn = document.getElementById('notify-submit-btn') as HTMLButtonElement;
