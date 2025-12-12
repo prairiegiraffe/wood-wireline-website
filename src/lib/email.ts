@@ -296,6 +296,103 @@ Review application: ${siteUrl}/admin/submissions/${submission.id}
 }
 
 /**
+ * Send a test email to verify email configuration is working
+ */
+export async function sendTestEmail(
+  env: CloudflareEnv,
+  toEmail: string,
+  userName: string,
+  fromEmail: string,
+  tenantName: string
+): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  const siteUrl = env.SITE_URL || 'https://woodwireline.com';
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #1a1a1a; color: white; padding: 20px; text-align: center; }
+        .badge { display: inline-block; background: #22c55e; color: white; padding: 4px 12px; border-radius: 20px; font-size: 14px; margin-top: 10px; }
+        .content { padding: 20px; background: #f9f9f9; }
+        .success-box { background: #dcfce7; border: 1px solid #22c55e; border-radius: 8px; padding: 16px; margin-bottom: 20px; }
+        .success-box h3 { color: #15803d; margin: 0 0 8px 0; }
+        .success-box p { color: #166534; margin: 0; }
+        .info-box { background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 16px; }
+        .info-box h4 { color: #0369a1; margin: 0 0 8px 0; }
+        .info-box ul { color: #0c4a6e; margin: 0; padding-left: 20px; }
+        .button { display: inline-block; background: #b43232; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; margin-top: 20px; }
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>🧪 Test Email</h1>
+          <span class="badge">Configuration Verified</span>
+        </div>
+        <div class="content">
+          <div class="success-box">
+            <h3>✅ Email System Working!</h3>
+            <p>Hi ${escapeHtml(userName)}, this test email confirms that your email notifications are properly configured.</p>
+          </div>
+
+          <div class="info-box">
+            <h4>What this means:</h4>
+            <ul>
+              <li>AWS SES credentials are valid</li>
+              <li>Email sending is operational</li>
+              <li>Your email address (${escapeHtml(toEmail)}) is receiving messages</li>
+            </ul>
+          </div>
+
+          <p style="margin-top: 20px; color: #666;">
+            You'll receive email notifications based on your notification preferences when new form submissions arrive.
+          </p>
+
+          <a href="${siteUrl}/admin" class="button">Go to Admin Dashboard</a>
+        </div>
+        <div class="footer">
+          <p>This test email was sent from ${tenantName}'s admin dashboard.</p>
+          <p>Sent on ${new Date().toLocaleString()}</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const text = `
+Test Email - Configuration Verified
+
+Hi ${userName},
+
+This test email confirms that your email notifications are properly configured.
+
+What this means:
+- AWS SES credentials are valid
+- Email sending is operational
+- Your email address (${toEmail}) is receiving messages
+
+You'll receive email notifications based on your notification preferences when new form submissions arrive.
+
+Visit the admin dashboard: ${siteUrl}/admin
+
+This test email was sent from ${tenantName}'s admin dashboard.
+Sent on ${new Date().toLocaleString()}
+  `.trim();
+
+  return sendEmail(env, {
+    to: [toEmail],
+    from: fromEmail,
+    subject: `🧪 Test Email - ${tenantName} Admin`,
+    html,
+    text,
+  });
+}
+
+/**
  * Escape HTML special characters
  */
 function escapeHtml(text: string): string {

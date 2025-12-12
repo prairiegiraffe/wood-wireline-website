@@ -191,6 +191,16 @@ function getNotifyLabel(notify: string): string {
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap text-right">
                         <div class="flex justify-end gap-2">
+                          {isSuperadmin && (
+                            <button
+                              class="test-email-btn text-green-600 hover:text-green-800 text-sm font-medium"
+                              data-user-id={u.id}
+                              data-user-email={u.email}
+                              title={`Send test email to ${u.email}`}
+                            >
+                              Test Email
+                            </button>
+                          )}
                           <button
                             class="edit-user-btn text-blue-600 hover:text-blue-800 text-sm font-medium"
                             data-user={JSON.stringify(u)}
@@ -559,6 +569,56 @@ function getNotifyLabel(notify: string): string {
           deleteModal.classList.add('hidden');
           deleteUserId = null;
         }
+      });
+
+      // Test email functionality (superadmin only)
+      document.querySelectorAll('.test-email-btn').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          const button = btn as HTMLButtonElement;
+          const userId = parseInt(button.dataset.userId || '0');
+          const userEmail = button.dataset.userEmail || '';
+
+          if (!userId) return;
+
+          // Confirm before sending
+          if (!confirm(`Send a test email to ${userEmail}?`)) return;
+
+          // Update button state
+          const originalText = button.textContent;
+          button.textContent = 'Sending...';
+          button.disabled = true;
+
+          try {
+            const response = await fetch('/api/admin/test-email', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ userId }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+              button.textContent = 'Sent ✓';
+              button.classList.remove('text-green-600', 'hover:text-green-800');
+              button.classList.add('text-gray-400');
+              setTimeout(() => {
+                button.textContent = originalText;
+                button.disabled = false;
+                button.classList.remove('text-gray-400');
+                button.classList.add('text-green-600', 'hover:text-green-800');
+              }, 3000);
+            } else {
+              alert(result.error || 'Failed to send test email');
+              button.textContent = originalText;
+              button.disabled = false;
+            }
+          } catch (error) {
+            console.error('Test email error:', error);
+            alert('Failed to send test email');
+            button.textContent = originalText;
+            button.disabled = false;
+          }
+        });
       });
     </script>
   </body>
