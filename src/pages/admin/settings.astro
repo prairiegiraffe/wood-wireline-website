@@ -13,6 +13,7 @@ if (!user) {
 }
 
 const isAgency = user.role === 'agency';
+const isSuperAdmin = user.role === 'superadmin';
 ---
 
 <!doctype html>
@@ -34,7 +35,7 @@ const isAgency = user.role === 'agency';
               <a href="/admin" class="text-gray-300 hover:text-white">Dashboard</a>
               <a href="/admin/submissions" class="text-gray-300 hover:text-white">All Submissions</a>
               {
-                isAgency && (
+                (isAgency || isSuperAdmin) && (
                   <a href="/admin/users" class="text-gray-300 hover:text-white">
                     Users
                   </a>
@@ -46,6 +47,7 @@ const isAgency = user.role === 'agency';
             <a href="/admin/settings" class="text-white hover:text-gray-300 text-sm">Settings</a>
             <span class="text-gray-300 text-sm">
               {user?.name}
+              {isSuperAdmin && <span class="ml-1 text-xs bg-red-600 px-2 py-0.5 rounded">Super Admin</span>}
               {isAgency && <span class="ml-1 text-xs bg-purple-600 px-2 py-0.5 rounded">Agency</span>}
             </span>
             <a
