@@ -129,31 +129,44 @@ export const POST: APIRoute = async ({ request, locals }) => {
         created_at: new Date().toISOString(),
       };
 
-      // Send email asynchronously (don't wait for it)
-      sendContactNotification(env, submission, tenantName, fromEmail, notificationEmails)
-        .then((result) => {
-          console.log('Email notification result:', result);
-          if (!result.success) {
-            console.error('Email notification failed:', result.error);
-          }
-        })
-        .catch((err) => {
-          console.error('Email notification error:', err);
-        });
+      // Send email synchronously for debugging
+      const emailResult = await sendContactNotification(env, submission, tenantName, fromEmail, notificationEmails);
+      console.log('Email notification result:', emailResult);
+
+      return new Response(
+        JSON.stringify({
+          success: true,
+          data: { id: clientSubmissionId },
+          debug: {
+            emailSent: emailResult.success,
+            emailError: emailResult.error,
+            messageId: emailResult.messageId,
+            fromEmail,
+            toEmails: notificationEmails,
+          },
+        }),
+        {
+          status: 201,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     } else {
       console.log('No notification emails to send - no recipients matched query');
+      return new Response(
+        JSON.stringify({
+          success: true,
+          data: { id: clientSubmissionId },
+          debug: {
+            emailSent: false,
+            reason: 'No recipients matched notification query',
+          },
+        }),
+        {
+          status: 201,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     }
-
-    return new Response(
-      JSON.stringify({
-        success: true,
-        data: { id: clientSubmissionId },
-      }),
-      {
-        status: 201,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
   } catch (error) {
     console.error('Contact form error:', error);
     return new Response(
