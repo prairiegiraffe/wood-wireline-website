@@ -258,15 +258,7 @@ const isAgency = user?.role === 'agency';
                               )}
                             </p>
                           </div>
-                          <div class="flex-shrink-0 flex gap-2">
-                            {submission.resume_key?.endsWith('.pdf') && (
-                              <button
-                                id="view-resume-btn"
-                                class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm"
-                              >
-                                View
-                              </button>
-                            )}
+                          <div class="flex-shrink-0">
                             <a
                               href={`/api/admin/resume/${submission.resume_key}`}
                               target="_blank"
@@ -279,30 +271,6 @@ const isAgency = user?.role === 'agency';
                         {submission.resume_key?.endsWith('.docx') && (
                           <div class="p-3 bg-orange-50 border border-orange-200 rounded-lg text-sm text-orange-700">
                             <strong>Note:</strong> This is a Word document. Click Download to open it in Microsoft Word or Google Docs.
-                          </div>
-                        )}
-                        <!-- PDF Viewer (hidden by default, only for PDFs) -->
-                        {submission.resume_key?.endsWith('.pdf') && (
-                          <div id="pdf-viewer-container" class="hidden mt-4">
-                            <div class="flex justify-between items-center mb-2">
-                              <span class="text-sm text-gray-600">Resume Preview</span>
-                              <button id="close-viewer-btn" class="text-gray-500 hover:text-gray-700">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                              </button>
-                            </div>
-                            <object
-                              id="pdf-viewer"
-                              type="application/pdf"
-                              class="w-full border border-gray-300 rounded-lg"
-                              style="height: 600px;"
-                              data=""
-                            >
-                              <p class="p-4 text-center text-gray-500">
-                                Unable to display PDF. <a id="pdf-fallback-link" href="#" target="_blank" class="text-blue-600 hover:underline">Click here to open in a new tab</a>.
-                              </p>
-                            </object>
                           </div>
                         )}
                       </div>
@@ -413,38 +381,7 @@ const isAgency = user?.role === 'agency';
       }
     </main>
 
-    <script define:vars={{ submissionId: id, isAgency, resumeKey: submission?.resume_key || '' }}>
-      // PDF Viewer toggle - only for PDF files
-      const viewResumeBtn = document.getElementById('view-resume-btn');
-      const closeViewerBtn = document.getElementById('close-viewer-btn');
-      const pdfViewerContainer = document.getElementById('pdf-viewer-container');
-      const pdfViewer = document.getElementById('pdf-viewer');
-      const pdfFallbackLink = document.getElementById('pdf-fallback-link');
-
-      if (viewResumeBtn && pdfViewer && pdfViewerContainer && resumeKey && resumeKey.endsWith('.pdf')) {
-        const viewUrl = `/api/admin/resume/${resumeKey}?view=1`;
-
-        // Set fallback link
-        if (pdfFallbackLink) {
-          pdfFallbackLink.href = viewUrl;
-        }
-
-        viewResumeBtn.addEventListener('click', () => {
-          console.log('Loading PDF:', viewUrl);
-          pdfViewer.data = viewUrl;
-          pdfViewerContainer.classList.remove('hidden');
-          viewResumeBtn.textContent = 'Viewing';
-        });
-      }
-
-      if (closeViewerBtn && pdfViewer && pdfViewerContainer) {
-        closeViewerBtn.addEventListener('click', () => {
-          pdfViewerContainer.classList.add('hidden');
-          pdfViewer.data = '';
-          if (viewResumeBtn) viewResumeBtn.textContent = 'View';
-        });
-      }
-
+    <script define:vars={{ submissionId: id, isAgency }}>
       if (!isAgency) {
         // Status update
         const statusForm = document.getElementById('status-form');
