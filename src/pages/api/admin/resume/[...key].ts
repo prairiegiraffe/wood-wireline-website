@@ -39,13 +39,19 @@ export const GET: APIRoute = async ({ params, request, locals, url }) => {
     // The key from [...key] route comes as the full path
     const decodedKey = decodeURIComponent(key);
 
-    // For non-agency users, verify they have access to this tenant's files
-    if (payload.role !== 'agency') {
+    // For non-agency/non-superadmin users, verify they have access to this tenant's files
+    if (payload.role !== 'agency' && payload.role !== 'superadmin') {
       const tenantId = payload.tenant_id || env.TENANT_ID || 'default';
       // Resume keys can be in format: {tenant_id}/resumes/... or resumes/{tenant_id}/...
       if (!decodedKey.startsWith(`${tenantId}/`) && !decodedKey.includes(`/${tenantId}/`)) {
         return new Response('Access denied', { status: 403 });
       }
+    }
+
+    // Debug: Check if STORAGE binding exists
+    if (!STORAGE) {
+      console.error('Resume error: STORAGE binding is missing');
+      return new Response('Storage not configured', { status: 500 });
     }
 
     // Get file from R2
