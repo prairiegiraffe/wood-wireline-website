@@ -57,7 +57,7 @@ export const PATCH: APIRoute = async ({ params, request, locals }) => {
     }
 
     // Get existing user
-    const existingUser = await DB.prepare('SELECT * FROM admin_users WHERE id = ?').bind(id).first() as any;
+    const existingUser = await DB.prepare('SELECT * FROM admin_users WHERE id = ?').bind(id).first<{ role: string }>();
     if (!existingUser) {
       return new Response(JSON.stringify({ success: false, error: 'User not found' }), {
         status: 404,
@@ -74,7 +74,7 @@ export const PATCH: APIRoute = async ({ params, request, locals }) => {
     }
 
     // Parse request body
-    const body = await request.json() as {
+    const body = (await request.json()) as {
       name?: string;
       role?: string;
       tenant_id?: string;
@@ -84,7 +84,7 @@ export const PATCH: APIRoute = async ({ params, request, locals }) => {
     };
 
     const updates: string[] = [];
-    const values: any[] = [];
+    const values: (string | number)[] = [];
 
     if (body.name !== undefined) {
       updates.push('name = ?');
@@ -93,14 +93,13 @@ export const PATCH: APIRoute = async ({ params, request, locals }) => {
 
     if (body.role !== undefined) {
       // Only superadmin can assign superadmin role
-      const allowedRoles = payload.role === 'superadmin'
-        ? ['superadmin', 'agency', 'admin', 'viewer']
-        : ['agency', 'admin', 'viewer'];
+      const allowedRoles =
+        payload.role === 'superadmin' ? ['superadmin', 'agency', 'admin', 'viewer'] : ['agency', 'admin', 'viewer'];
       if (!allowedRoles.includes(body.role)) {
-        return new Response(
-          JSON.stringify({ success: false, error: 'Invalid role' }),
-          { status: 400, headers: { 'Content-Type': 'application/json' } }
-        );
+        return new Response(JSON.stringify({ success: false, error: 'Invalid role' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        });
       }
       updates.push('role = ?');
       values.push(body.role);
@@ -136,32 +135,38 @@ export const PATCH: APIRoute = async ({ params, request, locals }) => {
     }
 
     if (updates.length === 0) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'No updates provided' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'No updates provided' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     values.push(id);
 
-    await DB.prepare(`UPDATE admin_users SET ${updates.join(', ')} WHERE id = ?`).bind(...values).run();
+    await DB.prepare(`UPDATE admin_users SET ${updates.join(', ')} WHERE id = ?`)
+      .bind(...values)
+      .run();
 
     // Get updated user
-    const updatedUser = await DB.prepare(`
+    const updatedUser = await DB.prepare(
+      `
       SELECT id, email, name, role, tenant_id, is_active, created_at, last_login
       FROM admin_users WHERE id = ?
-    `).bind(id).first();
+    `
+    )
+      .bind(id)
+      .first();
 
-    return new Response(
-      JSON.stringify({ success: true, data: { user: updatedUser } }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify({ success: true, data: { user: updatedUser } }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
   } catch (error) {
     console.error('Update user error:', error);
-    return new Response(
-      JSON.stringify({ success: false, error: 'Failed to update user' }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify({ success: false, error: 'Failed to update user' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 };
 
@@ -215,14 +220,16 @@ export const DELETE: APIRoute = async ({ params, request, locals }) => {
 
     // Prevent self-deletion
     if (payload.sub === id) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Cannot delete your own account' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'Cannot delete your own account' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Get user to check if superadmin
-    const userToDelete = await DB.prepare('SELECT role FROM admin_users WHERE id = ?').bind(id).first() as any;
+    const userToDelete = await DB.prepare('SELECT role FROM admin_users WHERE id = ?')
+      .bind(id)
+      .first<{ role: string }>();
     if (!userToDelete) {
       return new Response(JSON.stringify({ success: false, error: 'User not found' }), {
         status: 404,
@@ -244,15 +251,15 @@ export const DELETE: APIRoute = async ({ params, request, locals }) => {
     // Delete user
     await DB.prepare('DELETE FROM admin_users WHERE id = ?').bind(id).run();
 
-    return new Response(
-      JSON.stringify({ success: true }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
   } catch (error) {
     console.error('Delete user error:', error);
-    return new Response(
-      JSON.stringify({ success: false, error: 'Failed to delete user' }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify({ success: false, error: 'Failed to delete user' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 };

@@ -3,6 +3,7 @@
 // Server-rendered with auth
 
 import '~/assets/styles/tailwind.css';
+import type { Submission } from '~/lib/types';
 
 export const prerender = false;
 
@@ -12,16 +13,19 @@ const DB = env?.DB;
 
 // Get stats
 let stats = { total: 0, new_count: 0, contacts: 0, applications: 0 };
-let recentSubmissions: any[] = [];
+let recentSubmissions: Submission[] = [];
 
 if (DB && user) {
   try {
     // Build query based on user role
     const isAgency = user.role === 'agency';
-    const tenantFilter = isAgency ? 'is_agency_copy = 1' : `is_agency_copy = 0 AND tenant_id = '${user.tenant_id || env.TENANT_ID || 'default'}'`;
+    const tenantFilter = isAgency
+      ? 'is_agency_copy = 1'
+      : `is_agency_copy = 0 AND tenant_id = '${user.tenant_id || env.TENANT_ID || 'default'}'`;
 
     // Get stats for last 30 days
-    const statsResult = await DB.prepare(`
+    const statsResult = await DB.prepare(
+      `
       SELECT
         COUNT(*) as total,
         SUM(CASE WHEN status = 'new' THEN 1 ELSE 0 END) as new_count,
@@ -31,22 +35,25 @@ if (DB && user) {
       WHERE ${tenantFilter}
         AND deleted_at IS NULL
         AND created_at > datetime('now', '-30 days')
-    `).first();
+    `
+    ).first();
 
     if (statsResult) {
       stats = statsResult as typeof stats;
     }
 
     // Get recent submissions
-    const recentResult = await DB.prepare(`
+    const recentResult = await DB.prepare(
+      `
       SELECT id, tenant_id, form_type, name, email, status, location, created_at
       FROM submissions
       WHERE ${tenantFilter} AND deleted_at IS NULL
       ORDER BY created_at DESC
       LIMIT 10
-    `).all();
+    `
+    ).all();
 
-    recentSubmissions = recentResult.results || [];
+    recentSubmissions = (recentResult.results || []) as unknown as Submission[];
   } catch (error) {
     console.error('Dashboard error:', error);
   }
@@ -95,7 +102,13 @@ function getStatusColor(status: string): string {
             <div class="hidden md:flex gap-6">
               <a href="/admin" class="text-white hover:text-gray-300">Dashboard</a>
               <a href="/admin/submissions" class="text-gray-300 hover:text-white">All Submissions</a>
-              {user?.role === 'agency' && <a href="/admin/users" class="text-gray-300 hover:text-white">Users</a>}
+              {
+                user?.role === 'agency' && (
+                  <a href="/admin/users" class="text-gray-300 hover:text-white">
+                    Users
+                  </a>
+                )
+              }
             </div>
           </div>
           <div class="flex items-center gap-4">
@@ -243,7 +256,9 @@ function getStatusColor(status: string): string {
                       <td class="px-6 py-4 whitespace-nowrap">
                         <span
                           class={`inline-flex px-2 py-1 text-xs font-medium rounded ${
-                            sub.form_type === 'application' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+                            sub.form_type === 'application'
+                              ? 'bg-blue-100 text-blue-800'
+                              : 'bg-green-100 text-green-800'
                           }`}
                         >
                           {sub.form_type}

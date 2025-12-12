@@ -98,18 +98,23 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     // Get users who should receive notifications for contact forms
     // notify_forms can be: 'contact', 'all' for contact form notifications
-    const usersToNotify = await DB.prepare(`
+    const usersToNotify = await DB.prepare(
+      `
       SELECT email FROM admin_users
       WHERE is_active = 1
         AND (notify_forms = 'contact' OR notify_forms = 'all')
         AND (tenant_id = ? OR tenant_id IS NULL OR role = 'agency')
-    `).bind(tenantId).all();
+    `
+    )
+      .bind(tenantId)
+      .all();
 
-    const notificationEmails: string[] = (usersToNotify.results || []).map((u: any) => u.email);
+    const notificationEmails: string[] = (usersToNotify.results || []).map((u: { email: string }) => u.email);
 
     // Send notification email (don't block response)
     if (notificationEmails.length > 0) {
-      const fromEmail = (tenant?.from_email as string) || `noreply@${env.SITE_URL?.replace(/^https?:\/\//, '') || 'example.com'}`;
+      const fromEmail =
+        (tenant?.from_email as string) || `noreply@${env.SITE_URL?.replace(/^https?:\/\//, '') || 'example.com'}`;
       const tenantName = (tenant?.name as string) || 'Website';
 
       const submission: Partial<Submission> = {

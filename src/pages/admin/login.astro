@@ -28,14 +28,7 @@ if (token?.value) {
       }
 
       body {
-        font-family:
-          -apple-system,
-          BlinkMacSystemFont,
-          'Segoe UI',
-          Roboto,
-          Oxygen,
-          Ubuntu,
-          sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
         background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
         min-height: 100vh;
         display: flex;
@@ -224,7 +217,7 @@ if (token?.value) {
             errorMessage.textContent = data.error || 'Login failed. Please try again.';
             errorMessage.classList.add('show');
           }
-        } catch (error) {
+        } catch {
           errorMessage.textContent = 'An error occurred. Please try again.';
           errorMessage.classList.add('show');
         } finally {

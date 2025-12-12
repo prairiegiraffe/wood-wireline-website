@@ -20,6 +20,7 @@ export interface CloudflareEnv {
 
 // Extend Astro's locals
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace App {
     interface Locals {
       runtime: {

@@ -14,53 +14,53 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const { DB } = env;
 
     if (!DB) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Database not configured' }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'Database not configured' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Authenticate
     const token = getTokenFromRequest(request);
     if (!token) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Unauthorized' }),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     let payload: JWTPayload;
     try {
       payload = await verifyToken(token, env.JWT_SECRET);
     } catch {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Invalid token' }),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'Invalid token' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     const sessionValid = await validateSession(DB, payload.jti);
     if (!sessionValid) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Session expired' }),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'Session expired' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Only superadmin can send test emails
     if (payload.role !== 'superadmin') {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Only superadmins can send test emails' }),
-        { status: 403, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'Only superadmins can send test emails' }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Check for required AWS credentials
     if (!env.AWS_ACCESS_KEY_ID || !env.AWS_SECRET_ACCESS_KEY) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'AWS SES credentials not configured' }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'AWS SES credentials not configured' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Parse request body
@@ -68,35 +68,29 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const { userId } = body;
 
     if (!userId) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'User ID is required' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'User ID is required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Get the target user
-    const user = await DB.prepare(
-      'SELECT id, email, name FROM admin_users WHERE id = ?'
-    ).bind(userId).first<{ id: number; email: string; name: string }>();
+    const user = await DB.prepare('SELECT id, email, name FROM admin_users WHERE id = ?')
+      .bind(userId)
+      .first<{ id: number; email: string; name: string }>();
 
     if (!user) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'User not found' }),
-        { status: 404, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'User not found' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Send test email
     const fromEmail = env.FROM_EMAIL || 'noreply@woodwireline.com';
     const tenantName = 'Wood Wireline';
 
-    const result = await sendTestEmail(
-      env,
-      user.email,
-      user.name,
-      fromEmail,
-      tenantName
-    );
+    const result = await sendTestEmail(env, user.email, user.name, fromEmail, tenantName);
 
     if (result.success) {
       return new Response(

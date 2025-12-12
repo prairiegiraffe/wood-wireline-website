@@ -24,6 +24,7 @@ wrangler d1 create submissions-db
 ```
 
 Update `wrangler.toml` with the database ID:
+
 ```toml
 [[d1_databases]]
 binding = "DB"
@@ -49,6 +50,7 @@ wrangler r2 bucket create submissions-files
 ```
 
 The bucket name in `wrangler.toml` should match:
+
 ```toml
 [[r2_buckets]]
 binding = "STORAGE"
@@ -86,6 +88,7 @@ hashPassword('your-secure-password').then(console.log);
 ```
 
 Update the admin user with the proper hash:
+
 ```bash
 wrangler d1 execute submissions-db --command="UPDATE admin_users SET password_hash = 'YOUR_HASH_HERE' WHERE email = 'admin@woodwireline.com';"
 ```
@@ -96,27 +99,28 @@ In your Cloudflare Pages dashboard (or via `wrangler pages secret`):
 
 ### Required Variables
 
-| Variable | Description | Example |
-|----------|-------------|---------|
+| Variable     | Description                                  | Example                               |
+| ------------ | -------------------------------------------- | ------------------------------------- |
 | `JWT_SECRET` | Random 32+ character string for signing JWTs | Generate with: `openssl rand -hex 32` |
-| `TENANT_ID` | Identifier for this tenant | `wood-wireline` |
-| `SITE_URL` | Full URL of the site | `https://woodwireline.com` |
+| `TENANT_ID`  | Identifier for this tenant                   | `wood-wireline`                       |
+| `SITE_URL`   | Full URL of the site                         | `https://woodwireline.com`            |
 
 ### AWS SES Variables (for email notifications)
 
-| Variable | Description |
-|----------|-------------|
-| `AWS_ACCESS_KEY_ID` | AWS access key with SES permissions |
-| `AWS_SECRET_ACCESS_KEY` | AWS secret key |
-| `AWS_REGION` | AWS region where SES is configured (e.g., `us-east-1`) |
+| Variable                | Description                                            |
+| ----------------------- | ------------------------------------------------------ |
+| `AWS_ACCESS_KEY_ID`     | AWS access key with SES permissions                    |
+| `AWS_SECRET_ACCESS_KEY` | AWS secret key                                         |
+| `AWS_REGION`            | AWS region where SES is configured (e.g., `us-east-1`) |
 
 ### Optional Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `NOTIFICATION_EMAILS` | Comma-separated list of emails to notify on submissions | None |
+| Variable              | Description                                             | Default |
+| --------------------- | ------------------------------------------------------- | ------- |
+| `NOTIFICATION_EMAILS` | Comma-separated list of emails to notify on submissions | None    |
 
 Set secrets via CLI:
+
 ```bash
 wrangler pages secret put JWT_SECRET
 wrangler pages secret put AWS_ACCESS_KEY_ID
@@ -143,13 +147,17 @@ Or connect your GitHub repository to Cloudflare Pages for automatic deployments.
 ## Troubleshooting
 
 ### "Invalid binding `DB`" error
+
 Make sure your `wrangler.toml` has the correct database_id and that you've created the D1 database.
 
 ### "Invalid binding `STORAGE`" error
+
 Make sure you've created the R2 bucket with the exact name in `wrangler.toml`.
 
 ### "Invalid binding `SESSION`" warning
+
 The Cloudflare adapter auto-enables sessions with KV. You can ignore this warning or add:
+
 ```toml
 [[kv_namespaces]]
 binding = "SESSION"
@@ -157,11 +165,13 @@ id = "YOUR_KV_NAMESPACE_ID"
 ```
 
 ### Email notifications not sending
+
 1. Verify AWS credentials are set correctly
 2. Check that SES is out of sandbox mode (or recipient is verified)
 3. Check Cloudflare Workers logs for errors
 
 ### Forms not submitting
+
 1. Check browser console for errors
 2. Verify API routes are working by testing directly
 3. Check Cloudflare Workers logs
@@ -171,12 +181,14 @@ id = "YOUR_KV_NAMESPACE_ID"
 For agency/multi-tenant setup:
 
 1. Create additional tenants:
+
 ```sql
 INSERT INTO tenants (id, name, notification_emails, from_email)
 VALUES ('client-abc', 'Client ABC', '["client@example.com"]', 'noreply@client-abc.com');
 ```
 
 2. Create admin users for each tenant:
+
 ```sql
 INSERT INTO admin_users (email, password_hash, name, role, tenant_id, is_active)
 VALUES ('admin@client-abc.com', 'HASH', 'Client Admin', 'admin', 'client-abc', 1);

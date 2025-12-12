@@ -64,7 +64,9 @@ export const GET: APIRoute = async ({ params, request, locals }) => {
       bindParams = [parseInt(id), payload.tenant_id || env.TENANT_ID || 'default'];
     }
 
-    const submission = await DB.prepare(query).bind(...bindParams).first<Submission>();
+    const submission = await DB.prepare(query)
+      .bind(...bindParams)
+      .first<Submission>();
 
     if (!submission) {
       return new Response(JSON.stringify({ success: false, error: 'Submission not found' }), {

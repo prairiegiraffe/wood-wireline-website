@@ -49,11 +49,12 @@ export const GET: APIRoute = async ({ request, locals }) => {
     }
 
     // Get all users - agency users don't see superadmins
-    const usersQuery = payload.role === 'superadmin'
-      ? `SELECT id, email, name, role, tenant_id, is_active, created_at, last_login
+    const usersQuery =
+      payload.role === 'superadmin'
+        ? `SELECT id, email, name, role, tenant_id, is_active, created_at, last_login
          FROM admin_users
          ORDER BY created_at DESC`
-      : `SELECT id, email, name, role, tenant_id, is_active, created_at, last_login
+        : `SELECT id, email, name, role, tenant_id, is_active, created_at, last_login
          FROM admin_users
          WHERE role != 'superadmin'
          ORDER BY created_at DESC`;
@@ -71,13 +72,10 @@ export const GET: APIRoute = async ({ request, locals }) => {
     );
   } catch (error) {
     console.error('Get users error:', error);
-    return new Response(
-      JSON.stringify({ success: false, error: 'Failed to get users' }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    return new Response(JSON.stringify({ success: false, error: 'Failed to get users' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 };
 
@@ -122,7 +120,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     // Parse request body
-    const body = await request.json() as {
+    const body = (await request.json()) as {
       email?: string;
       password?: string;
       name?: string;
@@ -135,27 +133,20 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     // Validate required fields
     if (!email || !password || !name || !role) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Email, password, name, and role are required' }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'Email, password, name, and role are required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Validate role - only superadmin can create superadmin users
-    const allowedRoles = payload.role === 'superadmin'
-      ? ['superadmin', 'agency', 'admin', 'viewer']
-      : ['agency', 'admin', 'viewer'];
+    const allowedRoles =
+      payload.role === 'superadmin' ? ['superadmin', 'agency', 'admin', 'viewer'] : ['agency', 'admin', 'viewer'];
     if (!allowedRoles.includes(role)) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Invalid role' }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'Invalid role' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // For admin/viewer roles, tenant_id is required
@@ -172,13 +163,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // Check if email already exists
     const existing = await DB.prepare('SELECT id FROM admin_users WHERE email = ?').bind(email).first();
     if (existing) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Email already exists' }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'Email already exists' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Hash password
@@ -189,11 +177,15 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const notifyValue = validNotify.includes(notify_forms || '') ? notify_forms : 'none';
 
     // Insert user - agency and superadmin don't have tenant_id
-    const effectiveTenantId = (role === 'agency' || role === 'superadmin') ? null : tenant_id;
-    const result = await DB.prepare(`
+    const effectiveTenantId = role === 'agency' || role === 'superadmin' ? null : tenant_id;
+    const result = await DB.prepare(
+      `
       INSERT INTO admin_users (email, password_hash, name, role, tenant_id, notify_forms, is_active)
       VALUES (?, ?, ?, ?, ?, ?, 1)
-    `).bind(email, passwordHash, name, role, effectiveTenantId, notifyValue).run();
+    `
+    )
+      .bind(email, passwordHash, name, role, effectiveTenantId, notifyValue)
+      .run();
 
     return new Response(
       JSON.stringify({
@@ -216,12 +208,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
     );
   } catch (error) {
     console.error('Create user error:', error);
-    return new Response(
-      JSON.stringify({ success: false, error: 'Failed to create user' }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    return new Response(JSON.stringify({ success: false, error: 'Failed to create user' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 };

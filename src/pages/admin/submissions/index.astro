@@ -3,6 +3,7 @@
 // Server-rendered with auth
 
 import '~/assets/styles/tailwind.css';
+import type { Submission } from '~/lib/types';
 
 export const prerender = false;
 
@@ -20,14 +21,16 @@ const limit = 20;
 const offset = (page - 1) * limit;
 
 // Get submissions
-let submissions: any[] = [];
+let submissions: Submission[] = [];
 let totalCount = 0;
 
 if (DB && user) {
   try {
     // Build query based on user role
     const isAgency = user.role === 'agency';
-    let whereClause = isAgency ? 'is_agency_copy = 1' : `is_agency_copy = 0 AND tenant_id = '${user.tenant_id || env.TENANT_ID || 'default'}'`;
+    let whereClause = isAgency
+      ? 'is_agency_copy = 1'
+      : `is_agency_copy = 0 AND tenant_id = '${user.tenant_id || env.TENANT_ID || 'default'}'`;
     whereClause += ' AND deleted_at IS NULL';
 
     // Add filters
@@ -47,17 +50,19 @@ if (DB && user) {
     totalCount = (countResult?.count as number) || 0;
 
     // Get paginated submissions
-    const result = await DB.prepare(`
+    const result = await DB.prepare(
+      `
       SELECT id, tenant_id, form_type, name, email, phone, status, location, created_at, resume_filename
       FROM submissions
       WHERE ${whereClause}
       ORDER BY created_at DESC
       LIMIT ? OFFSET ?
-    `)
+    `
+    )
       .bind(limit, offset)
       .all();
 
-    submissions = result.results || [];
+    submissions = (result.results || []) as unknown as Submission[];
   } catch (error) {
     console.error('Submissions list error:', error);
   }
@@ -118,7 +123,13 @@ function pageUrl(pageNum: number): string {
             <div class="hidden md:flex gap-6">
               <a href="/admin" class="text-gray-300 hover:text-white">Dashboard</a>
               <a href="/admin/submissions" class="text-white hover:text-gray-300">All Submissions</a>
-              {user?.role === 'agency' && <a href="/admin/users" class="text-gray-300 hover:text-white">Users</a>}
+              {
+                user?.role === 'agency' && (
+                  <a href="/admin/users" class="text-gray-300 hover:text-white">
+                    Users
+                  </a>
+                )
+              }
             </div>
           </div>
           <div class="flex items-center gap-4">
@@ -249,7 +260,9 @@ function pageUrl(pageNum: number): string {
                       <td class="px-6 py-4 whitespace-nowrap">
                         <span
                           class={`inline-flex px-2 py-1 text-xs font-medium rounded ${
-                            sub.form_type === 'application' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+                            sub.form_type === 'application'
+                              ? 'bg-blue-100 text-blue-800'
+                              : 'bg-green-100 text-green-800'
                           }`}
                         >
                           {sub.form_type}

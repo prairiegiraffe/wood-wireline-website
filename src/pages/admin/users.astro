@@ -3,6 +3,7 @@
 // Agency-only: Create, edit, delete users
 
 import '~/assets/styles/tailwind.css';
+import type { AdminUser, Tenant } from '~/lib/types';
 
 export const prerender = false;
 
@@ -18,8 +19,8 @@ if (!user || (user.role !== 'agency' && user.role !== 'superadmin')) {
 const isSuperadmin = user.role === 'superadmin';
 
 // Get all users
-let users: any[] = [];
-let tenants: any[] = [];
+let users: AdminUser[] = [];
+let tenants: Tenant[] = [];
 
 if (DB) {
   try {
@@ -33,11 +34,11 @@ if (DB) {
          WHERE role != 'superadmin'
          ORDER BY created_at DESC`;
     const usersResult = await DB.prepare(usersQuery).all();
-    users = usersResult.results || [];
+    users = (usersResult.results || []) as unknown as AdminUser[];
 
     // Get tenants for dropdown
     const tenantsResult = await DB.prepare('SELECT id, name FROM tenants ORDER BY name').all();
-    tenants = tenantsResult.results || [];
+    tenants = (tenantsResult.results || []) as unknown as Tenant[];
   } catch (error) {
     console.error('Users page error:', error);
   }
@@ -102,11 +103,13 @@ function getNotifyLabel(notify: string): string {
             <a href="/admin/settings" class="text-gray-300 hover:text-white text-sm">Settings</a>
             <span class="text-gray-300 text-sm">
               {user?.name}
-              {isSuperadmin ? (
-                <span class="ml-1 text-xs bg-red-600 px-2 py-0.5 rounded">Super</span>
-              ) : (
-                <span class="ml-1 text-xs bg-purple-600 px-2 py-0.5 rounded">Agency</span>
-              )}
+              {
+                isSuperadmin ? (
+                  <span class="ml-1 text-xs bg-red-600 px-2 py-0.5 rounded">Super</span>
+                ) : (
+                  <span class="ml-1 text-xs bg-purple-600 px-2 py-0.5 rounded">Agency</span>
+                )
+              }
             </span>
             <a
               href="/api/admin/logout"
@@ -131,7 +134,7 @@ function getNotifyLabel(notify: string): string {
           class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
           </svg>
           Add User
         </button>
@@ -143,7 +146,12 @@ function getNotifyLabel(notify: string): string {
           users.length === 0 ? (
             <div class="px-6 py-12 text-center text-gray-500">
               <svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
+                />
               </svg>
               <p>No users found</p>
             </div>
@@ -154,11 +162,21 @@ function getNotifyLabel(notify: string): string {
                   <tr>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tenant</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notifications</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Login</th>
-                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Tenant
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Notifications
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Last Login
+                    </th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -182,13 +200,13 @@ function getNotifyLabel(notify: string): string {
                         {getNotifyLabel(u.notify_forms)}
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap">
-                        <span class={`inline-flex px-2 py-1 text-xs font-medium rounded ${u.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                        <span
+                          class={`inline-flex px-2 py-1 text-xs font-medium rounded ${u.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
+                        >
                           {u.is_active ? 'Active' : 'Inactive'}
                         </span>
                       </td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {formatDate(u.last_login)}
-                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatDate(u.last_login)}</td>
                       <td class="px-6 py-4 whitespace-nowrap text-right">
                         <div class="flex justify-end gap-2">
                           {isSuperadmin && (
@@ -235,7 +253,7 @@ function getNotifyLabel(notify: string): string {
           <h2 id="modal-title" class="text-lg font-semibold text-gray-900">Add User</h2>
           <button id="close-modal" class="text-gray-500 hover:text-gray-700">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
         </div>
@@ -268,7 +286,9 @@ function getNotifyLabel(notify: string): string {
 
           <div id="password-field">
             <label for="user-password" class="block text-sm font-medium text-gray-700 mb-1">
-              Password <span id="password-optional" class="text-gray-400 font-normal hidden">(leave blank to keep current)</span>
+              Password <span id="password-optional" class="text-gray-400 font-normal hidden"
+                >(leave blank to keep current)</span
+              >
             </label>
             <input
               type="password"
@@ -303,9 +323,7 @@ function getNotifyLabel(notify: string): string {
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="">Select a tenant...</option>
-              {tenants.map((t) => (
-                <option value={t.id}>{t.name}</option>
-              ))}
+              {tenants.map((t) => <option value={t.id}>{t.name}</option>)}
               <option value="wood_wireline">Wood Wireline (default)</option>
             </select>
           </div>
@@ -322,7 +340,9 @@ function getNotifyLabel(notify: string): string {
               <option value="application">Job applications only</option>
               <option value="all">All form submissions</option>
             </select>
-            <p class="mt-1 text-xs text-gray-500">Which form submissions should trigger email notifications to this user?</p>
+            <p class="mt-1 text-xs text-gray-500">
+              Which form submissions should trigger email notifications to this user?
+            </p>
           </div>
 
           <div id="active-field" class="hidden">
@@ -366,7 +386,12 @@ function getNotifyLabel(notify: string): string {
         <div class="p-6">
           <div class="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
             <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              ></path>
             </svg>
           </div>
           <h3 class="text-lg font-semibold text-gray-900 text-center mb-2">Delete User</h3>
@@ -479,7 +504,7 @@ function getNotifyLabel(notify: string): string {
         const url = isEdit ? `/api/admin/users/${userIdInput.value}` : '/api/admin/users';
         const method = isEdit ? 'PATCH' : 'POST';
 
-        const data: any = {
+        const data: Record<string, string | boolean> = {
           name: nameInput.value,
           role: roleSelect.value,
           notify_forms: notifySelect.value,
@@ -507,7 +532,7 @@ function getNotifyLabel(notify: string): string {
             body: JSON.stringify(data),
           });
 
-          const result = await response.json() as { success?: boolean; error?: string };
+          const result = (await response.json()) as { success?: boolean; error?: string };
 
           if (response.ok && result.success) {
             window.location.reload();
@@ -515,7 +540,7 @@ function getNotifyLabel(notify: string): string {
             formError.textContent = result.error || 'Failed to save user';
             formError.classList.remove('hidden');
           }
-        } catch (error) {
+        } catch {
           formError.textContent = 'An error occurred';
           formError.classList.remove('hidden');
         }
@@ -544,14 +569,14 @@ function getNotifyLabel(notify: string): string {
             method: 'DELETE',
           });
 
-          const result = await response.json() as { success?: boolean; error?: string };
+          const result = (await response.json()) as { success?: boolean; error?: string };
 
           if (response.ok && result.success) {
             window.location.reload();
           } else {
             alert(result.error || 'Failed to delete user');
           }
-        } catch (error) {
+        } catch {
           alert('An error occurred');
         }
 
@@ -595,7 +620,7 @@ function getNotifyLabel(notify: string): string {
               body: JSON.stringify({ userId }),
             });
 
-            const result = await response.json() as { success?: boolean; error?: string };
+            const result = (await response.json()) as { success?: boolean; error?: string };
 
             if (response.ok && result.success) {
               button.textContent = 'Sent ✓';

@@ -3,6 +3,7 @@
 // Server-rendered with auth
 
 import '~/assets/styles/tailwind.css';
+import type { Submission } from '~/lib/types';
 
 export const prerender = false;
 
@@ -11,7 +12,7 @@ const env = Astro.locals.runtime?.env;
 const user = Astro.locals.user;
 const DB = env?.DB;
 
-let submission: any = null;
+let submission: Submission | null = null;
 let notFound = false;
 
 if (DB && user && id) {
@@ -21,15 +22,17 @@ if (DB && user && id) {
     const copyFilter = isAgency ? 'is_agency_copy = 1' : 'is_agency_copy = 0';
     const tenantFilter = isAgency ? '' : ` AND tenant_id = '${user.tenant_id || env.TENANT_ID || 'default'}'`;
 
-    const result = await DB.prepare(`
+    const result = await DB.prepare(
+      `
       SELECT * FROM submissions
       WHERE id = ? AND ${copyFilter}${tenantFilter} AND deleted_at IS NULL
-    `)
+    `
+    )
       .bind(parseInt(id))
       .first();
 
     if (result) {
-      submission = result;
+      submission = result as unknown as Submission;
     } else {
       notFound = true;
     }
@@ -66,6 +69,9 @@ function getStatusColor(status: string): string {
 }
 
 const isAgency = user?.role === 'agency';
+
+// Create non-null reference for template use (only used in else branch where we know it's not null)
+const sub = submission!;
 ---
 
 <!doctype html>
@@ -73,7 +79,7 @@ const isAgency = user?.role === 'agency';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{submission ? `${submission.name} - Submission` : 'Not Found'} - Admin Dashboard</title>
+    <title>{submission ? `${sub.name} - Submission` : 'Not Found'} - Admin Dashboard</title>
     <meta name="robots" content="noindex, nofollow" />
   </head>
   <body class="bg-gray-100 min-h-screen">
@@ -86,7 +92,13 @@ const isAgency = user?.role === 'agency';
             <div class="hidden md:flex gap-6">
               <a href="/admin" class="text-gray-300 hover:text-white">Dashboard</a>
               <a href="/admin/submissions" class="text-white hover:text-gray-300">All Submissions</a>
-              {user?.role === 'agency' && <a href="/admin/users" class="text-gray-300 hover:text-white">Users</a>}
+              {
+                user?.role === 'agency' && (
+                  <a href="/admin/users" class="text-gray-300 hover:text-white">
+                    Users
+                  </a>
+                )
+              }
             </div>
           </div>
           <div class="flex items-center gap-4">
@@ -137,26 +149,23 @@ const isAgency = user?.role === 'agency';
           </div>
         ) : (
           <>
-            <!-- Header -->
             <div class="bg-white rounded-xl shadow mb-6 p-6">
               <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 <div>
                   <div class="flex items-center gap-3 mb-2">
                     <span
                       class={`inline-flex px-2 py-1 text-xs font-medium rounded ${
-                        submission.form_type === 'application'
-                          ? 'bg-blue-100 text-blue-800'
-                          : 'bg-green-100 text-green-800'
+                        sub.form_type === 'application' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
                       }`}
                     >
-                      {submission.form_type}
+                      {sub.form_type}
                     </span>
-                    <span class={`inline-flex px-2 py-1 text-xs font-medium rounded ${getStatusColor(submission.status)}`}>
-                      {submission.status}
+                    <span class={`inline-flex px-2 py-1 text-xs font-medium rounded ${getStatusColor(sub.status)}`}>
+                      {sub.status}
                     </span>
                   </div>
-                  <h1 class="text-2xl font-bold text-gray-900">{submission.name}</h1>
-                  <p class="text-gray-600">{formatDate(submission.created_at)}</p>
+                  <h1 class="text-2xl font-bold text-gray-900">{sub.name}</h1>
+                  <p class="text-gray-600">{formatDate(sub.created_at)}</p>
                 </div>
 
                 {!isAgency && (
@@ -173,69 +182,66 @@ const isAgency = user?.role === 'agency';
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <!-- Main Content -->
               <div class="lg:col-span-2 space-y-6">
-                <!-- Contact Info -->
                 <div class="bg-white rounded-xl shadow p-6">
                   <h2 class="text-lg font-semibold text-gray-900 mb-4">Contact Information</h2>
                   <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <dt class="text-sm font-medium text-gray-500">Name</dt>
-                      <dd class="mt-1 text-gray-900">{submission.name}</dd>
+                      <dd class="mt-1 text-gray-900">{sub.name}</dd>
                     </div>
                     <div>
                       <dt class="text-sm font-medium text-gray-500">Email</dt>
                       <dd class="mt-1">
-                        <a href={`mailto:${submission.email}`} class="text-blue-600 hover:text-blue-800">
-                          {submission.email}
+                        <a href={`mailto:${sub.email}`} class="text-blue-600 hover:text-blue-800">
+                          {sub.email}
                         </a>
                       </dd>
                     </div>
-                    {submission.phone && (
+                    {sub.phone && (
                       <div>
                         <dt class="text-sm font-medium text-gray-500">Phone</dt>
                         <dd class="mt-1">
-                          <a href={`tel:${submission.phone}`} class="text-blue-600 hover:text-blue-800">
-                            {submission.phone}
+                          <a href={`tel:${sub.phone}`} class="text-blue-600 hover:text-blue-800">
+                            {sub.phone}
                           </a>
                         </dd>
                       </div>
                     )}
-                    {submission.location && (
+                    {sub.location && (
                       <div>
                         <dt class="text-sm font-medium text-gray-500">Location</dt>
-                        <dd class="mt-1 text-gray-900">{submission.location}</dd>
+                        <dd class="mt-1 text-gray-900">{sub.location}</dd>
                       </div>
                     )}
                   </dl>
                 </div>
 
-                <!-- Application Details (if application) -->
-                {submission.form_type === 'application' && (
+                {sub.form_type === 'application' && (
                   <div class="bg-white rounded-xl shadow p-6">
                     <h2 class="text-lg font-semibold text-gray-900 mb-4">Application Details</h2>
                     <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {submission.dob && (
+                      {sub.dob && (
                         <div>
                           <dt class="text-sm font-medium text-gray-500">Date of Birth</dt>
-                          <dd class="mt-1 text-gray-900">{submission.dob}</dd>
+                          <dd class="mt-1 text-gray-900">{sub.dob}</dd>
                         </div>
                       )}
-                      {submission.experience && (
+                      {sub.experience && (
                         <div>
                           <dt class="text-sm font-medium text-gray-500">Experience</dt>
-                          <dd class="mt-1 text-gray-900">{submission.experience}</dd>
+                          <dd class="mt-1 text-gray-900">{sub.experience}</dd>
                         </div>
                       )}
-                      {submission.cdl && (
+                      {sub.cdl && (
                         <div>
                           <dt class="text-sm font-medium text-gray-500">CDL Status</dt>
-                          <dd class="mt-1 text-gray-900">{submission.cdl}</dd>
+                          <dd class="mt-1 text-gray-900">{sub.cdl}</dd>
                         </div>
                       )}
                     </dl>
 
-                    {submission.resume_key && (
+                    {sub.resume_key && (
                       <div class="mt-6 pt-6 border-t border-gray-200">
                         <h3 class="text-sm font-medium text-gray-500 mb-3">Resume</h3>
                         <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg mb-4">
@@ -250,17 +256,17 @@ const isAgency = user?.role === 'agency';
                             </svg>
                           </div>
                           <div class="flex-1 min-w-0">
-                            <p class="font-medium text-gray-900 truncate">{submission.resume_filename}</p>
+                            <p class="font-medium text-gray-900 truncate">{sub.resume_filename}</p>
                             <p class="text-sm text-gray-500">
-                              {submission.resume_size && `${(submission.resume_size / 1024).toFixed(1)} KB`}
-                              {submission.resume_key?.endsWith('.docx') && (
+                              {sub.resume_size && `${(sub.resume_size / 1024).toFixed(1)} KB`}
+                              {sub.resume_key?.endsWith('.docx') && (
                                 <span class="ml-2 text-orange-600">(Word Document)</span>
                               )}
                             </p>
                           </div>
                           <div class="flex-shrink-0">
                             <a
-                              href={`/api/admin/resume/${submission.resume_key}`}
+                              href={`/api/admin/resume/${sub.resume_key}`}
                               target="_blank"
                               class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
                             >
@@ -268,9 +274,10 @@ const isAgency = user?.role === 'agency';
                             </a>
                           </div>
                         </div>
-                        {submission.resume_key?.endsWith('.docx') && (
+                        {sub.resume_key?.endsWith('.docx') && (
                           <div class="p-3 bg-orange-50 border border-orange-200 rounded-lg text-sm text-orange-700">
-                            <strong>Note:</strong> This is a Word document. Click Download to open it in Microsoft Word or Google Docs.
+                            <strong>Note:</strong> This is a Word document. Click Download to open it in Microsoft Word
+                            or Google Docs.
                           </div>
                         )}
                       </div>
@@ -278,41 +285,37 @@ const isAgency = user?.role === 'agency';
                   </div>
                 )}
 
-                <!-- Message (if contact) -->
-                {submission.message && (
+                {sub.message && (
                   <div class="bg-white rounded-xl shadow p-6">
                     <h2 class="text-lg font-semibold text-gray-900 mb-4">Message</h2>
-                    <p class="text-gray-700 whitespace-pre-wrap">{submission.message}</p>
+                    <p class="text-gray-700 whitespace-pre-wrap">{sub.message}</p>
                   </div>
                 )}
 
-                <!-- Metadata -->
                 <div class="bg-white rounded-xl shadow p-6">
                   <h2 class="text-lg font-semibold text-gray-900 mb-4">Metadata</h2>
                   <dl class="grid grid-cols-1 gap-3 text-sm">
                     <div class="flex justify-between">
                       <dt class="text-gray-500">Source</dt>
-                      <dd class="text-gray-900">{submission.source || '—'}</dd>
+                      <dd class="text-gray-900">{sub.source || '—'}</dd>
                     </div>
                     <div class="flex justify-between">
                       <dt class="text-gray-500">Page URL</dt>
-                      <dd class="text-gray-900 truncate max-w-xs">{submission.page_url || '—'}</dd>
+                      <dd class="text-gray-900 truncate max-w-xs">{sub.page_url || '—'}</dd>
                     </div>
                     <div class="flex justify-between">
                       <dt class="text-gray-500">IP Address</dt>
-                      <dd class="text-gray-900">{submission.ip_address || '—'}</dd>
+                      <dd class="text-gray-900">{sub.ip_address || '—'}</dd>
                     </div>
                     <div class="flex justify-between">
                       <dt class="text-gray-500">Submission ID</dt>
-                      <dd class="text-gray-900">#{submission.id}</dd>
+                      <dd class="text-gray-900">#{sub.id}</dd>
                     </div>
                   </dl>
                 </div>
               </div>
 
-              <!-- Sidebar -->
               <div class="space-y-6">
-                <!-- Status Update (client only) -->
                 {!isAgency && (
                   <div class="bg-white rounded-xl shadow p-6">
                     <h2 class="text-lg font-semibold text-gray-900 mb-4">Update Status</h2>
@@ -323,7 +326,7 @@ const isAgency = user?.role === 'agency';
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4"
                       >
                         {statusOptions.map((opt) => (
-                          <option value={opt.value} selected={submission.status === opt.value}>
+                          <option value={opt.value} selected={sub.status === opt.value}>
                             {opt.label}
                           </option>
                         ))}
@@ -338,7 +341,6 @@ const isAgency = user?.role === 'agency';
                   </div>
                 )}
 
-                <!-- Admin Notes (client only) -->
                 {!isAgency && (
                   <div class="bg-white rounded-xl shadow p-6">
                     <h2 class="text-lg font-semibold text-gray-900 mb-4">Admin Notes</h2>
@@ -347,9 +349,11 @@ const isAgency = user?.role === 'agency';
                         name="notes"
                         id="admin-notes"
                         rows="6"
-                        placeholder="Add internal notes about this submission..."
+                        placeholder="Add internal notes about this sub..."
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4 resize-none"
-                      >{submission.admin_notes || ''}</textarea>
+                      >
+                        {sub.admin_notes || ''}
+                      </textarea>
                       <button
                         type="submit"
                         class="w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
@@ -360,17 +364,22 @@ const isAgency = user?.role === 'agency';
                   </div>
                 )}
 
-                <!-- Agency View Notice -->
                 {isAgency && (
                   <div class="bg-purple-50 border border-purple-200 rounded-xl p-6">
                     <div class="flex items-center gap-3 mb-2">
                       <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
                       </svg>
                       <h3 class="font-semibold text-purple-900">Agency View</h3>
                     </div>
                     <p class="text-sm text-purple-700">
-                      You're viewing the agency copy of this submission. Status and notes cannot be modified from the agency view.
+                      You're viewing the agency copy of this sub. Status and notes cannot be modified from the agency
+                      view.
                     </p>
                   </div>
                 )}

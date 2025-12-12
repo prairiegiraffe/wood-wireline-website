@@ -79,7 +79,9 @@ export const GET: APIRoute = async ({ request, locals, url }) => {
 
     // Get total count
     const countQuery = `SELECT COUNT(*) as count FROM submissions ${whereClause}`;
-    const countResult = await DB.prepare(countQuery).bind(...params).first<{ count: number }>();
+    const countResult = await DB.prepare(countQuery)
+      .bind(...params)
+      .first<{ count: number }>();
     const total = countResult?.count || 0;
 
     // Get submissions

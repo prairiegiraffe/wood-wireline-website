@@ -40,7 +40,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     // Parse request body
-    const body = await request.json() as {
+    const body = (await request.json()) as {
       current_password?: string;
       new_password?: string;
     };
@@ -49,18 +49,18 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     // Validate required fields
     if (!current_password || !new_password) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Current password and new password are required' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'Current password and new password are required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Validate new password length
     if (new_password.length < 8) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'New password must be at least 8 characters' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'New password must be at least 8 characters' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Get user's current password hash
@@ -69,38 +69,36 @@ export const POST: APIRoute = async ({ request, locals }) => {
       .first<{ password_hash: string }>();
 
     if (!user) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'User not found' }),
-        { status: 404, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'User not found' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Verify current password
     const isValidPassword = await verifyPassword(current_password, user.password_hash);
     if (!isValidPassword) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Current password is incorrect' }),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ success: false, error: 'Current password is incorrect' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Hash new password
     const newPasswordHash = await hashPassword(new_password);
 
     // Update password
-    await DB.prepare('UPDATE admin_users SET password_hash = ? WHERE id = ?')
-      .bind(newPasswordHash, payload.sub)
-      .run();
+    await DB.prepare('UPDATE admin_users SET password_hash = ? WHERE id = ?').bind(newPasswordHash, payload.sub).run();
 
-    return new Response(
-      JSON.stringify({ success: true, message: 'Password changed successfully' }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify({ success: true, message: 'Password changed successfully' }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
   } catch (error) {
     console.error('Change password error:', error);
-    return new Response(
-      JSON.stringify({ success: false, error: 'Failed to change password' }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify({ success: false, error: 'Failed to change password' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 };

@@ -270,66 +270,70 @@ function StateBorders() {
   useEffect(() => {
     fetch('/us-states.geojson')
       .then((res) => res.json())
-      .then((geojson: { features: Array<{ properties?: { name?: string }; geometry: { type: string; coordinates: unknown } }> }) => {
-        const geometries: THREE.BufferGeometry[] = [];
+      .then(
+        (geojson: {
+          features: Array<{ properties?: { name?: string }; geometry: { type: string; coordinates: unknown } }>;
+        }) => {
+          const geometries: THREE.BufferGeometry[] = [];
 
-        // Lat/Lon bounds for North America view including Pacific and Canada
-        const minLat = 22; // Southern Mexico/Caribbean
-        const maxLat = 61.5; // Northern Canada
-        const minLon = -136; // Pacific Ocean
-        const maxLon = -53.5; // Atlantic Ocean
+          // Lat/Lon bounds for North America view including Pacific and Canada
+          const minLat = 22; // Southern Mexico/Caribbean
+          const maxLat = 61.5; // Northern Canada
+          const minLon = -136; // Pacific Ocean
+          const maxLon = -53.5; // Atlantic Ocean
 
-        // Convert lat/lon to terrain coordinates
-        const latLonToTerrain = (lon: number, lat: number) => {
-          const x = ((lon - minLon) / (maxLon - minLon)) * TERRAIN_WIDTH - TERRAIN_WIDTH / 2;
-          const z = ((lat - minLat) / (maxLat - minLat)) * TERRAIN_HEIGHT - TERRAIN_HEIGHT / 2;
-          // Flip Z because latitude increases north but Z increases south in the map
-          return { x, z: -z };
-        };
+          // Convert lat/lon to terrain coordinates
+          const latLonToTerrain = (lon: number, lat: number) => {
+            const x = ((lon - minLon) / (maxLon - minLon)) * TERRAIN_WIDTH - TERRAIN_WIDTH / 2;
+            const z = ((lat - minLat) / (maxLat - minLat)) * TERRAIN_HEIGHT - TERRAIN_HEIGHT / 2;
+            // Flip Z because latitude increases north but Z increases south in the map
+            return { x, z: -z };
+          };
 
-        geojson.features.forEach(
-          (feature: { properties?: { name?: string }; geometry: { type: string; coordinates: unknown } }) => {
-            // Skip Alaska and Hawaii
-            const stateName = feature.properties?.name;
-            if (stateName === 'Alaska' || stateName === 'Hawaii') {
-              return;
-            }
-
-            const processCoordinates = (coords: unknown): void => {
-              if (!Array.isArray(coords) || coords.length === 0) return;
-
-              if (Array.isArray(coords[0])) {
-                if (typeof coords[0][0] === 'number') {
-                  // This is a line of coordinates
-                  const points: THREE.Vector3[] = [];
-                  (coords as [number, number][]).forEach(([lon, lat]) => {
-                    const { x, z } = latLonToTerrain(lon, lat);
-                    const y = getHeight(x, z) + 0.08;
-                    points.push(new THREE.Vector3(x, y, z));
-                  });
-                  if (points.length > 1) {
-                    const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                    geometries.push(geometry);
-                  }
-                } else {
-                  // This is a polygon or multipolygon, recurse
-                  coords.forEach((subCoords: unknown) => processCoordinates(subCoords));
-                }
+          geojson.features.forEach(
+            (feature: { properties?: { name?: string }; geometry: { type: string; coordinates: unknown } }) => {
+              // Skip Alaska and Hawaii
+              const stateName = feature.properties?.name;
+              if (stateName === 'Alaska' || stateName === 'Hawaii') {
+                return;
               }
-            };
 
-            if (feature.geometry.type === 'Polygon') {
-              processCoordinates(feature.geometry.coordinates);
-            } else if (feature.geometry.type === 'MultiPolygon') {
-              (feature.geometry.coordinates as unknown[]).forEach((polygon: unknown) => {
-                processCoordinates(polygon);
-              });
+              const processCoordinates = (coords: unknown): void => {
+                if (!Array.isArray(coords) || coords.length === 0) return;
+
+                if (Array.isArray(coords[0])) {
+                  if (typeof coords[0][0] === 'number') {
+                    // This is a line of coordinates
+                    const points: THREE.Vector3[] = [];
+                    (coords as [number, number][]).forEach(([lon, lat]) => {
+                      const { x, z } = latLonToTerrain(lon, lat);
+                      const y = getHeight(x, z) + 0.08;
+                      points.push(new THREE.Vector3(x, y, z));
+                    });
+                    if (points.length > 1) {
+                      const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                      geometries.push(geometry);
+                    }
+                  } else {
+                    // This is a polygon or multipolygon, recurse
+                    coords.forEach((subCoords: unknown) => processCoordinates(subCoords));
+                  }
+                }
+              };
+
+              if (feature.geometry.type === 'Polygon') {
+                processCoordinates(feature.geometry.coordinates);
+              } else if (feature.geometry.type === 'MultiPolygon') {
+                (feature.geometry.coordinates as unknown[]).forEach((polygon: unknown) => {
+                  processCoordinates(polygon);
+                });
+              }
             }
-          }
-        );
+          );
 
-        setBorderGeometries(geometries);
-      });
+          setBorderGeometries(geometries);
+        }
+      );
   }, []);
 
   return (

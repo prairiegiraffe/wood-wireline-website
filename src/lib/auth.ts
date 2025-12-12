@@ -77,11 +77,7 @@ export async function verifyPassword(password: string, storedHash: string): Prom
 /**
  * Generate a JWT token for a user
  */
-export async function generateToken(
-  user: AdminUser,
-  jwtSecret: string,
-  sessionId: string
-): Promise<string> {
+export async function generateToken(user: AdminUser, jwtSecret: string, sessionId: string): Promise<string> {
   const secret = new TextEncoder().encode(jwtSecret);
 
   const token = await new jose.SignJWT({
@@ -204,16 +200,9 @@ export function canModify(user: JWTPayload): boolean {
 /**
  * Create session in database
  */
-export async function createSession(
-  db: D1Database,
-  userId: number,
-  sessionId: string,
-  expiresAt: Date
-): Promise<void> {
+export async function createSession(db: D1Database, userId: number, sessionId: string, expiresAt: Date): Promise<void> {
   await db
-    .prepare(
-      `INSERT INTO sessions (id, user_id, expires_at) VALUES (?, ?, ?)`
-    )
+    .prepare(`INSERT INTO sessions (id, user_id, expires_at) VALUES (?, ?, ?)`)
     .bind(sessionId, userId, expiresAt.toISOString())
     .run();
 }
@@ -223,9 +212,7 @@ export async function createSession(
  */
 export async function validateSession(db: D1Database, sessionId: string): Promise<boolean> {
   const result = await db
-    .prepare(
-      `SELECT id FROM sessions WHERE id = ? AND expires_at > datetime('now')`
-    )
+    .prepare(`SELECT id FROM sessions WHERE id = ? AND expires_at > datetime('now')`)
     .bind(sessionId)
     .first();
 
@@ -262,8 +249,5 @@ export async function getUserByEmail(db: D1Database, email: string): Promise<Adm
  * Update user's last login time
  */
 export async function updateLastLogin(db: D1Database, userId: number): Promise<void> {
-  await db
-    .prepare(`UPDATE admin_users SET last_login = datetime('now') WHERE id = ?`)
-    .bind(userId)
-    .run();
+  await db.prepare(`UPDATE admin_users SET last_login = datetime('now') WHERE id = ?`).bind(userId).run();
 }
