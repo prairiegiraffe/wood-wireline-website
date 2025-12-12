@@ -54,6 +54,7 @@ export const onRequest = defineMiddleware(async ({ request, locals, redirect, ur
           name: payload.name,
           role: payload.role,
           tenant_id: payload.tenant_id,
+          notify_forms: 'none',
           is_active: 1,
           password_hash: '',
           created_at: '',

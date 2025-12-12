@@ -207,7 +207,7 @@ function getNotifyLabel(notify: string): string {
                           >
                             Edit
                           </button>
-                          {u.id !== parseInt(user?.sub || '0') && (
+                          {u.id !== (user?.id || 0) && (
                             <button
                               class="delete-user-btn text-red-600 hover:text-red-800 text-sm font-medium"
                               data-user-id={u.id}
@@ -401,15 +401,15 @@ function getNotifyLabel(notify: string): string {
       const passwordOptional = document.getElementById('password-optional') as HTMLSpanElement;
       const activeField = document.getElementById('active-field') as HTMLDivElement;
       const tenantField = document.getElementById('tenant-field') as HTMLDivElement;
-      const roleSelect = document.getElementById('user-role') as HTMLSelectElement;
+      const roleSelect = document.getElementById('user-role') as unknown as HTMLSelectElement;
 
       // Form fields
       const userIdInput = document.getElementById('user-id') as HTMLInputElement;
       const nameInput = document.getElementById('user-name') as HTMLInputElement;
       const emailInput = document.getElementById('user-email') as HTMLInputElement;
       const passwordInput = document.getElementById('user-password') as HTMLInputElement;
-      const tenantSelect = document.getElementById('user-tenant') as HTMLSelectElement;
-      const notifySelect = document.getElementById('user-notify') as HTMLSelectElement;
+      const tenantSelect = document.getElementById('user-tenant') as unknown as HTMLSelectElement;
+      const notifySelect = document.getElementById('user-notify') as unknown as HTMLSelectElement;
       const activeCheckbox = document.getElementById('user-active') as HTMLInputElement;
 
       let deleteUserId: number | null = null;
@@ -507,7 +507,7 @@ function getNotifyLabel(notify: string): string {
             body: JSON.stringify(data),
           });
 
-          const result = await response.json();
+          const result = await response.json() as { success?: boolean; error?: string };
 
           if (response.ok && result.success) {
             window.location.reload();
@@ -544,7 +544,7 @@ function getNotifyLabel(notify: string): string {
             method: 'DELETE',
           });
 
-          const result = await response.json();
+          const result = await response.json() as { success?: boolean; error?: string };
 
           if (response.ok && result.success) {
             window.location.reload();
@@ -595,7 +595,7 @@ function getNotifyLabel(notify: string): string {
               body: JSON.stringify({ userId }),
             });
 
-            const result = await response.json();
+            const result = await response.json() as { success?: boolean; error?: string };
 
             if (response.ok && result.success) {
               button.textContent = 'Sent ✓';

@@ -15,6 +15,7 @@ export interface CloudflareEnv {
   SITE_URL: string;
   NOTIFICATION_EMAILS: string;
   TENANT_ID: string;
+  FROM_EMAIL: string;
 }
 
 // Extend Astro's locals

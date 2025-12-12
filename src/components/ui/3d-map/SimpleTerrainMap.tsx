@@ -270,7 +270,7 @@ function StateBorders() {
   useEffect(() => {
     fetch('/us-states.geojson')
       .then((res) => res.json())
-      .then((geojson) => {
+      .then((geojson: { features: Array<{ properties?: { name?: string }; geometry: { type: string; coordinates: unknown } }> }) => {
         const geometries: THREE.BufferGeometry[] = [];
 
         // Lat/Lon bounds for North America view including Pacific and Canada
