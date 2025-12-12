@@ -112,10 +112,13 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const notificationEmails: string[] = (usersToNotify.results || []).map((u: { email: string }) => u.email);
 
     // Send notification email (don't block response)
+    console.log('Notification emails query returned:', notificationEmails.length, 'recipients:', notificationEmails);
     if (notificationEmails.length > 0) {
       const fromEmail =
         (tenant?.from_email as string) || `noreply@${env.SITE_URL?.replace(/^https?:\/\//, '') || 'example.com'}`;
       const tenantName = (tenant?.name as string) || 'Website';
+
+      console.log('Sending contact notification from:', fromEmail, 'to:', notificationEmails);
 
       const submission: Partial<Submission> = {
         id: clientSubmissionId as number,
@@ -129,6 +132,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       // Send email asynchronously (don't wait for it)
       sendContactNotification(env, submission, tenantName, fromEmail, notificationEmails)
         .then((result) => {
+          console.log('Email notification result:', result);
           if (!result.success) {
             console.error('Email notification failed:', result.error);
           }
@@ -136,6 +140,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
         .catch((err) => {
           console.error('Email notification error:', err);
         });
+    } else {
+      console.log('No notification emails to send - no recipients matched query');
     }
 
     return new Response(
