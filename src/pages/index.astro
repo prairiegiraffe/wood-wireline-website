@@ -125,18 +125,55 @@ const metadata = {
 
   <section class="py-12 md:py-16 bg-white dark:bg-gray-900">
     <div class="max-w-6xl mx-auto px-4 sm:px-6">
-      <div class="relative w-full rounded-2xl overflow-hidden shadow-2xl" style="aspect-ratio: 16/9;">
-        <iframe
-          src="https://www.youtube.com/embed/I5wQVq_7LrA?rel=0&modestbranding=1"
-          title="Wood Wireline Video"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-          class="absolute inset-0 w-full h-full"
-        ></iframe>
+      <div
+        id="youtube-lite"
+        class="relative w-full rounded-2xl overflow-hidden shadow-2xl cursor-pointer group"
+        style="aspect-ratio: 16/9;"
+        data-video-id="I5wQVq_7LrA"
+      >
+        <!-- YouTube maxres thumbnail -->
+        <img
+          src="https://i.ytimg.com/vi/I5wQVq_7LrA/maxresdefault.jpg"
+          alt="Wood Wireline Video"
+          class="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
+        />
+        <!-- Dark overlay -->
+        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></div>
+        <!-- Play button -->
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div
+            class="w-16 h-16 md:w-20 md:h-20 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:bg-red-700 group-hover:scale-110 transition-all"
+          >
+            <svg class="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
   </section>
+
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('youtube-lite');
+      if (!container) return;
+
+      container.addEventListener('click', () => {
+        const videoId = container.dataset.videoId;
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&autoplay=1`;
+        iframe.title = 'Wood Wireline Video';
+        iframe.frameBorder = '0';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.allowFullscreen = true;
+        iframe.className = 'absolute inset-0 w-full h-full';
+        container.innerHTML = '';
+        container.appendChild(iframe);
+        container.classList.remove('cursor-pointer', 'group');
+      });
+    });
+  </script>
 
   <!-- Enhanced Stats Widget (Metrics Bar) ****************** -->
 
