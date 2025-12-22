@@ -146,7 +146,7 @@ const metadata = {
             class="w-16 h-16 md:w-20 md:h-20 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:bg-red-700 group-hover:scale-110 transition-all"
           >
             <svg class="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z" />
+              <path d="M8 5v14l11-7z"></path>
             </svg>
           </div>
         </div>
@@ -164,7 +164,7 @@ const metadata = {
         const iframe = document.createElement('iframe');
         iframe.src = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&autoplay=1`;
         iframe.title = 'Wood Wireline Video';
-        iframe.frameBorder = '0';
+        iframe.setAttribute('frameborder', '0');
         iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
         iframe.allowFullscreen = true;
         iframe.className = 'absolute inset-0 w-full h-full';
