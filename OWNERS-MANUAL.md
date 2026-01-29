@@ -84,10 +84,12 @@ The new user can now log in with their email and the password you created.
 ## 📋 Viewing Form Submissions
 
 ### Dashboard View:
+
 1. Log in to see recent submissions on your main dashboard
 2. Click on any submission to view full details
 
 ### All Submissions View:
+
 1. Click **All Submissions** in the top navigation
 2. See a complete list of all contact forms and job applications
 3. Click on any submission to view details, notes, or download resumes
@@ -109,15 +111,19 @@ The new user can now log in with their email and the password you created.
 ## 🆘 Common Issues
 
 ### "I'm not getting email notifications"
+
 → Check your **Settings > Email Notifications** and make sure it's not set to "None"
 
 ### "I can't see the Users page"
+
 → Only Admin users can manage users. If you have a Viewer account, you won't see this page. Contact your administrator if you need elevated access.
 
 ### "I forgot my password"
+
 → Contact your website administrator to reset it for you.
 
 ### "The email went to my spam folder"
+
 → Add `noreply@woodwireline.com` to your contacts/safe senders list.
 
 ---
@@ -125,6 +131,7 @@ The new user can now log in with their email and the password you created.
 ## 📞 Need Help?
 
 If you're still having issues, contact your web administrator with:
+
 - Your email address (login)
 - A description of the problem
 - Any error messages you're seeing
