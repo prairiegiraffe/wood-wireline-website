@@ -48,8 +48,8 @@ export const PATCH: APIRoute = async ({ params, request, locals }) => {
       });
     }
 
-    // Only agency and superadmin users can update other users
-    if (payload.role !== 'agency' && payload.role !== 'superadmin') {
+    // Admin, agency, and superadmin users can update users (viewers cannot)
+    if (payload.role === 'viewer') {
       return new Response(JSON.stringify({ success: false, error: 'Access denied' }), {
         status: 403,
         headers: { 'Content-Type': 'application/json' },
@@ -65,8 +65,16 @@ export const PATCH: APIRoute = async ({ params, request, locals }) => {
       });
     }
 
-    // Agency users cannot edit superadmin users
-    if (payload.role === 'agency' && existingUser.role === 'superadmin') {
+    // Non-superadmin users cannot edit superadmin users
+    if (payload.role !== 'superadmin' && existingUser.role === 'superadmin') {
+      return new Response(JSON.stringify({ success: false, error: 'Access denied' }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Admin users cannot edit agency users
+    if (payload.role === 'admin' && existingUser.role === 'agency') {
       return new Response(JSON.stringify({ success: false, error: 'Access denied' }), {
         status: 403,
         headers: { 'Content-Type': 'application/json' },
@@ -92,11 +100,21 @@ export const PATCH: APIRoute = async ({ params, request, locals }) => {
     }
 
     if (body.role !== undefined) {
-      // Only superadmin can assign superadmin role
-      const allowedRoles =
-        payload.role === 'superadmin' ? ['superadmin', 'agency', 'admin', 'viewer'] : ['agency', 'admin', 'viewer'];
+      // Validate role based on user's role:
+      // - superadmin can assign: superadmin, agency, admin, viewer
+      // - agency can assign: agency, admin, viewer
+      // - admin can only assign: admin, viewer
+      let allowedRoles: string[] = [];
+      if (payload.role === 'superadmin') {
+        allowedRoles = ['superadmin', 'agency', 'admin', 'viewer'];
+      } else if (payload.role === 'agency') {
+        allowedRoles = ['agency', 'admin', 'viewer'];
+      } else if (payload.role === 'admin') {
+        allowedRoles = ['admin', 'viewer'];
+      }
+
       if (!allowedRoles.includes(body.role)) {
-        return new Response(JSON.stringify({ success: false, error: 'Invalid role' }), {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid role or insufficient permissions' }), {
           status: 400,
           headers: { 'Content-Type': 'application/json' },
         });
@@ -210,8 +228,8 @@ export const DELETE: APIRoute = async ({ params, request, locals }) => {
       });
     }
 
-    // Only agency and superadmin users can delete users
-    if (payload.role !== 'agency' && payload.role !== 'superadmin') {
+    // Admin, agency, and superadmin users can delete users (viewers cannot)
+    if (payload.role === 'viewer') {
       return new Response(JSON.stringify({ success: false, error: 'Access denied' }), {
         status: 403,
         headers: { 'Content-Type': 'application/json' },
@@ -237,8 +255,16 @@ export const DELETE: APIRoute = async ({ params, request, locals }) => {
       });
     }
 
-    // Agency users cannot delete superadmin users
-    if (payload.role === 'agency' && userToDelete.role === 'superadmin') {
+    // Non-superadmin users cannot delete superadmin users
+    if (payload.role !== 'superadmin' && userToDelete.role === 'superadmin') {
+      return new Response(JSON.stringify({ success: false, error: 'Access denied' }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Admin users cannot delete agency users
+    if (payload.role === 'admin' && userToDelete.role === 'agency') {
       return new Response(JSON.stringify({ success: false, error: 'Access denied' }), {
         status: 403,
         headers: { 'Content-Type': 'application/json' },

@@ -11,8 +11,9 @@ const env = Astro.locals.runtime?.env;
 const user = Astro.locals.user;
 const DB = env?.DB;
 
-// Only agency and superadmin users can access this page
-if (!user || (user.role !== 'agency' && user.role !== 'superadmin')) {
+// Admin, agency, and superadmin users can access this page
+// Viewers cannot manage users
+if (!user || user.role === 'viewer') {
   return Astro.redirect('/admin');
 }
 
@@ -24,7 +25,8 @@ let tenants: Tenant[] = [];
 
 if (DB) {
   try {
-    // Superadmin sees everyone, agency users don't see superadmins
+    // Superadmin sees everyone
+    // Everyone else (agency, admin) doesn't see superadmins
     const usersQuery = isSuperadmin
       ? `SELECT id, email, name, role, tenant_id, notify_forms, is_active, created_at, last_login
          FROM admin_users
@@ -308,9 +310,9 @@ function getNotifyLabel(notify: string): string {
               required
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
-              <option value="admin">Admin (manages own tenant)</option>
+              <option value="admin">Admin (full access)</option>
               <option value="viewer">Viewer (read-only)</option>
-              <option value="agency">Agency (sees all tenants)</option>
+              {(user.role === 'agency' || isSuperadmin) && <option value="agency">Agency (sees all tenants)</option>}
               {isSuperadmin && <option value="superadmin">Superadmin (invisible god mode)</option>}
             </select>
           </div>

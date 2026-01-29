@@ -124,7 +124,7 @@ function pageUrl(pageNum: number): string {
               <a href="/admin" class="text-gray-300 hover:text-white">Dashboard</a>
               <a href="/admin/submissions" class="text-white hover:text-gray-300">All Submissions</a>
               {
-                (user?.role === 'agency' || user?.role === 'superadmin') && (
+                user?.role !== 'viewer' && (
                   <a href="/admin/users" class="text-gray-300 hover:text-white">
                     Users
                   </a>

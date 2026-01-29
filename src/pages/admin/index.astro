@@ -103,7 +103,7 @@ function getStatusColor(status: string): string {
               <a href="/admin" class="text-white hover:text-gray-300">Dashboard</a>
               <a href="/admin/submissions" class="text-gray-300 hover:text-white">All Submissions</a>
               {
-                (user?.role === 'agency' || user?.role === 'superadmin') && (
+                user?.role !== 'viewer' && (
                   <a href="/admin/users" class="text-gray-300 hover:text-white">
                     Users
                   </a>

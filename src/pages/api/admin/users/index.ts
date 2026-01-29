@@ -40,8 +40,8 @@ export const GET: APIRoute = async ({ request, locals }) => {
       });
     }
 
-    // Only agency and superadmin users can manage users
-    if (payload.role !== 'agency' && payload.role !== 'superadmin') {
+    // Admin, agency, and superadmin users can manage users (viewers cannot)
+    if (payload.role === 'viewer') {
       return new Response(JSON.stringify({ success: false, error: 'Access denied' }), {
         status: 403,
         headers: { 'Content-Type': 'application/json' },
@@ -111,8 +111,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
 
-    // Only agency and superadmin users can create users
-    if (payload.role !== 'agency' && payload.role !== 'superadmin') {
+    // Admin, agency, and superadmin users can create users (viewers cannot)
+    if (payload.role === 'viewer') {
       return new Response(JSON.stringify({ success: false, error: 'Access denied' }), {
         status: 403,
         headers: { 'Content-Type': 'application/json' },
@@ -139,11 +139,21 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
 
-    // Validate role - only superadmin can create superadmin users
-    const allowedRoles =
-      payload.role === 'superadmin' ? ['superadmin', 'agency', 'admin', 'viewer'] : ['agency', 'admin', 'viewer'];
+    // Validate role based on user's role:
+    // - superadmin can create: superadmin, agency, admin, viewer
+    // - agency can create: agency, admin, viewer
+    // - admin can only create: admin, viewer
+    let allowedRoles: string[] = [];
+    if (payload.role === 'superadmin') {
+      allowedRoles = ['superadmin', 'agency', 'admin', 'viewer'];
+    } else if (payload.role === 'agency') {
+      allowedRoles = ['agency', 'admin', 'viewer'];
+    } else if (payload.role === 'admin') {
+      allowedRoles = ['admin', 'viewer'];
+    }
+
     if (!allowedRoles.includes(role)) {
-      return new Response(JSON.stringify({ success: false, error: 'Invalid role' }), {
+      return new Response(JSON.stringify({ success: false, error: 'Invalid role or insufficient permissions' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
       });

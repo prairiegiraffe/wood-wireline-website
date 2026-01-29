@@ -35,7 +35,7 @@ const isSuperAdmin = user.role === 'superadmin';
               <a href="/admin" class="text-gray-300 hover:text-white">Dashboard</a>
               <a href="/admin/submissions" class="text-gray-300 hover:text-white">All Submissions</a>
               {
-                (isAgency || isSuperAdmin) && (
+                user?.role !== 'viewer' && (
                   <a href="/admin/users" class="text-gray-300 hover:text-white">
                     Users
                   </a>
