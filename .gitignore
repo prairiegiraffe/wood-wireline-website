@@ -29,3 +29,7 @@ public/background-video.mp4
 # Cloudflare local dev
 .dev.vars
 .wrangler/
+
+# VSCode history and temp folders
+.history/
+astrowind-pg-template/
