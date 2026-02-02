@@ -206,7 +206,7 @@ export async function sendContactNotification(
     <body>
       <div class="container">
         <div class="header">
-          <h1>New Contact Form Submission</h1>
+          <h1>New Quote Request</h1>
         </div>
         <div class="content">
           <div class="field">
@@ -244,7 +244,7 @@ export async function sendContactNotification(
   `;
 
   const text = `
-New Contact Form Submission
+New Quote Request
 
 Name: ${submission.name}
 Email: ${submission.email}
@@ -259,7 +259,7 @@ View in admin: ${siteUrl}/admin/submissions/${submission.id}
   return sendEmail(env, {
     to: toEmails,
     from: fromEmail,
-    subject: `New Contact from ${submission.name} - ${tenantName}`,
+    subject: `New Quote Request from ${submission.name} - ${tenantName}`,
     html,
     text,
   });
