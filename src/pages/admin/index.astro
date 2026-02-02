@@ -266,7 +266,7 @@ function getStatusColor(status: string): string {
                               : 'bg-green-100 text-green-800'
                           }`}
                         >
-                          {sub.form_type}
+                          {sub.form_type === 'contact' ? 'quote' : sub.form_type}
                         </span>
                       </td>
                       <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{sub.name}</td>
