@@ -34,7 +34,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const honeypot = (formData.get('company_website') as string) || '';
     const renderTs = Number(formData.get('form_render_ts'));
     const elapsedMs = Number.isFinite(renderTs) && renderTs > 0 ? Date.now() - renderTs : Infinity;
-    const looksLikeBot = honeypot.trim().length > 0 || (Number.isFinite(elapsedMs) && elapsedMs >= 0 && elapsedMs < 2000);
+    const looksLikeBot =
+      honeypot.trim().length > 0 || (Number.isFinite(elapsedMs) && elapsedMs >= 0 && elapsedMs < 2000);
     if (looksLikeBot) {
       return new Response(JSON.stringify({ success: true, data: { id: null } }), {
         status: 201,
