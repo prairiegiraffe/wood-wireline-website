@@ -58,6 +58,15 @@ const metadata = {
         class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 md:p-8 shadow-lg border border-gray-200 dark:border-gray-700"
         id="applicationForm"
       >
+        <!-- Spam trap: a real applicant never sees this field, so they leave it
+             blank. Bots that fill every input trip it and get silently dropped. -->
+        <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">
+          <label>Website<input type="text" name="company_website" tabindex="-1" autocomplete="off" /></label>
+        </div>
+        <!-- Stamps when the form loaded; the server rejects anything submitted in
+             under 2 seconds as an automated script, never a real person. -->
+        <input type="hidden" name="form_render_ts" id="form_render_ts" value="" />
+
         <div class="grid md:grid-cols-2 gap-6 mb-6">
           <!-- Name -->
           <div>
@@ -135,6 +144,23 @@ const metadata = {
               <option value="dickinson">Dickinson, ND</option>
               <option value="williston">Williston, ND</option>
               <option value="any">Any Location</option>
+            </select>
+          </div>
+
+          <!-- Work Authorization -->
+          <div>
+            <label for="workAuthorized" class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+              Are you legally authorized to work in the United States? <span class="text-red-500">*</span>
+            </label>
+            <select
+              id="workAuthorized"
+              name="workAuthorized"
+              required
+              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent"
+            >
+              <option value="">Select an answer</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
             </select>
           </div>
 
@@ -269,6 +295,11 @@ const metadata = {
 
 <script>
   const form = document.getElementById('applicationForm') as HTMLFormElement | null;
+
+  // Record when the form became fillable. The server compares this to arrival
+  // time and drops anything submitted in under 2 seconds as a bot.
+  const renderTsField = document.getElementById('form_render_ts') as HTMLInputElement | null;
+  if (renderTsField) renderTsField.value = String(Date.now());
 
   async function submitApplication(form: HTMLFormElement) {
     const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;

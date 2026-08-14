@@ -25,6 +25,24 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // Parse multipart form data
     const formData = await request.formData();
 
+    // ── Invisible spam layer ────────────────────────────────────────────────
+    // Neither check can block a real applicant, because a human never sees the
+    // honeypot and never submits a job application in under 2 seconds. When a
+    // check trips we return the same success shape a real submission gets, but
+    // save nothing — a bot gets no error to learn from and no lead reaches the
+    // inbox. This is what got Wood Wireline hammered before; now it's covered.
+    const honeypot = (formData.get('company_website') as string) || '';
+    const renderTs = Number(formData.get('form_render_ts'));
+    const elapsedMs = Number.isFinite(renderTs) && renderTs > 0 ? Date.now() - renderTs : Infinity;
+    const looksLikeBot = honeypot.trim().length > 0 || (Number.isFinite(elapsedMs) && elapsedMs >= 0 && elapsedMs < 2000);
+    if (looksLikeBot) {
+      return new Response(JSON.stringify({ success: true, data: { id: null } }), {
+        status: 201,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+    // ────────────────────────────────────────────────────────────────────────
+
     // Extract form fields
     const name = formData.get('name') as string;
     const email = formData.get('email') as string;
@@ -33,11 +51,19 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const location = formData.get('location') as string;
     const experience = formData.get('experience') as string;
     const cdl = formData.get('cdl') as string;
+    const workAuthorized = formData.get('workAuthorized') as string;
     const pageUrl = formData.get('page_url') as string;
     const resumeFile = formData.get('resume') as File | null;
 
+    // Work-auth answer is stored in the `message` column (NULL for applications
+    // otherwise) so this needs no schema migration on the live database. It shows
+    // in the admin alongside the rest of the application.
+    const workAuthMessage = workAuthorized
+      ? `Authorized to work in the U.S.: ${workAuthorized === 'yes' ? 'Yes' : 'No'}`
+      : null;
+
     // Validate required fields
-    if (!name || !email || !phone || !dob || !location || !experience || !cdl) {
+    if (!name || !email || !phone || !dob || !location || !experience || !cdl || !workAuthorized) {
       return new Response(
         JSON.stringify({
           success: false,
@@ -143,16 +169,17 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // Insert CLIENT copy of submission
     const clientResult = await DB.prepare(
       `INSERT INTO submissions (
-        tenant_id, is_agency_copy, form_type, name, email, phone, dob,
+        tenant_id, is_agency_copy, form_type, name, email, phone, message, dob,
         location, experience, cdl, resume_key, resume_filename, resume_size,
         source, page_url, ip_address, user_agent
-      ) VALUES (?, 0, 'application', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      ) VALUES (?, 0, 'application', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
       .bind(
         tenantId,
         name,
         email,
         phone,
+        workAuthMessage,
         dob,
         location,
         experience,
@@ -172,16 +199,17 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // Insert AGENCY copy of submission (immutable)
     await DB.prepare(
       `INSERT INTO submissions (
-        tenant_id, is_agency_copy, form_type, name, email, phone, dob,
+        tenant_id, is_agency_copy, form_type, name, email, phone, message, dob,
         location, experience, cdl, resume_key, resume_filename, resume_size,
         source, page_url, ip_address, user_agent
-      ) VALUES (?, 1, 'application', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      ) VALUES (?, 1, 'application', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
       .bind(
         tenantId,
         name,
         email,
         phone,
+        workAuthMessage,
         dob,
         location,
         experience,
