@@ -101,5 +101,5 @@ export const footerData = {
     { ariaLabel: 'YouTube', icon: 'tabler:brand-youtube', href: 'https://www.youtube.com/@WoodWireline' },
     { ariaLabel: 'Linktree', icon: 'tabler:tree', href: '#' },
   ],
-  footNote: `© ${new Date().getFullYear()} Wood Wireline. All rights reserved. Established 1977. · Powered by <a href="https://kutthru.com/" target="_blank" rel="noopener noreferrer" class="hover:text-primary hover:underline transition duration-150 ease-in-out">KUT | THRŪ Media</a>`,
+  footNote: `<span class="block">© ${new Date().getFullYear()} Wood Wireline. All rights reserved. Established 1977.</span><span class="mt-2 flex flex-col leading-tight"><span class="text-[0.6875rem] uppercase tracking-[0.12em]">Built by:</span><a href="https://kutthru.com/" target="_blank" rel="noopener noreferrer" class="font-semibold hover:text-primary hover:underline transition duration-150 ease-in-out">KUT | THRŪ Media</a></span>`,
 };
